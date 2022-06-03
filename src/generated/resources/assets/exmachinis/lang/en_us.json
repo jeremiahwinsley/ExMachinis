@@ -1,0 +1,17 @@
+{
+  "block.exmachinis.flux_compactor": "Flux Compactor",
+  "block.exmachinis.flux_hammer": "Flux Hammer",
+  "block.exmachinis.flux_sieve": "Flux Sieve",
+  "gui.exmachinis.inventoryFull": "Inventory is full.",
+  "gui.exmachinis.inventoryMissing": "Place inventory above machine.",
+  "gui.exmachinis.noStatus": "Machine starting up...",
+  "gui.exmachinis.toggleWork": "Working status",
+  "gui.exmachinis.workArea": "Work area (in chunks)",
+  "gui.exmachinis.workAreaBlocks": "Work area (in blocks)",
+  "gui.exmachinis.working": "Machine is working.",
+  "item.exmachinis.bulk_upgrade_basic": "Bulk Upgrade",
+  "itemGroup.exmachinis": "Ex Machinis",
+  "tooltip.exmachinis.activated": "Activated",
+  "tooltip.exmachinis.player": "Player: %s",
+  "tooltip.exmachinis.progress": "Progress: %d/%d seconds"
+}
