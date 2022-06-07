@@ -1,0 +1,12 @@
+{
+  "type": "exmachinis:compacting",
+  "input": {
+    "ingredient": {
+      "item": "exnihilosequentia:gold_pieces"
+    },
+    "count": 4
+  },
+  "output": {
+    "item": "minecraft:raw_gold"
+  }
+}

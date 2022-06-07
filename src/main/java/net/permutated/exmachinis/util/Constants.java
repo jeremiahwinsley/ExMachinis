@@ -44,6 +44,7 @@ public class Constants {
         }
 
         public static final String INPUT = "input";
+        public static final String INGREDIENT = "ingredient";
         public static final String OUTPUT = "output";
         public static final String ITEM = "item";
         public static final String COUNT = "count";

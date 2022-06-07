@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import java.util.Objects;
@@ -14,34 +15,27 @@ public class SerializerUtil {
         // nothing to do
     }
 
-    private static void validateKey(JsonObject json, String key)
-    {
-        if (!json.has(key))
-        {
+    private static void validateKey(JsonObject json, String key) {
+        if (!json.has(key)) {
             throw new JsonSyntaxException("Missing '" + key + "', expected to find an object");
         }
-        if (!json.get(key).isJsonObject())
-        {
+        if (!json.get(key).isJsonObject()) {
             throw new JsonSyntaxException("Expected '" + key + "' to be an object");
         }
     }
 
-    public static ItemStack getItemStack(JsonObject json, String key)
-    {
+    public static ItemStack getItemStack(JsonObject json, String key) {
         validateKey(json, key);
         return ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, key));
     }
 
-    public static JsonElement serializeItemStack(ItemStack stack)
-    {
+    public static JsonElement serializeItemStack(ItemStack stack) {
         JsonObject json = new JsonObject();
         json.addProperty(Constants.JSON.ITEM, Objects.requireNonNull(stack.getItem().getRegistryName()).toString());
-        if (stack.getCount() > 1)
-        {
+        if (stack.getCount() > 1) {
             json.addProperty(Constants.JSON.COUNT, stack.getCount());
         }
-        if (stack.hasTag())
-        {
+        if (stack.hasTag()) {
             json.addProperty(Constants.JSON.NBT, stack.getOrCreateTag().toString());
         }
         return json;

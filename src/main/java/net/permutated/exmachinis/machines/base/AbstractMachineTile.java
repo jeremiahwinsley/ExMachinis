@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -25,7 +25,9 @@ import net.permutated.exmachinis.util.WorkStatus;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 public abstract class AbstractMachineTile extends BlockEntity {
     protected AbstractMachineTile(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
@@ -35,6 +37,11 @@ public abstract class AbstractMachineTile extends BlockEntity {
     protected WorkStatus workStatus = WorkStatus.NONE;
 
     protected final EnergyStorage energyStorage = new EnergyStorage(10_000);
+
+    public static final int UPGRADE_SLOT = 0;
+    public static final int EXTRA_SLOT = 1;
+    public static final int[] INPUT_SLOTS = IntStream.rangeClosed(2, 11).toArray();
+    public static final int TOTAL_SLOTS = 11;
     public static final int SLOTS = 9;
 
     protected final ItemStackHandler itemStackHandler = new MachineItemStackHandler(SLOTS) {
@@ -53,13 +60,17 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     protected abstract boolean isItemValid(ItemStack stack);
 
+    protected final LazyOptional<EnergyStorage> energy = LazyOptional.of(() -> energyStorage);
     protected final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemStackHandler);
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side == null) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return handler.cast();
+        }
+        if (cap == CapabilityEnergy.ENERGY) {
+            return energy.cast();
         }
         return super.getCapability(cap, side);
     }

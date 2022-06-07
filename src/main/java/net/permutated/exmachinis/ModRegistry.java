@@ -84,7 +84,7 @@ public class ModRegistry {
     public static final RegistryObject<BlockItem> FLUX_COMPACTOR_ITEM = blockItem(FLUX_COMPACTOR_BLOCK);
 
     public static final RegistryObject<RecipeType<CompactingRecipe>> COMPACTING_RECIPE_TYPE = RECIPE_TYPES.register(Constants.COMPACTING, () -> new RecipeType<>() {});
-    public static final RegistryObject<RecipeSerializer<CompactingRecipe>> COMPACTING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(Constants.FLUX_COMPACTOR, CompactingRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<CompactingRecipe>> COMPACTING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(Constants.COMPACTING, CompactingRecipe.Serializer::new);
 
 /////////
 

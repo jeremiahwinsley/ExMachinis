@@ -21,6 +21,7 @@ public final class DataGenerators {
 
         if (event.includeServer()) {
             generator.addProvider(new BlockTags(generator, fileHelper));
+            generator.addProvider(new CompactingRecipes(generator));
             generator.addProvider(new CraftingRecipes(generator));
             generator.addProvider(new BlockLoot(generator));
         }
