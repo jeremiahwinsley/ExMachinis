@@ -21,13 +21,13 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.util.Constants;
+import net.permutated.exmachinis.util.ExNihiloAPI;
+import net.permutated.exmachinis.util.OverlayItemHandler;
 import net.permutated.exmachinis.util.WorkStatus;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
 
 public abstract class AbstractMachineTile extends BlockEntity {
     protected AbstractMachineTile(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
@@ -38,36 +38,48 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     protected final EnergyStorage energyStorage = new EnergyStorage(10_000);
 
-    public static final int UPGRADE_SLOT = 0;
-    public static final int EXTRA_SLOT = 1;
-    public static final int[] INPUT_SLOTS = IntStream.rangeClosed(2, 11).toArray();
-    public static final int TOTAL_SLOTS = 11;
-    public static final int SLOTS = 9;
-
-    protected final ItemStackHandler itemStackHandler = new MachineItemStackHandler(SLOTS) {
+    protected final ItemStackHandler itemStackHandler = new MachineItemStackHandler(9) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             return AbstractMachineTile.this.isItemValid(stack);
         }
     };
 
-    protected final ItemStackHandler upgradeInventory = new MachineItemStackHandler(1) {
+    protected final ItemStackHandler upgradeStackHandler = new MachineItemStackHandler(enableMeshSlot() ? 2 : 1) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return stack.getItem() instanceof UpgradeItem;
+            if (slot == 0) {
+                return stack.getItem() instanceof UpgradeItem;
+            } else {
+                return enableMeshSlot() && ExNihiloAPI.isMeshItem(stack);
+            }
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return slot == 0 ? 3 : 1;
         }
     };
 
     protected abstract boolean isItemValid(ItemStack stack);
 
+    protected boolean enableMeshSlot() {
+        return false;
+    }
+
     protected final LazyOptional<EnergyStorage> energy = LazyOptional.of(() -> energyStorage);
     protected final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemStackHandler);
+    protected final LazyOptional<IItemHandler> overlay = LazyOptional.of(() -> new OverlayItemHandler(itemStackHandler, upgradeStackHandler));
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
+            if (side == null) {
+                return overlay.cast();
+            } else {
+                return handler.cast();
+            }
         }
         if (cap == CapabilityEnergy.ENERGY) {
             return energy.cast();
@@ -77,6 +89,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     public void dropItems() {
         AbstractMachineTile.dropItems(level, worldPosition, itemStackHandler);
+        AbstractMachineTile.dropItems(level, worldPosition, upgradeStackHandler);
     }
 
     @Override
@@ -98,9 +111,11 @@ public abstract class AbstractMachineTile extends BlockEntity {
     }
 
     int offset = 0;
+
     /**
      * Add a random offset between 0 and 19 ticks.
      * This is generated once per block entity on the first tick.
+     *
      * @param gameTime the current game time
      * @return the tick delay with the saved offset
      */
@@ -136,6 +151,8 @@ public abstract class AbstractMachineTile extends BlockEntity {
      * @param packetBuffer the packet ready to be filled
      */
     public void updateContainer(FriendlyByteBuf packetBuffer) {
+        packetBuffer.writeBoolean(enableMeshSlot());
+        packetBuffer.writeInt(energyStorage.getEnergyStored());
         packetBuffer.writeBlockPos(worldPosition);
         packetBuffer.writeEnum(workStatus);
     }
@@ -143,7 +160,9 @@ public abstract class AbstractMachineTile extends BlockEntity {
     // Save TE data to disk
     @Override
     protected void saveAdditional(CompoundTag tag) {
-        tag.put(Constants.NBT.INV, itemStackHandler.serializeNBT());
+        tag.put(Constants.NBT.ENERGY, energyStorage.serializeNBT());
+        tag.put(Constants.NBT.INVENTORY, itemStackHandler.serializeNBT());
+        tag.put(Constants.NBT.UPGRADES, upgradeStackHandler.serializeNBT());
         writeFields(tag);
     }
 
@@ -155,7 +174,9 @@ public abstract class AbstractMachineTile extends BlockEntity {
     // Load TE data from disk
     @Override
     public void load(CompoundTag tag) {
-        itemStackHandler.deserializeNBT(tag.getCompound(Constants.NBT.INV));
+        energyStorage.deserializeNBT(tag.getCompound(Constants.NBT.ENERGY));
+        itemStackHandler.deserializeNBT(tag.getCompound(Constants.NBT.INVENTORY));
+        upgradeStackHandler.deserializeNBT(tag.getCompound(Constants.NBT.UPGRADES));
         readFields(tag);
         super.load(tag);
     }

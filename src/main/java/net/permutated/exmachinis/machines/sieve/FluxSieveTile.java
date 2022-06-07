@@ -9,11 +9,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemStackHandler;
 import net.permutated.exmachinis.ModRegistry;
+import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.util.ExNihiloAPI;
 import net.permutated.exmachinis.util.WorkStatus;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 import static net.permutated.exmachinis.util.ItemStackUtil.multiplyStack;
@@ -23,10 +26,13 @@ public class FluxSieveTile extends AbstractMachineTile {
         super(ModRegistry.FLUX_SIEVE_TILE.get(), pos, state);
     }
 
-    //TODO mesh inventory?
-
     @Override
     protected boolean isItemValid(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    protected boolean enableMeshSlot() {
         return true;
     }
 

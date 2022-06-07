@@ -13,9 +13,9 @@ public class ConfigHolder {
         // nothing to do
     }
 
-    public static final String CATEGORY_EXPULSION = "expulsion_pylon";
-    public static final String CATEGORY_INFUSION = "infusion_pylon";
-    public static final String CATEGORY_HARVESTER = "harvester_pylon";
+    public static final String CATEGORY_SIEVE = "sieve";
+    public static final String CATEGORY_HAMMER = "hammer";
+    public static final String CATEGORY_COMPACTOR = "compactor";
 
 
     public static final ServerConfig SERVER;
@@ -28,11 +28,13 @@ public class ConfigHolder {
     }
 
     public static class ServerConfig {
-        // CATEGORY_EXPULSION
+        // CATEGORY_SIEVE
+        // rf per block
+        // multiplier per upgrade?
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> expulsionAllowedDimensions;
         public final ForgeConfigSpec.IntValue expulsionWorldSpawnRadius;
 
-        // CATEGORY_INFUSION
+        // CATEGORY_HAMMER
         public final ForgeConfigSpec.IntValue infusionMinimumDuration;
         public final ForgeConfigSpec.IntValue infusionRequiredDuration;
         public final ForgeConfigSpec.IntValue infusionAppliedDuration;
@@ -40,14 +42,14 @@ public class ConfigHolder {
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> infusionAllowedEffects;
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> infusionDeniedEffects;
 
-        // CATEGORY_HARVESTER
+        // CATEGORY_COMPACTOR
         public final ForgeConfigSpec.IntValue harvesterWorkDelay;
         public final ForgeConfigSpec.BooleanValue harvesterRequiresTool;
 
 
         ServerConfig(ForgeConfigSpec.Builder builder) {
             // CATEGORY_EXPULSION
-            builder.push(CATEGORY_EXPULSION);
+            builder.push(CATEGORY_SIEVE);
 
             expulsionAllowedDimensions = builder
                 .comment("Which dimensions the Expulsion Pylon is allowed to operate in.")
@@ -63,7 +65,7 @@ public class ConfigHolder {
             builder.pop();
 
             // CATEGORY_INFUSION
-            builder.push(CATEGORY_INFUSION);
+            builder.push(CATEGORY_HAMMER);
 
             infusionMinimumDuration = builder
                 .comment("The minimum effect duration (in seconds) that can be used for Potion Filters.",
@@ -98,7 +100,7 @@ public class ConfigHolder {
                     s -> s instanceof String string && string.matches("^\\w+(:\\w+)?$"));
 
             builder.pop();
-            builder.push(CATEGORY_HARVESTER);
+            builder.push(CATEGORY_COMPACTOR);
 
             harvesterWorkDelay = builder
                 .comment("Delay between harvest attempts (in ticks).")

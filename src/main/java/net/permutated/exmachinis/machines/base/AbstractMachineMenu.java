@@ -1,10 +1,7 @@
 package net.permutated.exmachinis.machines.base;
 
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,17 +19,25 @@ import net.minecraftforge.registries.RegistryObject;
 import net.permutated.exmachinis.util.WorkStatus;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public abstract class AbstractMachineMenu extends AbstractContainerMenu {
 
     @Nullable // should only be accessed from server
     private final AbstractMachineTile tileEntity;
+
+    protected boolean enableMeshSlot;
+    protected int energyStored;
     protected final BlockPos blockPos;
     protected final WorkStatus workStatus;
+
+    protected int totalSlots = 0;
 
     protected AbstractMachineMenu(@Nullable MenuType<?> containerType, int windowId, Inventory playerInventory, FriendlyByteBuf packetBuffer) {
         super(containerType, windowId);
 
+        enableMeshSlot = packetBuffer.readBoolean();
+        energyStored = packetBuffer.readInt();
         blockPos = packetBuffer.readBlockPos();
         workStatus = packetBuffer.readEnum(WorkStatus.class);
 
@@ -43,8 +48,17 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-                for (int slot = 0; slot < AbstractMachineTile.SLOTS; slot++) {
-                    addSlot(new SlotItemHandler(handler, slot, 8 + slot * 18, 54));
+                int index = 0;
+                addSlot(new SlotItemHandler(handler, index++, 116, 53));
+                if (enableMeshSlot) {
+                    addSlot(new SlotItemHandler(handler, index++, 79, 35));
+                }
+
+                // 3 x 3
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        addSlot(new SlotItemHandler(handler, index++, 8 + j * 18, 18 + i * 18));
+                    }
                 }
             });
         }
@@ -53,10 +67,6 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     }
 
     protected abstract RegistryObject<Block> getBlock();
-
-    protected int getInventorySize() {
-        return AbstractMachineTile.SLOTS;
-    }
 
     protected WorkStatus getWorkStatus() {
         return workStatus;
@@ -79,7 +89,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 
-        int inventorySize = getInventorySize();
+        int inventorySize = totalSlots;
 
         if (slot != null && slot.hasItem()) {
             ItemStack stack = slot.getItem();
