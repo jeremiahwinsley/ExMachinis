@@ -28,6 +28,7 @@ import net.permutated.exmachinis.util.WorkStatus;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractMachineTile extends BlockEntity {
     protected AbstractMachineTile(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
@@ -36,7 +37,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     protected WorkStatus workStatus = WorkStatus.NONE;
 
-    protected final EnergyStorage energyStorage = new EnergyStorage(10_000);
+    protected final EnergyStorage energyStorage = new MachineEnergyStorage(100_000, 1_000);
 
     protected final ItemStackHandler itemStackHandler = new MachineItemStackHandler(9) {
         @Override
@@ -102,12 +103,15 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     public boolean canTick(final int every) {
         long gameTime = level != null ? level.getGameTime() : 0L;
-        if (offset(gameTime) % every == 0 && gameTime != lastTicked) {
+        if (gameTime != lastTicked) {
             lastTicked = gameTime;
-            return true;
-        } else {
-            return false;
+            delayProgress.incrementAndGet();
+            if (offset(gameTime) % every == 0) {
+                delayProgress.set(0);
+                return true;
+            }
         }
+        return false;
     }
 
     int offset = 0;
@@ -133,6 +137,44 @@ public abstract class AbstractMachineTile extends BlockEntity {
         }
     }
 
+    //TODO can this be merged with above code for gametime? gametime % max delay?
+    protected AtomicInteger delayProgress = new AtomicInteger(0);
+    public int getWorkDelay() {
+        return 60;
+        //TODO config
+    }
+
+    public int getDelayProgress() {
+        return delayProgress.get();
+    }
+
+    public void setDelayProgress(int delayProgress) {
+        this.delayProgress.set(delayProgress);
+    }
+
+    public float getWorkFraction() {
+        if (getDelayProgress() == 0) {
+            return 0f;
+        } else {
+            return ((float) getDelayProgress()) / getWorkDelay();
+        }
+    }
+
+    public void setWorkStatus(WorkStatus workStatus) {
+        this.workStatus = workStatus;
+    }
+    public WorkStatus getWorkStatus() {
+        return this.workStatus;
+    }
+
+    public float getEnergyFraction() {
+        if(energyStorage.getEnergyStored() == 0) {
+            return 0f;
+        } else {
+            return ((float) energyStorage.getEnergyStored()) / energyStorage.getMaxEnergyStored();
+        }
+    }
+
     protected static void dropItems(@Nullable Level world, BlockPos pos, IItemHandler itemHandler) {
         for (int i = 0; i < itemHandler.getSlots(); ++i) {
             ItemStack itemstack = itemHandler.getStackInSlot(i);
@@ -152,7 +194,6 @@ public abstract class AbstractMachineTile extends BlockEntity {
      */
     public void updateContainer(FriendlyByteBuf packetBuffer) {
         packetBuffer.writeBoolean(enableMeshSlot());
-        packetBuffer.writeInt(energyStorage.getEnergyStored());
         packetBuffer.writeBlockPos(worldPosition);
         packetBuffer.writeEnum(workStatus);
     }
@@ -223,4 +264,52 @@ public abstract class AbstractMachineTile extends BlockEntity {
         }
     }
 
+    public class MachineEnergyStorage extends EnergyStorage {
+
+        public MachineEnergyStorage(int capacity, int maxTransfer) {
+            super(capacity, maxTransfer, 0);
+        }
+
+        public void onEnergyChanged() {
+            setChanged();
+        }
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            int rc = super.receiveEnergy(maxReceive, simulate);
+            if (rc > 0 && !simulate) {
+                onEnergyChanged();
+            }
+            return rc;
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate) {
+            int rc = super.extractEnergy(maxExtract, simulate);
+            if (rc > 0 && !simulate) {
+                onEnergyChanged();
+            }
+            return rc;
+        }
+
+        public void setEnergy(int energy) {
+            this.energy = energy;
+            onEnergyChanged();
+        }
+
+        public void addEnergy(int energy) {
+            this.energy += energy;
+            if (this.energy > getMaxEnergyStored()) {
+                this.energy = getEnergyStored();
+            }
+            onEnergyChanged();
+        }
+
+        public void consumeEnergy(int energy) {
+            this.energy -= energy;
+            if (this.energy < 0) {
+                this.energy = 0;
+            }
+            onEnergyChanged();
+        }
+    }
 }

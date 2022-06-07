@@ -42,7 +42,7 @@ public class FluxSieveTile extends AbstractMachineTile {
 
     @Override
     public void tick() {
-        if (level instanceof ServerLevel serverLevel && canTick(60)) {
+        if (level instanceof ServerLevel serverLevel && canTick(getWorkDelay())) {
 
             // ensure that block above is a valid inventory, and get an IItemHandler
             BlockPos above = getBlockPos().above();

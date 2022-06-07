@@ -31,7 +31,7 @@ public class FluxHammerTile extends AbstractMachineTile {
 
     @Override
     public void tick() {
-        if (level != null && !level.isClientSide && canTick(60)) {
+        if (level != null && !level.isClientSide && canTick(getWorkDelay())) {
 
             // ensure that block above is a valid inventory, and get an IItemHandler
             BlockPos above = getBlockPos().above();

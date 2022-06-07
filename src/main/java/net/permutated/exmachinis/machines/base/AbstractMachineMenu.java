@@ -6,11 +6,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -19,7 +23,6 @@ import net.minecraftforge.registries.RegistryObject;
 import net.permutated.exmachinis.util.WorkStatus;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public abstract class AbstractMachineMenu extends AbstractContainerMenu {
 
@@ -27,9 +30,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     private final AbstractMachineTile tileEntity;
 
     protected boolean enableMeshSlot;
-    protected int energyStored;
     protected final BlockPos blockPos;
-    protected final WorkStatus workStatus;
 
     protected int totalSlots = 0;
 
@@ -37,9 +38,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         super(containerType, windowId);
 
         enableMeshSlot = packetBuffer.readBoolean();
-        energyStored = packetBuffer.readInt();
         blockPos = packetBuffer.readBlockPos();
-        workStatus = packetBuffer.readEnum(WorkStatus.class);
 
         Level world = playerInventory.player.getCommandSenderWorld();
 
@@ -51,7 +50,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
                 int index = 0;
                 addSlot(new SlotItemHandler(handler, index++, 116, 53));
                 if (enableMeshSlot) {
-                    addSlot(new SlotItemHandler(handler, index++, 79, 35));
+                    addSlot(new SlotItemHandler(handler, index++, 80, 36));
                 }
 
                 // 3 x 3
@@ -64,12 +63,13 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         }
 
         registerPlayerSlots(wrappedInventory);
+        registerDataSlots();
     }
 
     protected abstract RegistryObject<Block> getBlock();
 
     protected WorkStatus getWorkStatus() {
-        return workStatus;
+        return tileEntity.getWorkStatus();
     }
 
     @Override
@@ -122,5 +122,72 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         for (int i = 0; i < 9; i++) {
             addSlot(new SlotItemHandler(wrappedInventory, i, 8 + i * 18, 142));
         }
+    }
+
+    public void registerDataSlots() {
+
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return tileEntity.getWorkStatus().ordinal();
+            }
+
+            @Override
+            public void set(int value) {
+                tileEntity.setWorkStatus(WorkStatus.values()[value]);
+            }
+        });
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return tileEntity.getDelayProgress();
+            }
+
+            @Override
+            public void set(int value) {
+                tileEntity.setDelayProgress(value);
+            }
+        });
+
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return getEnergy() & 0xffff;
+            }
+
+            @Override
+            public void set(int value) {
+                tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> {
+                    int energyStored = energy.getEnergyStored() & 0xffff0000;
+                    ((AbstractMachineTile.MachineEnergyStorage)energy).setEnergy(energyStored + (value & 0xffff));
+                });
+            }
+        });
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return (getEnergy() >> 16) & 0xffff;
+            }
+
+            @Override
+            public void set(int value) {
+                tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> {
+                    int energyStored = energy.getEnergyStored() & 0x0000ffff;
+                    ((AbstractMachineTile.MachineEnergyStorage)energy).setEnergy(energyStored | (value << 16));
+                });
+            }
+        });
+    }
+
+    public int getEnergy() {
+        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
+    }
+
+    public float getWorkFraction() {
+        return tileEntity.getWorkFraction();
+    }
+
+    public float getEnergyFraction() {
+        return tileEntity.getEnergyFraction();
     }
 }
