@@ -13,7 +13,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -32,6 +34,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     protected WorkStatus workStatus = WorkStatus.NONE;
 
+    protected final EnergyStorage energyStorage = new EnergyStorage(10_000);
     public static final int SLOTS = 9;
 
     protected final ItemStackHandler itemStackHandler = new MachineItemStackHandler(SLOTS) {

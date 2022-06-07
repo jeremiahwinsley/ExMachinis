@@ -16,6 +16,5 @@ public class FluxSieveScreen extends AbstractMachineScreen<AbstractMachineMenu> 
     @Override
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
-        drawText(matrixStack, translateGui("effects"), 42);
     }
 }

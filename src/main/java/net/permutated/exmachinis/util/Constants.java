@@ -13,6 +13,8 @@ public class Constants {
 
     public static final String BULK_UPGRADE = "bulk_upgrade";
 
+    public static final String COMPACTING = "compacting";
+
     public static class NBT {
         private NBT() {
             // nothing to do
@@ -33,5 +35,19 @@ public class Constants {
         public static final String ENABLED = "enabled";
         public static final String CONTENTS = "contents";
         public static final String POSITION = "position";
+    }
+
+    public static class JSON
+    {
+        private JSON() {
+            // nothing to do
+        }
+
+        public static final String INPUT = "input";
+        public static final String OUTPUT = "output";
+        public static final String ITEM = "item";
+        public static final String COUNT = "count";
+        public static final String NBT = "nbt";
+        public static final String TAG = "tag";
     }
 }

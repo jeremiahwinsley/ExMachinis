@@ -40,9 +40,5 @@ public class FluxCompactorBlock extends AbstractMachineBlock {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter reader, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, reader, tooltip, flagIn);
-
-        tooltip.add(translateTooltip("expulsion1"));
-        tooltip.add(translateTooltip("expulsion2"));
-        tooltip.add(translateTooltip("expulsion3"));
     }
 }
