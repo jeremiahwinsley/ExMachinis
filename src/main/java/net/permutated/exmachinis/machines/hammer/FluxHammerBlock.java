@@ -40,5 +40,6 @@ public class FluxHammerBlock extends AbstractMachineBlock {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter reader, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, reader, tooltip, flagIn);
+        tooltip.add(translateTooltip("hammer1"));
     }
 }

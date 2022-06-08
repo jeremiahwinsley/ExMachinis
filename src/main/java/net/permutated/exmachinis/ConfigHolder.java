@@ -4,9 +4,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Mod.EventBusSubscriber
 public class ConfigHolder {
     private ConfigHolder() {
@@ -30,43 +27,56 @@ public class ConfigHolder {
 
     public static class ServerConfig {
         // CATEGORY_GENERAL
-        public final ForgeConfigSpec.IntValue noneWorkDelay;
-        public final ForgeConfigSpec.IntValue basicWorkDelay;
-        public final ForgeConfigSpec.IntValue advancedWorkDelay;
-        public final ForgeConfigSpec.IntValue ultimateWorkDelay;
+        public final ForgeConfigSpec.IntValue goldTicksPerOperation;
+        public final ForgeConfigSpec.IntValue goldEnergyPerBlock;
 
-        public final ForgeConfigSpec.IntValue noneWorkCost;
-        public final ForgeConfigSpec.IntValue basicWorkCost;
-        public final ForgeConfigSpec.IntValue advancedWorkCost;
-        public final ForgeConfigSpec.IntValue ultimateWorkCost;
+        public final ForgeConfigSpec.IntValue diamondTicksPerOperation;
+        public final ForgeConfigSpec.IntValue diamondEnergyPerBlock;
 
+        public final ForgeConfigSpec.IntValue netheriteTicksPerOperation;
+        public final ForgeConfigSpec.IntValue netheriteEnergyPerBlock;
 
-        // CATEGORY_SIEVE
-        // rf per block
-        // multiplier per upgrade?
-
-        // CATEGORY_HAMMER
-
-
-        // CATEGORY_COMPACTOR
-
-
+        public final ForgeConfigSpec.IntValue energyBufferSize;
+        public final ForgeConfigSpec.IntValue maxEnergyPerTick;
 
         ServerConfig(ForgeConfigSpec.Builder builder) {
-            builder.push(CATEGORY_GENERAL);
-            noneWorkDelay = builder.defineInRange("noneWorkDelay", 160, 10, 1200);
-            basicWorkDelay = builder.defineInRange("basicWorkDelay", 80, 10, 1200);
-            advancedWorkDelay = builder.defineInRange("advancedWorkDelay", 40, 10, 1200);
-            ultimateWorkDelay = builder.defineInRange("ultimateWorkDelay", 20, 10, 1200);
+            builder
+                .comment("General balance configs",
+                    "The default calculations for each upgrade are calculated as follows:",
+                    "(ticks per operation * RF per block) * blocks processed = RF per operation",
+                    "RF per operation / ticks per operation = RF per tick")
+                .push(CATEGORY_GENERAL);
 
-            // cost per block, max 1k out of 100,000 buffer? make buffer config
-            noneWorkCost = builder.defineInRange("noneWorkCost", 100, 0, 1_000);
-            basicWorkCost = builder.defineInRange("basicWorkCost", 200, 0, 1_000);
-            advancedWorkCost = builder.defineInRange("advancedWorkCost", 400, 0, 1_000);
-            ultimateWorkCost = builder.defineInRange("ultimateWorkCost", 800, 0, 1_000);
+            goldTicksPerOperation = builder
+                .comment("Ticks per operation for the gold upgrade.")
+                .defineInRange("goldTicksPerOperation", 160, 10, 1200);
+            goldEnergyPerBlock = builder
+                .comment("Energy per block for the gold upgrade.",
+                    "(160 * 1280) * 8 = 1,280RF/operation, 8RF/t")
+                .defineInRange("goldEnergyPerOperation", 1_280, 0, 128_000);
 
-            // none, gold, diamond, netherite
-            // work cost, work delay,
+            diamondTicksPerOperation = builder
+                .comment("Ticks per operation for the diamond upgrade.")
+                .defineInRange("diamondTicksPerOperation", 80, 10, 1200);
+            diamondEnergyPerBlock = builder
+                .comment("Energy per block for the diamond upgrade.",
+                    "(80 * 2560) * 64 = 163,840RF/operation, 2,048RF/t")
+                .defineInRange("diamondEnergyPerOperation", 2_560, 0, 256_000);
+
+            netheriteTicksPerOperation = builder
+                .comment("Ticks per operation for the netherite upgrade.")
+                .defineInRange("netheriteTicksPerOperation", 20, 10, 1200);
+            netheriteEnergyPerBlock = builder
+                .comment("Energy per block for the netherite upgrade.",
+                    "(20 * 2560) * 64 = 163,840RF/operation, 8,192RF/t")
+                .defineInRange("netheriteEnergyPerOperation", 2_560, 0, 256_000);
+
+            energyBufferSize = builder
+                .comment("Max energy buffer size for machines.")
+                .defineInRange("energyBufferSize", 200_000, 20_000, 20_000_000);
+            maxEnergyPerTick = builder
+                .comment("Max energy transfer per tick for machines.")
+                .defineInRange("maxEnergyPerTick", 10_000, 1_000, 1_000_000);
         }
     }
 }

@@ -1,0 +1,9 @@
+Upgrade Type,Ticks per op,RF per block,Blocks per op,RF/t,RF/op
+none,160,1280,1,=(C2 / B2) * D2,=C2 * D2
+1x gold,160,=C2,2,=(C3 / B3) * D3,=C3 * D3
+2x gold,160,=C2,4,=(C4 / B4) * D4,=C4 * D4
+3x gold,160,=C2,8,=(C5 / B5) * D5,=C5 * D5
+1x diamond,80,=C2*2,16,=(C6 / B6) * D6,=C6 * D6
+2x diamond,80,=C2*2,32,=(C7 / B7) * D7,=C7 * D7
+3x diamond,80,=C2*2,64,=(C8 / B8) * D8,=C8 * D8
+1x netherite,20,=C2*2,64,=(C9 / B9) * D9,=C9 * D9

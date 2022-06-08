@@ -27,8 +27,36 @@ public class CraftingRecipes extends RecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+        shaped(ModRegistry.GOLD_UPGRADE.get())
+            .pattern("tct")
+            .pattern("gdg")
+            .pattern("ggg")
+            .define('t', Items.CYAN_TERRACOTTA)
+            .define('c', Tags.Items.DYES_GREEN)
+            .define('d', Tags.Items.INGOTS_GOLD)
+            .define('g', Tags.Items.GLASS)
+            .unlockedBy("has_gold_ingot", has(Tags.Items.INGOTS_GOLD))
+            .save(consumer);
 
-        // nothing to do
+        shaped(ModRegistry.DIAMOND_UPGRADE.get())
+            .pattern("unu")
+            .pattern("ndn")
+            .pattern("unu")
+            .define('u', ModRegistry.GOLD_UPGRADE.get())
+            .define('n', Tags.Items.GEMS_DIAMOND)
+            .define('d', Tags.Items.GLASS)
+            .unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
+            .save(consumer);
+
+        shaped(ModRegistry.NETHERITE_UPGRADE.get())
+            .pattern("unu")
+            .pattern("ndn")
+            .pattern("unu")
+            .define('u', ModRegistry.DIAMOND_UPGRADE.get())
+            .define('n', Tags.Items.INGOTS_NETHERITE)
+            .define('d', Tags.Items.GLASS)
+            .unlockedBy("has_netherite_ingot", has(Tags.Items.INGOTS_NETHERITE))
+            .save(consumer);
 
     }
 

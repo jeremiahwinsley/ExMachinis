@@ -24,7 +24,9 @@ public class Languages {
             addBlock(ModRegistry.FLUX_HAMMER_BLOCK, "Flux Hammer");
             addBlock(ModRegistry.FLUX_COMPACTOR_BLOCK, "Flux Compactor");
 
-            addItem(ModRegistry.BULK_UPGRADE_BASIC, "Bulk Upgrade");
+            addItem(ModRegistry.GOLD_UPGRADE, "Gold Upgrade");
+            addItem(ModRegistry.DIAMOND_UPGRADE, "Diamond Upgrade");
+            addItem(ModRegistry.NETHERITE_UPGRADE, "Netherite Upgrade");
 
             add(gui("noStatus"), "Machine starting up...");
             add(gui("inventoryMissing"), "Place inventory above machine.");
@@ -36,6 +38,9 @@ public class Languages {
             add(gui("toggleWork"), "Working status");
             add(tab(), "Ex Machinis");
 
+            add(tooltip("sieve1"), "RF-powered automatic sieve");
+            add(tooltip("hammer1"), "RF-powered automatic hammer");
+            add(tooltip("compactor1"), "RF-powered automatic compactor");
 
             add(tooltip("activated"), "Activated");
             add(tooltip("progress"), "Progress: %d/%d seconds");

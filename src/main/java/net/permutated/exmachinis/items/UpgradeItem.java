@@ -6,13 +6,19 @@ import net.permutated.exmachinis.ModRegistry;
 public class UpgradeItem extends Item {
 
     public enum Tier {
-        BASIC,
-        ADVANCED,
-        ULTIMATE,
+        GOLD(3),
+        DIAMOND(3),
+        NETHERITE(1),
+        ;
+
+        final int stackSize;
+        Tier(int stackSize) {
+            this.stackSize = stackSize;
+        }
     }
 
     public UpgradeItem(Tier tier) {
-        super(new Properties().stacksTo(3).tab(ModRegistry.CREATIVE_TAB).setNoRepair());
+        super(new Properties().stacksTo(tier.stackSize).tab(ModRegistry.CREATIVE_TAB).setNoRepair());
         this.tier = tier;
     }
 

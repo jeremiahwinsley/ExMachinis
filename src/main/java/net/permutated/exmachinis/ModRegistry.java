@@ -4,20 +4,17 @@ import com.mojang.datafixers.types.Type;
 import com.mojang.datafixers.types.constant.EmptyPart;
 import com.mojang.datafixers.util.Unit;
 import net.minecraft.core.Registry;
-import net.minecraft.world.Container;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.IContainerFactory;
@@ -57,12 +54,12 @@ public class ModRegistry {
 
 
     public static final CreativeModeTab CREATIVE_TAB = new ModItemGroup(ExMachinis.MODID,
-        () -> new ItemStack(ModRegistry.BULK_UPGRADE_ULTIMATE.get()));
+        () -> new ItemStack(ModRegistry.NETHERITE_UPGRADE.get()));
 
     // bulk upgrades, add efficiency/speed/something else?
-    public static final RegistryObject<Item> BULK_UPGRADE_BASIC = upgradeItem(Constants.BULK_UPGRADE, UpgradeItem.Tier.BASIC);
-    public static final RegistryObject<Item> BULK_UPGRADE_ADVANCED = upgradeItem(Constants.BULK_UPGRADE, UpgradeItem.Tier.ADVANCED);
-    public static final RegistryObject<Item> BULK_UPGRADE_ULTIMATE = upgradeItem(Constants.BULK_UPGRADE, UpgradeItem.Tier.ULTIMATE);
+    public static final RegistryObject<Item> GOLD_UPGRADE = upgradeItem(Constants.GOLD_UPGRADE, UpgradeItem.Tier.GOLD);
+    public static final RegistryObject<Item> DIAMOND_UPGRADE = upgradeItem(Constants.DIAMOND_UPGRADE, UpgradeItem.Tier.DIAMOND);
+    public static final RegistryObject<Item> NETHERITE_UPGRADE = upgradeItem(Constants.NETHERITE_UPGRADE, UpgradeItem.Tier.NETHERITE);
 
 
     // Flux Sieve
@@ -106,8 +103,7 @@ public class ModRegistry {
      * @return the new registry object
      */
     public static RegistryObject<Item> upgradeItem(String name, UpgradeItem.Tier tier) {
-        String registry = String.format("%s_%s", name, tier.name().toLowerCase(Locale.ROOT));
-        return ITEMS.register(registry, () -> new UpgradeItem(tier));
+        return ITEMS.register(name, () -> new UpgradeItem(tier));
     }
 
     /**

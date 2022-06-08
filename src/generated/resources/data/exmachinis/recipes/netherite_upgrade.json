@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "exmachinis",
+  "pattern": [
+    "unu",
+    "ndn",
+    "unu"
+  ],
+  "key": {
+    "u": {
+      "item": "exmachinis:diamond_upgrade"
+    },
+    "n": {
+      "tag": "forge:ingots/netherite"
+    },
+    "d": {
+      "tag": "forge:glass"
+    }
+  },
+  "result": {
+    "item": "exmachinis:netherite_upgrade"
+  }
+}

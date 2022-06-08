@@ -93,12 +93,16 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
             ), x, y, this.font);
         }
 
-        if (this.isHovering(116, 53, 16, 16, x, y) && this.menu.getCarried().isEmpty()) {
+        if (this.isHovering(116, 53, 16, 16, x, y) && shouldShowSlotTooltip()) {
             this.renderComponentTooltip(stack, List.of(translateTooltip("upgradeSlot")), x, y, this.font);
         }
 
-        if (this.isHovering(80, 36, 16, 16, x, y) && this.menu.enableMeshSlot && this.menu.getCarried().isEmpty()) {
+        if (this.isHovering(80, 36, 16, 16, x, y) && this.menu.enableMeshSlot && shouldShowSlotTooltip()) {
             this.renderComponentTooltip(stack, List.of(translateTooltip("meshSlot")), x, y, this.font);
         }
+    }
+
+    private boolean shouldShowSlotTooltip() {
+        return this.menu.getCarried().isEmpty() && this.hoveredSlot != null && !this.hoveredSlot.hasItem();
     }
 }

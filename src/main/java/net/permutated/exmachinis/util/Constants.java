@@ -11,7 +11,9 @@ public class Constants {
 
     public static final String UNKNOWN = "unknown";
 
-    public static final String BULK_UPGRADE = "bulk_upgrade";
+    public static final String GOLD_UPGRADE = "gold_upgrade";
+    public static final String DIAMOND_UPGRADE = "diamond_upgrade";
+    public static final String NETHERITE_UPGRADE = "netherite_upgrade";
 
     public static final String COMPACTING = "compacting";
 
