@@ -14,9 +14,4 @@ public class FluxHammerScreen extends AbstractMachineScreen<AbstractMachineMenu>
     public FluxHammerScreen(AbstractMachineMenu container, Inventory inv, Component name) {
         super(container, inv, name, Constants.FLUX_HAMMER);
     }
-
-    @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
-    }
 }

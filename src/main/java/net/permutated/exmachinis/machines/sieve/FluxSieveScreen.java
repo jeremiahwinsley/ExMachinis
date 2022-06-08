@@ -13,9 +13,4 @@ public class FluxSieveScreen extends AbstractMachineScreen<AbstractMachineMenu> 
     public FluxSieveScreen(AbstractMachineMenu container, Inventory inv, Component name) {
         super(container, inv, name, Constants.FLUX_SIEVE);
     }
-
-    @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
-    }
 }

@@ -40,6 +40,13 @@ public class Languages {
             add(tooltip("activated"), "Activated");
             add(tooltip("progress"), "Progress: %d/%d seconds");
 
+            add(tooltip("fluxBar"), "Redstone Flux:");
+            add(tooltip("fluxData"), "%d/%d RF stored");
+            add(tooltip("workBar"), "Work Progress:");
+            add(tooltip("workData"), "%d/%d ticks");
+            add(tooltip("upgradeSlot"), "Upgrade Slot");
+            add(tooltip("meshSlot"), "Mesh Slot");
+
             add(tooltip("player"), "Player: %s");
         }
     }

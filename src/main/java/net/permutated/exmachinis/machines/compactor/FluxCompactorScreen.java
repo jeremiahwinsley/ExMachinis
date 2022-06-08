@@ -13,10 +13,4 @@ public class FluxCompactorScreen extends AbstractMachineScreen<AbstractMachineMe
     public FluxCompactorScreen(AbstractMachineMenu container, Inventory inv, Component name) {
         super(container, inv, name, Constants.FLUX_COMPACTOR);
     }
-
-    @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
-        drawText(matrixStack, translateGui("effects"), 42);
-    }
 }

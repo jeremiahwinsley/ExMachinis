@@ -13,10 +13,8 @@ import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.util.ExNihiloAPI;
 import net.permutated.exmachinis.util.WorkStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraftforge.items.ItemHandlerHelper.copyStackWithSize;
 import static net.permutated.exmachinis.util.ItemStackUtil.multiplyStack;
 
 public class FluxHammerTile extends AbstractMachineTile {
@@ -31,7 +29,7 @@ public class FluxHammerTile extends AbstractMachineTile {
 
     @Override
     public void tick() {
-        if (level != null && !level.isClientSide && canTick(getWorkDelay())) {
+        if (level != null && !level.isClientSide && canTick(getMaxWork())) {
 
             // ensure that block above is a valid inventory, and get an IItemHandler
             BlockPos above = getBlockPos().above();

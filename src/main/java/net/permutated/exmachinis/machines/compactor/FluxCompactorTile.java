@@ -19,7 +19,7 @@ public class FluxCompactorTile extends AbstractMachineTile {
 
     @Override
     public void tick() {
-        if (level instanceof ServerLevel serverLevel && canTick(getWorkDelay())) {
+        if (level instanceof ServerLevel serverLevel && canTick(getMaxWork())) {
             // tick
         }
     }

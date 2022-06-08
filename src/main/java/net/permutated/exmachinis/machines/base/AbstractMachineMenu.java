@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -44,6 +43,9 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
 
         tileEntity = (AbstractMachineTile) world.getBlockEntity(blockPos);
         IItemHandler wrappedInventory = new InvWrapper(playerInventory);
+
+        //TODO move to data holder
+        tileEntity.setWorkStatus(packetBuffer.readEnum(WorkStatus.class));
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
@@ -140,12 +142,12 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         addDataSlot(new DataSlot() {
             @Override
             public int get() {
-                return tileEntity.getDelayProgress();
+                return tileEntity.getWork();
             }
 
             @Override
             public void set(int value) {
-                tileEntity.setDelayProgress(value);
+                tileEntity.setWork(value);
             }
         });
 
@@ -183,11 +185,31 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
     }
 
+    public int getMaxEnergy() {
+        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getMaxEnergyStored).orElse(0);
+    }
+
+    public int getWork() {
+        return tileEntity.getWork();
+    }
+
+    public int getMaxWork() {
+        return tileEntity.getMaxWork();
+    }
+
     public float getWorkFraction() {
-        return tileEntity.getWorkFraction();
+        if (getWork() == 0) {
+            return 0f;
+        } else {
+            return ((float) getWork()) / getMaxWork();
+        }
     }
 
     public float getEnergyFraction() {
-        return tileEntity.getEnergyFraction();
+        if(getEnergy() == 0) {
+            return 0f;
+        } else {
+            return ((float) getEnergy()) / getMaxEnergy();
+        }
     }
 }

@@ -99,17 +99,15 @@ public abstract class AbstractMachineTile extends BlockEntity {
         handler.invalidate();
     }
 
+    int remainder = 0;
     private long lastTicked = 0L;
 
     public boolean canTick(final int every) {
         long gameTime = level != null ? level.getGameTime() : 0L;
         if (gameTime != lastTicked) {
             lastTicked = gameTime;
-            delayProgress.incrementAndGet();
-            if (offset(gameTime) % every == 0) {
-                delayProgress.set(0);
-                return true;
-            }
+            remainder = (int) (offset(gameTime) % every);
+            return remainder == 0;
         }
         return false;
     }
@@ -139,25 +137,18 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     //TODO can this be merged with above code for gametime? gametime % max delay?
     protected AtomicInteger delayProgress = new AtomicInteger(0);
-    public int getWorkDelay() {
+    public int getMaxWork() {
         return 60;
         //TODO config
     }
 
-    public int getDelayProgress() {
-        return delayProgress.get();
+    public int getWork() {
+        return remainder;
     }
 
-    public void setDelayProgress(int delayProgress) {
-        this.delayProgress.set(delayProgress);
-    }
-
-    public float getWorkFraction() {
-        if (getDelayProgress() == 0) {
-            return 0f;
-        } else {
-            return ((float) getDelayProgress()) / getWorkDelay();
-        }
+    @Deprecated // remove TE access in frontend
+    public void setWork(int delayProgress) {
+        this.remainder = delayProgress;
     }
 
     public void setWorkStatus(WorkStatus workStatus) {
@@ -165,14 +156,6 @@ public abstract class AbstractMachineTile extends BlockEntity {
     }
     public WorkStatus getWorkStatus() {
         return this.workStatus;
-    }
-
-    public float getEnergyFraction() {
-        if(energyStorage.getEnergyStored() == 0) {
-            return 0f;
-        } else {
-            return ((float) energyStorage.getEnergyStored()) / energyStorage.getMaxEnergyStored();
-        }
     }
 
     protected static void dropItems(@Nullable Level world, BlockPos pos, IItemHandler itemHandler) {

@@ -64,6 +64,9 @@ public class ConfigHolder {
             basicWorkCost = builder.defineInRange("basicWorkCost", 200, 0, 1_000);
             advancedWorkCost = builder.defineInRange("advancedWorkCost", 400, 0, 1_000);
             ultimateWorkCost = builder.defineInRange("ultimateWorkCost", 800, 0, 1_000);
+
+            // none, gold, diamond, netherite
+            // work cost, work delay,
         }
     }
 }
