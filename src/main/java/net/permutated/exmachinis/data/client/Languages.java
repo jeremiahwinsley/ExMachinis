@@ -4,6 +4,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.ExMachinis;
+import net.permutated.exmachinis.util.Constants;
 
 import static net.permutated.exmachinis.util.TranslationKey.*;
 
@@ -32,6 +33,8 @@ public class Languages {
             add(gui("inventoryMissing"), "Place inventory above machine.");
             add(gui("inventoryFull"), "Inventory is full.");
             add(gui("working"), "Machine is working.");
+            add(gui("outOfEnergy"), "Out of energy.");
+            add(gui("meshMissing"), "Mesh required for operation.");
 
             add(gui("workArea"), "Work area (in chunks)");
             add(gui("workAreaBlocks"), "Work area (in blocks)");
@@ -53,6 +56,8 @@ public class Languages {
             add(tooltip("meshSlot"), "Mesh Slot");
 
             add(tooltip("player"), "Player: %s");
+
+            add(jei(Constants.COMPACTING), "Flux Compactor");
         }
     }
 }

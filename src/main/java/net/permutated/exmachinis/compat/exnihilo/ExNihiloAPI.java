@@ -1,12 +1,10 @@
-package net.permutated.exmachinis.util;
+package net.permutated.exmachinis.compat.exnihilo;
 
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
-import novamachina.exnihilosequentia.common.init.ExNihiloItems;
 import novamachina.exnihilosequentia.common.item.MeshItem;
 import novamachina.exnihilosequentia.common.registries.ExNihiloRegistries;
 
@@ -49,11 +47,6 @@ public class ExNihiloAPI {
 
     public static boolean isMeshItem(ItemStack stack) {
         return stack.getItem() instanceof MeshItem;
-    }
-
-    //TODO remove
-    public static ItemStack getMeshItem() {
-        return new ItemStack(ExNihiloItems.MESH_IRON.get());
     }
 
     public static boolean canSieve(ItemStack stack, ItemStack mesh, boolean waterlogged) {

@@ -2,6 +2,7 @@ package net.permutated.exmachinis.machines.base;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -201,7 +202,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         if (getWork() == 0) {
             return 0f;
         } else {
-            return ((float) getWork()) / getMaxWork();
+            return ((float) Mth.clamp(getWork(), 0, getMaxWork())) / getMaxWork();
         }
     }
 
@@ -209,7 +210,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         if(getEnergy() == 0) {
             return 0f;
         } else {
-            return ((float) getEnergy()) / getMaxEnergy();
+            return ((float) Mth.clamp(getEnergy(), 0, getMaxEnergy())) / getMaxEnergy();
         }
     }
 }

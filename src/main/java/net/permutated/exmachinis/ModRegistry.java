@@ -10,6 +10,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
@@ -33,9 +34,11 @@ import net.permutated.exmachinis.machines.sieve.FluxSieveMenu;
 import net.permutated.exmachinis.machines.sieve.FluxSieveTile;
 import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
+import net.permutated.exmachinis.recipes.CompactingRegistry;
 import net.permutated.exmachinis.util.Constants;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
 
@@ -82,8 +85,7 @@ public class ModRegistry {
 
     public static final RegistryObject<RecipeType<CompactingRecipe>> COMPACTING_RECIPE_TYPE = RECIPE_TYPES.register(Constants.COMPACTING, () -> new RecipeType<>() {});
     public static final RegistryObject<RecipeSerializer<CompactingRecipe>> COMPACTING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(Constants.COMPACTING, CompactingRecipe.Serializer::new);
-
-/////////
+    public static final CompactingRegistry COMPACTING_REGISTRY = new CompactingRegistry();
 
     /**
      * Register a BlockItem for a Block
@@ -104,16 +106,6 @@ public class ModRegistry {
      */
     public static RegistryObject<Item> upgradeItem(String name, UpgradeItem.Tier tier) {
         return ITEMS.register(name, () -> new UpgradeItem(tier));
-    }
-
-    /**
-     * Register simple materials with no extra properties
-     *
-     * @param path registry location
-     * @return the new registry object
-     */
-    private static RegistryObject<Item> material(String path) {
-        return ITEMS.register(path, () -> new Item(new Item.Properties().tab(CREATIVE_TAB)));
     }
 
     /**

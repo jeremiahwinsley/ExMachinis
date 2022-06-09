@@ -147,8 +147,11 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.18.2-40.1.16'
 
-    runtimeOnly fg.deobf("curse.maven:jei-238222:3788739")
     runtimeOnly fg.deobf("curse.maven:cobblefordays-349460:3739573")
+    runtimeOnly fg.deobf("curse.maven:thermal-expansion-69163:3803489")
+    runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:3803495")
+    runtimeOnly fg.deobf("curse.maven:cofh-core-69162:3803484")
+    implementation fg.deobf("curse.maven:jei-238222:3788739")
     implementation fg.deobf("curse.maven:exnihilo-400012:3810814")
 }
 

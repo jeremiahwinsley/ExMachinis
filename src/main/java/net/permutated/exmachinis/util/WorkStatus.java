@@ -11,6 +11,7 @@ public enum WorkStatus {
     MISSING_INVENTORY(translateGui("inventoryMissing").withStyle(ChatFormatting.RED)),
     INVENTORY_FULL(translateGui("inventoryFull").withStyle(ChatFormatting.RED)),
     OUT_OF_ENERGY(translateGui("outOfEnergy").withStyle(ChatFormatting.RED)),
+    MISSING_MESH(translateGui("meshMissing").withStyle(ChatFormatting.RED)),
     ;
 
     final MutableComponent translation;

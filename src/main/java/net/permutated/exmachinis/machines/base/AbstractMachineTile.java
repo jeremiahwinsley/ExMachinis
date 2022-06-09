@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -19,16 +20,16 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.permutated.exmachinis.ConfigHolder;
 import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.util.Constants;
-import net.permutated.exmachinis.util.ExNihiloAPI;
+import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
 import net.permutated.exmachinis.util.OverlayItemHandler;
 import net.permutated.exmachinis.util.WorkStatus;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractMachineTile extends BlockEntity {
     protected AbstractMachineTile(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
@@ -37,7 +38,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     protected WorkStatus workStatus = WorkStatus.NONE;
 
-    protected final EnergyStorage energyStorage = new MachineEnergyStorage(100_000, 1_000);
+    protected final MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergyStorage(), getMaxEnergyTransfer());
 
     protected final ItemStackHandler itemStackHandler = new MachineItemStackHandler(9) {
         @Override
@@ -61,6 +62,51 @@ public abstract class AbstractMachineTile extends BlockEntity {
             return slot == 0 ? 3 : 1;
         }
     };
+
+    protected int getMaxEnergyStorage() {
+        return ConfigHolder.SERVER.energyBufferSize.get();
+    }
+
+    protected int getMaxEnergyTransfer() {
+        return ConfigHolder.SERVER.maxEnergyPerTick.get();
+    }
+
+    protected int getUpgradeItemsProcessed() {
+        var upgradeStack = upgradeStackHandler.getStackInSlot(0);
+        if (upgradeStack.getItem() instanceof UpgradeItem upgradeItem && upgradeStack.getCount() > 0) {
+            int upgradeCount = Mth.clamp(upgradeStack.getCount(), 1, 3);
+            return switch (upgradeItem.getTier()) {
+                case GOLD -> 1 << upgradeCount;
+                case DIAMOND -> 1 << (3 + upgradeCount);
+                case NETHERITE -> 64;
+            };
+        }
+        return 1;
+    }
+
+    protected int getUpgradeTickDelay() {
+        var upgradeStack = upgradeStackHandler.getStackInSlot(0);
+        if (upgradeStack.getItem() instanceof UpgradeItem upgradeItem) {
+            return switch (upgradeItem.getTier()) {
+                case GOLD -> ConfigHolder.SERVER.goldTicksPerOperation.get();
+                case DIAMOND -> ConfigHolder.SERVER.diamondTicksPerOperation.get();
+                case NETHERITE -> ConfigHolder.SERVER.netheriteTicksPerOperation.get();
+            };
+        }
+        return ConfigHolder.SERVER.goldTicksPerOperation.get();
+    }
+
+    protected int getUpgradeEnergyCost() {
+        var upgradeStack = upgradeStackHandler.getStackInSlot(0);
+        if (upgradeStack.getItem() instanceof UpgradeItem upgradeItem) {
+            return switch (upgradeItem.getTier()) {
+                case GOLD -> ConfigHolder.SERVER.goldEnergyPerBlock.get();
+                case DIAMOND -> ConfigHolder.SERVER.diamondEnergyPerBlock.get();
+                case NETHERITE -> ConfigHolder.SERVER.netheriteEnergyPerBlock.get();
+            };
+        }
+        return ConfigHolder.SERVER.goldEnergyPerBlock.get();
+    }
 
     protected abstract boolean isItemValid(ItemStack stack);
 
@@ -134,12 +180,9 @@ public abstract class AbstractMachineTile extends BlockEntity {
             machineTile.tick();
         }
     }
-
-    //TODO can this be merged with above code for gametime? gametime % max delay?
-    protected AtomicInteger delayProgress = new AtomicInteger(0);
+    //TODO remove tile entity syncing
     public int getMaxWork() {
-        return 60;
-        //TODO config
+        return getUpgradeTickDelay();
     }
 
     public int getWork() {
@@ -154,6 +197,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
     public void setWorkStatus(WorkStatus workStatus) {
         this.workStatus = workStatus;
     }
+
     public WorkStatus getWorkStatus() {
         return this.workStatus;
     }
@@ -249,13 +293,14 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     public class MachineEnergyStorage extends EnergyStorage {
 
-        public MachineEnergyStorage(int capacity, int maxTransfer) {
-            super(capacity, maxTransfer, 0);
+        public MachineEnergyStorage(int capacity, int maxRecieve) {
+            super(capacity, maxRecieve, 0);
         }
 
         public void onEnergyChanged() {
             setChanged();
         }
+
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
             int rc = super.receiveEnergy(maxReceive, simulate);
@@ -279,20 +324,16 @@ public abstract class AbstractMachineTile extends BlockEntity {
             onEnergyChanged();
         }
 
-        public void addEnergy(int energy) {
-            this.energy += energy;
-            if (this.energy > getMaxEnergyStored()) {
-                this.energy = getEnergyStored();
+        public boolean consumeEnergy(int request, boolean simulate) {
+            int consumed = Math.max(0, request);
+            if (this.energy > consumed) {
+                if (!simulate) {
+                    this.energy -= consumed;
+                    onEnergyChanged();
+                }
+                return true;
             }
-            onEnergyChanged();
-        }
-
-        public void consumeEnergy(int energy) {
-            this.energy -= energy;
-            if (this.energy < 0) {
-                this.energy = 0;
-            }
-            onEnergyChanged();
+            return false;
         }
     }
 }
