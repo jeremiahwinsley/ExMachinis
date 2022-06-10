@@ -62,6 +62,8 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
                         addSlot(new SlotItemHandler(handler, index++, 8 + j * 18, 18 + i * 18));
                     }
                 }
+
+                totalSlots = enableMeshSlot ? 11 : 10;
             });
         }
 
@@ -162,7 +164,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
             public void set(int value) {
                 tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> {
                     int energyStored = energy.getEnergyStored() & 0xffff0000;
-                    ((AbstractMachineTile.MachineEnergyStorage)energy).setEnergy(energyStored + (value & 0xffff));
+                    ((AbstractMachineTile.MachineEnergyStorage) energy).setEnergy(energyStored + (value & 0xffff));
                 });
             }
         });
@@ -176,7 +178,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
             public void set(int value) {
                 tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> {
                     int energyStored = energy.getEnergyStored() & 0x0000ffff;
-                    ((AbstractMachineTile.MachineEnergyStorage)energy).setEnergy(energyStored | (value << 16));
+                    ((AbstractMachineTile.MachineEnergyStorage) energy).setEnergy(energyStored | (value << 16));
                 });
             }
         });
@@ -207,7 +209,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     }
 
     public float getEnergyFraction() {
-        if(getEnergy() == 0) {
+        if (getEnergy() == 0) {
             return 0f;
         } else {
             return ((float) Mth.clamp(getEnergy(), 0, getMaxEnergy())) / getMaxEnergy();

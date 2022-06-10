@@ -180,6 +180,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
             machineTile.tick();
         }
     }
+
     //TODO remove tile entity syncing
     public int getMaxWork() {
         return getUpgradeTickDelay();
