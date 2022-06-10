@@ -12,6 +12,7 @@ import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.compat.jei.category.CompactingCategory;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.util.ResourceUtil;
+import novamachina.exnihilosequentia.common.compat.jei.RecipeTypes;
 
 
 @JeiPlugin
@@ -31,6 +32,9 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_COMPACTOR_BLOCK.get()), CompactingCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_HAMMER_BLOCK.get()), RecipeTypes.HAMMER);
+        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.DRY_SIEVE);
+        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.WET_SIEVE);
     }
 
     @Override
