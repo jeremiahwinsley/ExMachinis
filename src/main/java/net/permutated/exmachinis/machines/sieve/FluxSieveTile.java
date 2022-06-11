@@ -104,10 +104,9 @@ public class FluxSieveTile extends AbstractMachineTile {
                         maxProcessed -= count;
                     }
 
-                    if (!processResults(itemHandler, meshStack, stack, multiplier, true)) {
-                        // simulating inserts failed
-                        return;
-                    }
+                    // do not simulate inserts first
+                    // since the drops are not determinate, this avoids an issue
+                    // where the drops could be selected by pre-filling the output.
 
                     int totalCost = cost * multiplier;
                     boolean result = energyStorage.consumeEnergy(totalCost, true);
@@ -125,6 +124,7 @@ public class FluxSieveTile extends AbstractMachineTile {
         }
     }
 
+    @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"}) // kept for consistency
     private boolean processResults(IItemHandler itemHandler, ItemStack meshStack, ItemStack stack, int multiplier, boolean simulate) {
         // process sieve results
         ExNihiloAPI.getSieveResult(stack, meshStack, isWaterlogged()).stream()
