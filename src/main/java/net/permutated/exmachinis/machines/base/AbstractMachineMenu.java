@@ -2,7 +2,7 @@ package net.permutated.exmachinis.machines.base;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.Mth;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -13,80 +13,61 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.registries.RegistryObject;
+import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.util.WorkStatus;
 
 import javax.annotation.Nullable;
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
 
 public abstract class AbstractMachineMenu extends AbstractContainerMenu {
+    private final ContainerLevelAccess containerLevelAccess;
+    protected final DataHolder dataHolder;
+    protected final boolean enableMeshSlot;
+    protected final int totalSlots;
 
-    @Nullable // should only be accessed from server
-    private final AbstractMachineTile tileEntity;
-
-    protected boolean enableMeshSlot;
-    protected final BlockPos blockPos;
-
-    protected int totalSlots = 0;
-
-    protected AbstractMachineMenu(@Nullable MenuType<?> containerType, int windowId, Inventory playerInventory, FriendlyByteBuf packetBuffer) {
+    protected AbstractMachineMenu(@Nullable MenuType<?> containerType, int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
         super(containerType, windowId);
+        this.enableMeshSlot = buf.readBoolean();
+        this.totalSlots = enableMeshSlot ? 11 : 10;
 
-        enableMeshSlot = packetBuffer.readBoolean();
-        blockPos = packetBuffer.readBlockPos();
-
-        Level world = playerInventory.player.getCommandSenderWorld();
-
-        tileEntity = (AbstractMachineTile) world.getBlockEntity(blockPos);
-        IItemHandler wrappedInventory = new InvWrapper(playerInventory);
-
-        //TODO move to data holder
-        tileEntity.setWorkStatus(packetBuffer.readEnum(WorkStatus.class));
-
-        if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-                int index = 0;
-                addSlot(new SlotItemHandler(handler, index++, 116, 53));
-                if (enableMeshSlot) {
-                    addSlot(new SlotItemHandler(handler, index++, 80, 36));
-                }
-
-                // 3 x 3
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        addSlot(new SlotItemHandler(handler, index++, 8 + j * 18, 18 + i * 18));
-                    }
-                }
-
-                totalSlots = enableMeshSlot ? 11 : 10;
-            });
+        BlockPos pos = buf.readBlockPos();
+        Level level = playerInventory.player.getCommandSenderWorld();
+        if (level instanceof ServerLevel serverLevel) { // server-side
+            this.containerLevelAccess = ContainerLevelAccess.create(level, pos);
+            BlockEntity blockEntity = serverLevel.getBlockEntity(pos);
+            if (blockEntity instanceof AbstractMachineTile tile) {
+                this.dataHolder = new DataHolderServer(tile);
+                tile.overlay.ifPresent(this::registerHandlerSlots);
+            } else {
+                ExMachinis.LOGGER.error("Tried to create DataHolder on server, but did not find matching tile for pos: {}", pos);
+                this.dataHolder = new DataHolderClient();
+            }
+        } else { // client-side
+            this.containerLevelAccess = ContainerLevelAccess.NULL;
+            this.dataHolder = new DataHolderClient();
+            registerHandlerSlots(new ItemStackHandler(totalSlots));
         }
 
-        registerPlayerSlots(wrappedInventory);
+        registerPlayerSlots(new InvWrapper(playerInventory));
         registerDataSlots();
     }
 
     protected abstract RegistryObject<Block> getBlock();
 
     protected WorkStatus getWorkStatus() {
-        return tileEntity.getWorkStatus();
+        return dataHolder.getWorkStatus();
     }
 
     @Override
     public boolean stillValid(Player playerEntity) {
-        if (tileEntity != null) {
-            Level world = tileEntity.getLevel();
-            if (world != null) {
-                ContainerLevelAccess callable = ContainerLevelAccess.create(world, tileEntity.getBlockPos());
-                return stillValid(callable, playerEntity, getBlock().get());
-            }
-        }
-        return false;
+        return stillValid(containerLevelAccess, playerEntity, getBlock().get());
     }
 
     @Override
@@ -117,6 +98,21 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         return itemstack;
     }
 
+    public void registerHandlerSlots(IItemHandler handler) {
+        int index = 0;
+        addSlot(new SlotItemHandler(handler, index++, 116, 53));
+        if (enableMeshSlot) {
+            addSlot(new SlotItemHandler(handler, index++, 80, 36));
+        }
+
+        // 3 x 3
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                addSlot(new SlotItemHandler(handler, index++, 8 + j * 18, 18 + i * 18));
+            }
+        }
+    }
+
     public void registerPlayerSlots(IItemHandler wrappedInventory) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
@@ -130,89 +126,44 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     }
 
     public void registerDataSlots() {
-
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return tileEntity.getWorkStatus().ordinal();
-            }
-
-            @Override
-            public void set(int value) {
-                tileEntity.setWorkStatus(WorkStatus.values()[value]);
-            }
-        });
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return tileEntity.getWork();
-            }
-
-            @Override
-            public void set(int value) {
-                tileEntity.setWork(value);
-            }
+        addDataSlot(dataHolder::getWork, dataHolder::setWork);
+        addDataSlot(dataHolder::getMaxWork, dataHolder::setMaxWork);
+        addDataSlot(dataHolder::getMaxEnergy, dataHolder::setMaxEnergy);
+        addDataSlot(() -> dataHolder.getWorkStatus().ordinal(), dataHolder::setWorkStatus);
+        addDataSlot(() -> dataHolder.getEnergy() & 0xffff, value -> {
+            int energyStored = dataHolder.getEnergy() & 0xffff0000;
+            dataHolder.setEnergy(energyStored + (value & 0xffff));
         });
 
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return getEnergy() & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> {
-                    int energyStored = energy.getEnergyStored() & 0xffff0000;
-                    ((AbstractMachineTile.MachineEnergyStorage) energy).setEnergy(energyStored + (value & 0xffff));
-                });
-            }
-        });
-        addDataSlot(new DataSlot() {
-            @Override
-            public int get() {
-                return (getEnergy() >> 16) & 0xffff;
-            }
-
-            @Override
-            public void set(int value) {
-                tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> {
-                    int energyStored = energy.getEnergyStored() & 0x0000ffff;
-                    ((AbstractMachineTile.MachineEnergyStorage) energy).setEnergy(energyStored | (value << 16));
-                });
-            }
+        addDataSlot(() -> (dataHolder.getEnergy() >> 16) & 0xffff, value -> {
+            int energyStored = dataHolder.getEnergy() & 0x0000ffff;
+            dataHolder.setEnergy(energyStored | (value << 16));
         });
     }
 
-    public int getEnergy() {
-        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
+    private void addDataSlot(IntSupplier getter, IntConsumer setter) {
+        addDataSlot(new LambdaDataSlot(getter, setter));
     }
 
-    public int getMaxEnergy() {
-        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getMaxEnergyStored).orElse(0);
-    }
+    static class LambdaDataSlot extends DataSlot {
 
-    public int getWork() {
-        return tileEntity.getWork();
-    }
+        private final IntSupplier getter;
+        private final IntConsumer setter;
 
-    public int getMaxWork() {
-        return tileEntity.getMaxWork();
-    }
-
-    public float getWorkFraction() {
-        if (getWork() == 0) {
-            return 0f;
-        } else {
-            return ((float) Mth.clamp(getWork(), 0, getMaxWork())) / getMaxWork();
+        public LambdaDataSlot(IntSupplier getter, IntConsumer setter) {
+            this.getter = getter;
+            this.setter = setter;
         }
-    }
 
-    public float getEnergyFraction() {
-        if (getEnergy() == 0) {
-            return 0f;
-        } else {
-            return ((float) Mth.clamp(getEnergy(), 0, getMaxEnergy())) / getMaxEnergy();
+        @Override
+        public int get() {
+            return this.getter.getAsInt();
         }
+
+        @Override
+        public void set(int pValue) {
+            this.setter.accept(pValue);
+        }
+
     }
 }

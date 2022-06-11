@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 public abstract class AbstractMachineBlock extends Block implements EntityBlock {
 
     protected AbstractMachineBlock() {
-        super(Properties.of(Material.METAL).strength(-1F, 1200F));
+        super(Properties.of(Material.METAL).strength(3.0F, 3.0F));
     }
 
     public abstract IContainerFactory<AbstractMachineMenu> containerFactory();

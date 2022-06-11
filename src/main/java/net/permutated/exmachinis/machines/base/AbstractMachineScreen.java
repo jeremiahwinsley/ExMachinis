@@ -47,7 +47,7 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
 
         // texture offset - addon texture
 
-        float energyFraction = this.menu.getEnergyFraction();
+        float energyFraction = this.menu.dataHolder.getEnergyFraction();
         var energyHolder = new TextureHolder(152, 17, 176, 0, 16, 52);
         blit(matrixStack,
             relX + energyHolder.progressOffsetX(),
@@ -59,7 +59,7 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         );
 
         // work progress
-        float workFraction = this.menu.getWorkFraction();
+        float workFraction = this.menu.dataHolder.getWorkFraction();
         var progressHolder = new TextureHolder(134, 17, 192, 0, 16, 52);
         blit(matrixStack,
             relX + progressHolder.progressOffsetX(),
@@ -82,14 +82,14 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         if (this.isHovering(152, 17, 16, 52, x, y)) {
             this.renderComponentTooltip(stack, List.of(
                 translateTooltip("fluxBar"),
-                translateTooltip("fluxData", this.menu.getEnergy(), this.menu.getMaxEnergy())
+                translateTooltip("fluxData", this.menu.dataHolder.getEnergy(), this.menu.dataHolder.getMaxEnergy())
             ), x, y, this.font);
         }
 
         if (this.isHovering(134, 17, 16, 52, x, y)) {
             this.renderComponentTooltip(stack, List.of(
                 translateTooltip("workBar"),
-                translateTooltip("workData", this.menu.getWork(), this.menu.getMaxWork())
+                translateTooltip("workData", this.menu.dataHolder.getWork(), this.menu.dataHolder.getMaxWork())
             ), x, y, this.font);
         }
 

@@ -10,8 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CompactingRegistry {
 
-    private static List<CompactingRecipe> recipeList = Collections.emptyList();
-    private static final Map<Item, CompactingRecipe> recipeByItemCache = new ConcurrentHashMap<>();
+    private final Object lock = new Object();
+    private List<CompactingRecipe> recipeList = Collections.emptyList();
+    private final Map<Item, CompactingRecipe> recipeByItemCache = new ConcurrentHashMap<>();
 
     public CompactingRecipe findRecipe(final Item item) {
         return recipeByItemCache.computeIfAbsent(item, it -> {
@@ -24,20 +25,20 @@ public class CompactingRegistry {
     }
 
     public void setRecipeList(final List<CompactingRecipe> recipes) {
-        synchronized (this) {
+        synchronized (lock) {
             recipeList = List.copyOf(recipes);
             recipeByItemCache.clear();
         }
     }
 
     public List<CompactingRecipe> getRecipeList() {
-        synchronized (this) {
+        synchronized (lock) {
             return recipeList;
         }
     }
 
     public void clearRecipes() {
-        synchronized (this) {
+        synchronized (lock) {
             recipeList = Collections.emptyList();
             recipeByItemCache.clear();
         }

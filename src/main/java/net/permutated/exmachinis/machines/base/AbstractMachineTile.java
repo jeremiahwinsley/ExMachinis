@@ -181,22 +181,12 @@ public abstract class AbstractMachineTile extends BlockEntity {
         }
     }
 
-    //TODO remove tile entity syncing
     public int getMaxWork() {
         return getUpgradeTickDelay();
     }
 
     public int getWork() {
         return remainder;
-    }
-
-    @Deprecated // remove TE access in frontend
-    public void setWork(int delayProgress) {
-        this.remainder = delayProgress;
-    }
-
-    public void setWorkStatus(WorkStatus workStatus) {
-        this.workStatus = workStatus;
     }
 
     public WorkStatus getWorkStatus() {
@@ -223,7 +213,6 @@ public abstract class AbstractMachineTile extends BlockEntity {
     public void updateContainer(FriendlyByteBuf packetBuffer) {
         packetBuffer.writeBoolean(enableMeshSlot());
         packetBuffer.writeBlockPos(worldPosition);
-        packetBuffer.writeEnum(workStatus);
     }
 
     // Save TE data to disk
@@ -232,13 +221,8 @@ public abstract class AbstractMachineTile extends BlockEntity {
         tag.put(Constants.NBT.ENERGY, energyStorage.serializeNBT());
         tag.put(Constants.NBT.INVENTORY, itemStackHandler.serializeNBT());
         tag.put(Constants.NBT.UPGRADES, upgradeStackHandler.serializeNBT());
-        writeFields(tag);
     }
 
-    // Write TE data to a provided CompoundNBT
-    private void writeFields(CompoundTag tag) {
-        // no extra TE data
-    }
 
     // Load TE data from disk
     @Override
@@ -246,26 +230,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
         energyStorage.deserializeNBT(tag.getCompound(Constants.NBT.ENERGY));
         itemStackHandler.deserializeNBT(tag.getCompound(Constants.NBT.INVENTORY));
         upgradeStackHandler.deserializeNBT(tag.getCompound(Constants.NBT.UPGRADES));
-        readFields(tag);
         super.load(tag);
-    }
-
-    // Read TE data from a provided CompoundNBT
-    private void readFields(@Nullable CompoundTag tag) {
-        // no extra TE data
-    }
-
-    // Called whenever a client loads a new chunk
-    @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        writeFields(tag);
-        return tag;
-    }
-
-    @Override
-    public void handleUpdateTag(@Nullable CompoundTag tag) {
-        readFields(tag);
     }
 
     // Called whenever a block update happens on the client
@@ -318,11 +283,6 @@ public abstract class AbstractMachineTile extends BlockEntity {
                 onEnergyChanged();
             }
             return rc;
-        }
-
-        public void setEnergy(int energy) {
-            this.energy = energy;
-            onEnergyChanged();
         }
 
         public boolean consumeEnergy(int request, boolean simulate) {
