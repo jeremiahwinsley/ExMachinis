@@ -12,6 +12,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -25,6 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.network.NetworkHooks;
 import net.permutated.exmachinis.ExMachinis;
+import net.permutated.exmachinis.items.UpgradeItem;
 
 import javax.annotation.Nullable;
 
@@ -59,12 +61,9 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
 
     @Override
     @SuppressWarnings("java:S1874") // deprecated method from super class
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        if (!state.is(newState.getBlock()))
-        {
-            if (level.getBlockEntity(pos) instanceof AbstractMachineTile machineTile)
-            {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            if (level.getBlockEntity(pos) instanceof AbstractMachineTile machineTile) {
                 machineTile.dropItems();
                 level.updateNeighbourForOutputSignal(pos, this);
             }
@@ -75,11 +74,39 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
 
     @Override
     @SuppressWarnings("java:S1874") // deprecated method from super class
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockRayTraceResult)
-    {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockRayTraceResult) {
         if (!world.isClientSide) {
             BlockEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof AbstractMachineTile machineTile) {
+                ItemStack stackInHand = player.getItemInHand(hand).copy();
+                if (!stackInHand.isEmpty() && stackInHand.getItem() instanceof UpgradeItem handItem) {
+                    ItemStack inSlot = machineTile.upgradeStackHandler.getStackInSlot(0).copy();
+                    if (inSlot.isEmpty()) { // no upgrades in machine, move the whole stack
+                        ItemStack result = machineTile.upgradeStackHandler.insertItem(0, stackInHand, true);
+                        if (result.isEmpty()) { // verify that all items were inserted
+                            ItemStack actual = machineTile.upgradeStackHandler.insertItem(0, stackInHand, false);
+                            player.setItemInHand(hand, actual);
+                            return InteractionResult.SUCCESS;
+                        }
+                    } else if (inSlot.sameItem(stackInHand)) { // same upgrade type in machine
+                        if (inSlot.getCount() < inSlot.getMaxStackSize()) { // make sure the stack size is not max already
+                            ItemStack result = machineTile.upgradeStackHandler.insertItem(0, stackInHand, true);
+                            int maxInsert = inSlot.getMaxStackSize() - inSlot.getCount(); // the max that can be inserted in the slot.
+                            int expectedToRemain = Math.max(stackInHand.getCount() - maxInsert, 0); // if max is greater than count, clamp to 0
+                            if (expectedToRemain == result.getCount()) { // verify that the simulated count matches the expected count
+                                ItemStack actual = machineTile.upgradeStackHandler.insertItem(0, stackInHand, false);
+                                player.setItemInHand(hand, actual);
+                                return InteractionResult.SUCCESS;
+                            }
+                        }
+                    } else if (inSlot.getItem() instanceof UpgradeItem slotItem && handItem.getTier().compareTo(slotItem.getTier()) > 0) {
+                        // handItem is a higher tier UpgradeItem, so swap slots
+                        machineTile.upgradeStackHandler.setStackInSlot(0, stackInHand);
+                        player.setItemInHand(hand, inSlot);
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
