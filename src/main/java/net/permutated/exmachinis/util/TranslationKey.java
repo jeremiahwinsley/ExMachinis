@@ -55,4 +55,8 @@ public class TranslationKey {
     public static MutableComponent translateGui(String key, Object... values) {
         return new TranslatableComponent(TranslationKey.gui(key), values);
     }
+
+    public static MutableComponent translateJei(String key) {
+        return new TranslatableComponent(TranslationKey.jei(key));
+    }
 }

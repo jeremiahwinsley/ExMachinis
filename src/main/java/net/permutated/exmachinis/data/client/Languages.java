@@ -58,6 +58,19 @@ public class Languages {
             add(tooltip("player"), "Player: %s");
 
             add(jei(Constants.COMPACTING), "Flux Compactor");
+
+            add(jei(Constants.FLUX_COMPACTOR), """
+                The Flux Compactor will take items from an inventory above,
+                and place the outputs into an inventory below.
+                """);
+            add(jei(Constants.FLUX_HAMMER), """
+                The Flux Hammer will take items from an inventory above,
+                and place the outputs into an inventory in front.
+                """);
+            add(jei(Constants.FLUX_SIEVE), """
+                The Flux Sieve will take items from the internal inventory,
+                and place the outputs into an inventory below.
+                """);
         }
     }
 }
