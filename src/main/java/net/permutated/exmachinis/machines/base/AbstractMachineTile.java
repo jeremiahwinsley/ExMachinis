@@ -3,6 +3,7 @@ package net.permutated.exmachinis.machines.base;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -227,7 +228,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
     // Load TE data from disk
     @Override
     public void load(CompoundTag tag) {
-        energyStorage.deserializeNBT(tag.getCompound(Constants.NBT.ENERGY));
+        energyStorage.deserializeNBT(tag.get(Constants.NBT.ENERGY));
         itemStackHandler.deserializeNBT(tag.getCompound(Constants.NBT.INVENTORY));
         upgradeStackHandler.deserializeNBT(tag.getCompound(Constants.NBT.UPGRADES));
         super.load(tag);
@@ -238,12 +239,6 @@ public abstract class AbstractMachineTile extends BlockEntity {
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
-    }
-
-    // Handles the update packet received from the server
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.handleUpdateTag(pkt.getTag());
     }
 
     public class MachineItemStackHandler extends ItemStackHandler {

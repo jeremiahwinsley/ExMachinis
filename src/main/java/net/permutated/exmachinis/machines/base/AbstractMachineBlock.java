@@ -2,6 +2,7 @@ package net.permutated.exmachinis.machines.base;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -21,6 +23,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.IContainerFactory;
@@ -33,7 +38,8 @@ import javax.annotation.Nullable;
 public abstract class AbstractMachineBlock extends Block implements EntityBlock {
 
     protected AbstractMachineBlock() {
-        super(Properties.of(Material.METAL).strength(3.0F, 3.0F));
+        super(Properties.of(Material.METAL).strength(3.0F, 3.0F).noOcclusion());
+
     }
 
     public abstract IContainerFactory<AbstractMachineMenu> containerFactory();

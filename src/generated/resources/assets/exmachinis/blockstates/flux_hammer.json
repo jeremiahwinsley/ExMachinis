@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "exmachinis:block/flux_hammer"
+    },
+    "facing=south": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
     }
   }
 }
