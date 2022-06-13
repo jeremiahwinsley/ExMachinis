@@ -14,24 +14,54 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.IContainerFactory;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
 import net.permutated.exmachinis.machines.base.AbstractMachineMenu;
 import net.permutated.exmachinis.machines.base.AbstractMachineTile;
+import net.permutated.exmachinis.util.BlockUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static net.permutated.exmachinis.util.TranslationKey.translateTooltip;
 
 public class FluxHammerBlock extends AbstractMachineBlock {
+
+    private static final VoxelShape NORTH_SHAPE = Stream.of(
+        Block.box(0, 0, 2, 16, 10, 15),
+        Block.box(5, 10, 7, 13, 13, 15),
+        Shapes.join(Block.box(13, 12, 6, 15, 16, 14),
+            Shapes.join(Block.box(3, 12, 14, 15, 16, 16),
+                Shapes.join(Block.box(3, 12, 6, 5, 16, 14),
+        Block.box(3, 12, 4, 15, 16, 6), BooleanOp.AND), BooleanOp.AND), BooleanOp.AND)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+
+    private static final VoxelShape SOUTH_SHAPE = BlockUtil.rotateShape(Direction.NORTH, Direction.SOUTH, NORTH_SHAPE);
+    private static final VoxelShape EAST_SHAPE = BlockUtil.rotateShape(Direction.NORTH, Direction.EAST, NORTH_SHAPE);
+    private static final VoxelShape WEST_SHAPE = BlockUtil.rotateShape(Direction.NORTH, Direction.WEST, NORTH_SHAPE);
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public FluxHammerBlock() {
         super();
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    @SuppressWarnings("java:S1874") // deprecated
+    public VoxelShape getShape(BlockState blockState, BlockGetter reader, BlockPos pos, CollisionContext context) {
+        return switch (blockState.getValue(FACING)) {
+            case EAST -> EAST_SHAPE;
+            case WEST -> WEST_SHAPE;
+            case SOUTH -> SOUTH_SHAPE;
+            default -> NORTH_SHAPE;
+        };
     }
 
     @Override

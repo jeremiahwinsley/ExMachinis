@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.IContainerFactory;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
@@ -29,10 +31,18 @@ import static net.permutated.exmachinis.util.TranslationKey.translateTooltip;
 
 public class FluxSieveBlock extends AbstractMachineBlock implements SimpleWaterloggedBlock {
 
+    private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 15, 14);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
     public FluxSieveBlock() {
         super();
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.FALSE));
+    }
+
+    @Override
+    @SuppressWarnings("java:S1874") // deprecated
+    public VoxelShape getShape(BlockState blockState, BlockGetter reader, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @Override

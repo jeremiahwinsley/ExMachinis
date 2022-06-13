@@ -24,15 +24,8 @@ public class Constants {
 
         public static final String REGISTRY = "registry";
         public static final String ENERGY = "energy";
-        public static final String OWNER = "owner";
-        public static final String NAME = "name";
-        public static final String UUID = "uuid";
         public static final String INVENTORY = "inventory";
         public static final String UPGRADES = "upgrades";
-
-        public static final String EFFECT = "effect";
-        public static final String DURATION = "duration";
-        public static final String AMPLIFIER = "amplifier";
 
         public static final String RANGE = "range";
         public static final String ENABLED = "enabled";
