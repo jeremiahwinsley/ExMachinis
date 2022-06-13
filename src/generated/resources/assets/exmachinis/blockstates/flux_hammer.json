@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,hopper=false": {
       "model": "exmachinis:block/flux_hammer"
     },
-    "facing=south": {
+    "facing=south,hopper=false": {
       "model": "exmachinis:block/flux_hammer",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,hopper=false": {
       "model": "exmachinis:block/flux_hammer",
       "y": 270
     },
-    "facing=east": {
+    "facing=east,hopper=false": {
       "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "facing=north,hopper=true": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "facing=south,hopper=true": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "facing=west,hopper=true": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "facing=east,hopper=true": {
+      "model": "exmachinis:block/flux_hammer_hopper",
       "y": 90
     }
   }

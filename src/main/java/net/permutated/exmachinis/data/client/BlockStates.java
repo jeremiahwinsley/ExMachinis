@@ -9,6 +9,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
+import net.permutated.exmachinis.machines.hammer.FluxHammerBlock;
 
 import java.util.Objects;
 
@@ -29,7 +30,8 @@ public class BlockStates extends BlockStateProvider {
     protected void directional(RegistryObject<Block> block) {
         String blockName = Objects.requireNonNull(block.get().getRegistryName()).getPath();
         ModelFile model = models().getExistingFile(prefix("block/".concat(blockName)));
-        horizontalBlock(block.get(), model);
+        ModelFile hopperModel = models().getExistingFile(prefix("block/".concat(blockName).concat("_hopper")));
+        horizontalBlock(block.get(), blockState -> blockState.getValue(FluxHammerBlock.HOPPER) ? hopperModel : model);
         simpleBlockItem(block.get(), model);
     }
 
