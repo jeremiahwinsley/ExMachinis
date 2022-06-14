@@ -31,14 +31,18 @@ import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.util.BlockUtil;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static net.permutated.exmachinis.util.TranslationKey.translateTooltip;
 
 public class FluxHammerBlock extends AbstractMachineBlock {
 
-    private static final VoxelShape NORTH_SHAPE = Stream.of(
+    // minX, minY, minZ, maxX, maxY, maxZ
+    private static final VoxelShape SHAPE = Block.box(0, 0, 2, 16, 10, 15);
+    private static final VoxelShape SHAPE_HOPPER = Stream.of(
         Block.box(0, 0, 2, 16, 10, 15),
         Block.box(5, 10, 7, 13, 13, 15),
         Shapes.join(Block.box(13, 12, 6, 15, 16, 14),
@@ -47,9 +51,15 @@ public class FluxHammerBlock extends AbstractMachineBlock {
                     Block.box(3, 12, 4, 15, 16, 6), BooleanOp.AND), BooleanOp.AND), BooleanOp.AND)
     ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
-    private static final VoxelShape SOUTH_SHAPE = BlockUtil.rotateShape(Direction.NORTH, Direction.SOUTH, NORTH_SHAPE);
-    private static final VoxelShape EAST_SHAPE = BlockUtil.rotateShape(Direction.NORTH, Direction.EAST, NORTH_SHAPE);
-    private static final VoxelShape WEST_SHAPE = BlockUtil.rotateShape(Direction.NORTH, Direction.WEST, NORTH_SHAPE);
+    private static final EnumMap<Direction, Map.Entry<VoxelShape, VoxelShape>> SHAPE_MAP = new EnumMap<>(Direction.class);
+
+    static {
+        Direction.Plane.HORIZONTAL.forEach(direction -> {
+            var left = BlockUtil.rotateShape(Direction.NORTH, direction, SHAPE);
+            var right = BlockUtil.rotateShape(Direction.NORTH, direction, SHAPE_HOPPER);
+            SHAPE_MAP.put(direction, Map.entry(left, right));
+        });
+    }
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty HOPPER = BooleanProperty.create("hopper");
@@ -62,12 +72,10 @@ public class FluxHammerBlock extends AbstractMachineBlock {
     @Override
     @SuppressWarnings("java:S1874") // deprecated
     public VoxelShape getShape(BlockState blockState, BlockGetter reader, BlockPos pos, CollisionContext context) {
-        return switch (blockState.getValue(FACING)) {
-            case EAST -> EAST_SHAPE;
-            case WEST -> WEST_SHAPE;
-            case SOUTH -> SOUTH_SHAPE;
-            default -> NORTH_SHAPE;
-        };
+        var hopper = blockState.getValue(HOPPER);
+        var facing = blockState.getValue(FACING);
+        var shapes = SHAPE_MAP.get(facing);
+        return Boolean.FALSE.equals(hopper) ? shapes.getKey() : shapes.getValue();
     }
 
     @Override
