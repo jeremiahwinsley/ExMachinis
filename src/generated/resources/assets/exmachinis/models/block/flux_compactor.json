@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "minecraft:block/emerald_block"
+    "all": "exmachinis:block/flux_compactor"
   }
 }

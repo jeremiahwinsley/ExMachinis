@@ -60,7 +60,7 @@ public class Languages {
             add(jei(Constants.COMPACTING), "Flux Compactor");
 
             add(jei(Constants.FLUX_COMPACTOR), """
-                The Flux Compactor will take items from an inventory above,
+                The Flux Compactor will take items from the internal inventory,
                 and place the outputs into an inventory below.
                 """);
             add(jei(Constants.FLUX_HAMMER), """

@@ -32,9 +32,14 @@ public class ResourceUtil {
         return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(path));
     }
 
+    public static ResourceLocation block(String path) {
+        return prefix(String.format("block/%s", path));
+    }
+
     public static ResourceLocation gui(String path) {
         return prefix(String.format("textures/gui/%s.png", path));
     }
+
     public static ResourceLocation jei(String path) {
         return prefix(String.format("textures/jei/%s.png", path));
     }
