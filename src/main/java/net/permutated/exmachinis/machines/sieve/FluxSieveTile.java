@@ -41,15 +41,15 @@ public class FluxSieveTile extends AbstractMachineTile {
     public void tick() {
         if (level instanceof ServerLevel && canTick(getUpgradeTickDelay())) {
 
-            // ensure that block above is a valid inventory, and get an IItemHandler
-            BlockPos above = getBlockPos().above();
-            BlockEntity target = level.getBlockEntity(above);
+            // ensure that block below is a valid inventory, and get an IItemHandler
+            BlockPos below = getBlockPos().below();
+            BlockEntity target = level.getBlockEntity(below);
             if (target == null) {
                 workStatus = WorkStatus.MISSING_INVENTORY;
                 return;
             }
 
-            IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN)
+            IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP)
                 .resolve()
                 .orElse(null);
             if (itemHandler == null) {

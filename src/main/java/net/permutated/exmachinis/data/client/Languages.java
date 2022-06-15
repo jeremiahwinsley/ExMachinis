@@ -30,7 +30,7 @@ public class Languages {
             addItem(ModRegistry.NETHERITE_UPGRADE, "Netherite Upgrade");
 
             add(gui("noStatus"), "Machine starting up...");
-            add(gui("inventoryMissing"), "Place inventory above machine.");
+            add(gui("inventoryMissing"), "Place inventory on machine output.");
             add(gui("inventoryFull"), "Inventory is full.");
             add(gui("working"), "Machine is working.");
             add(gui("outOfEnergy"), "Out of energy.");

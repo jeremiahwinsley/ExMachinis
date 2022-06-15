@@ -31,15 +31,16 @@ public class FluxHammerTile extends AbstractMachineTile {
     public void tick() {
         if (level != null && !level.isClientSide && canTick(getUpgradeTickDelay())) {
 
-            // ensure that block above is a valid inventory, and get an IItemHandler
-            BlockPos above = getBlockPos().above();
-            BlockEntity target = level.getBlockEntity(above);
+            // ensure that facing block is a valid inventory, and get an IItemHandler
+            Direction facing = getBlockState().getValue(FluxHammerBlock.FACING);
+            BlockPos facingPos = getBlockPos().relative(facing);
+            BlockEntity target = level.getBlockEntity(facingPos);
             if (target == null) {
                 workStatus = WorkStatus.MISSING_INVENTORY;
                 return;
             }
 
-            IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN)
+            IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())
                 .resolve()
                 .orElse(null);
             if (itemHandler == null) {
@@ -107,6 +108,8 @@ public class FluxHammerTile extends AbstractMachineTile {
                 }
             }
 
+            // refill an empty slot from inventory above, if it exists
+            pullFromAbove();
         }
     }
 
@@ -122,5 +125,42 @@ public class FluxHammerTile extends AbstractMachineTile {
                 }
             });
         return workStatus == WorkStatus.WORKING;
+    }
+
+    private void pullFromAbove() {
+        // optionally connect to an inventory above to pull from
+        IItemHandler inputItemHandler = null;
+        if (level != null && getBlockState().getValue(FluxHammerBlock.HOPPER).equals(Boolean.TRUE)) {
+            // ensure that block above is a valid inventory, and get an IItemHandler
+            BlockPos above = getBlockPos().above();
+            BlockEntity targetAbove = level.getBlockEntity(above);
+            if (targetAbove != null) {
+                inputItemHandler = targetAbove.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN)
+                    .resolve()
+                    .orElse(null);
+            }
+        }
+
+        if (inputItemHandler != null) {
+            // iterate input slots until reaching the end, or finding a valid stack
+            for (int i = 0; i < inputItemHandler.getSlots(); i++) {
+                ItemStack stack = inputItemHandler.getStackInSlot(i);
+                if (!stack.isEmpty() && ExNihiloAPI.canHammer(stack)) {
+                    // extract up to one stack
+                    var extractResult = inputItemHandler.extractItem(i, stack.getMaxStackSize(), true);
+                    var insertResult = ItemHandlerHelper.insertItemStacked(itemStackHandler, extractResult, true);
+
+                    // only move items if the leftover amount is less than the extracted amount
+                    // should always be true unless item.maxStackSize > slot.getMaxStackSize,
+                    // or the internal inventory is full
+                    if (extractResult.getCount() > insertResult.getCount()) {
+                        int inserted = extractResult.getCount() - insertResult.getCount();
+                        ItemStack extracted = inputItemHandler.extractItem(i, inserted, false);
+                        ItemHandlerHelper.insertItemStacked(itemStackHandler, extracted, false);
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
