@@ -76,7 +76,7 @@ public class FluxCompactorTile extends AbstractMachineTile {
                 if (!stack.isEmpty()) {
                     CompactingRecipe recipe = ModRegistry.COMPACTING_REGISTRY.findRecipe(stack.getItem());
                     if (recipe == CompactingRecipe.EMPTY || !recipe.getIngredient().test(stack)) {
-                        return;
+                        continue;
                     }
 
                     // Compactor recipes allow multiple inputs > one output.
