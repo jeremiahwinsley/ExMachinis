@@ -4,16 +4,17 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
+import novamachina.exnihilosequentia.common.init.ExNihiloItems;
 
 import java.util.function.Consumer;
-
-import static net.permutated.exmachinis.util.ResourceUtil.prefix;
 
 public class CraftingRecipes extends RecipeProvider {
     public CraftingRecipes(DataGenerator generatorIn) {
@@ -58,6 +59,40 @@ public class CraftingRecipes extends RecipeProvider {
             .unlockedBy("has_netherite_ingot", has(Tags.Items.INGOTS_NETHERITE))
             .save(consumer);
 
+        var sieveTag = TagKey.create(ForgeRegistries.ITEMS.getRegistryKey(), new ResourceLocation("exnihilosequentia:sieves"));
+        shaped(ModRegistry.FLUX_SIEVE_ITEM.get())
+            .pattern("bbb")
+            .pattern("bsb")
+            .pattern("ihi")
+            .define('b', Items.IRON_BARS)
+            .define('s', sieveTag)
+            .define('i', Tags.Items.STORAGE_BLOCKS_IRON)
+            .define('h', Items.HOPPER)
+            .unlockedBy("has_sieve", has(sieveTag))
+            .save(consumer);
+
+        var hammerItem = ExNihiloItems.HAMMER_DIAMOND.get();
+        shaped(ModRegistry.FLUX_HAMMER_ITEM.get())
+            .pattern("ggg")
+            .pattern("gdg")
+            .pattern("ihi")
+            .define('g', Tags.Items.GLASS_PANES)
+            .define('d', hammerItem)
+            .define('i', Tags.Items.STORAGE_BLOCKS_IRON)
+            .define('h', Items.HOPPER)
+            .unlockedBy("has_diamond_hammer", has(hammerItem))
+            .save(consumer);
+
+        shaped(ModRegistry.FLUX_COMPACTOR_ITEM.get())
+            .pattern("ipi")
+            .pattern("pcp")
+            .pattern("ihi")
+            .define('i', Tags.Items.STORAGE_BLOCKS_IRON)
+            .define('p', Items.PISTON)
+            .define('c', Items.COMPARATOR)
+            .define('h', Items.HOPPER)
+            .unlockedBy("has_anvil", has(Items.ANVIL))
+            .save(consumer);
     }
 
 }

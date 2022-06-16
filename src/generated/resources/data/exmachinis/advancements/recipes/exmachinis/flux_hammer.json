@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "exmachinis:flux_hammer"
+    ]
+  },
+  "criteria": {
+    "has_diamond_hammer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "exnihilosequentia:diamond_hammer"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "exmachinis:flux_hammer"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_diamond_hammer",
+      "has_the_recipe"
+    ]
+  ]
+}
