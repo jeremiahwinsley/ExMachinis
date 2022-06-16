@@ -40,22 +40,20 @@ public class CraftingRecipes extends RecipeProvider {
             .save(consumer);
 
         shaped(ModRegistry.DIAMOND_UPGRADE.get())
-            .pattern("unu")
-            .pattern("ndn")
-            .pattern("unu")
+            .pattern("nun")
+            .pattern("nun")
+            .pattern("nun")
             .define('u', ModRegistry.GOLD_UPGRADE.get())
             .define('n', Tags.Items.GEMS_DIAMOND)
-            .define('d', Tags.Items.GLASS)
             .unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
             .save(consumer);
 
         shaped(ModRegistry.NETHERITE_UPGRADE.get())
-            .pattern("unu")
-            .pattern("ndn")
-            .pattern("unu")
+            .pattern("nun")
+            .pattern("nun")
+            .pattern("nun")
             .define('u', ModRegistry.DIAMOND_UPGRADE.get())
             .define('n', Tags.Items.INGOTS_NETHERITE)
-            .define('d', Tags.Items.GLASS)
             .unlockedBy("has_netherite_ingot", has(Tags.Items.INGOTS_NETHERITE))
             .save(consumer);
 
