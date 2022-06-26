@@ -8,7 +8,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,8 +20,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.IContainerFactory;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
@@ -66,7 +63,11 @@ public class FluxHammerBlock extends AbstractMachineBlock {
 
     public FluxHammerBlock() {
         super();
-        this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.defaultBlockState()
+            .setValue(FACING, Direction.NORTH)
+            .setValue(HOPPER, false)
+            .setValue(ENABLED, Boolean.TRUE)
+        );
     }
 
     @Override
@@ -86,12 +87,13 @@ public class FluxHammerBlock extends AbstractMachineBlock {
 
         return this.defaultBlockState()
             .setValue(FACING, context.getHorizontalDirection().getOpposite())
-            .setValue(HOPPER, !isAir);
+            .setValue(HOPPER, !isAir)
+            .setValue(ENABLED, Boolean.TRUE);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, HOPPER);
+        builder.add(FACING, HOPPER, ENABLED);
     }
 
     @Override

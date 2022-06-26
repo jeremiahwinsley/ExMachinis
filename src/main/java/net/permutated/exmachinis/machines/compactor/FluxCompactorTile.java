@@ -10,6 +10,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.permutated.exmachinis.ModRegistry;
+import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
 import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.util.WorkStatus;
@@ -31,6 +32,12 @@ public class FluxCompactorTile extends AbstractMachineTile {
     @Override
     public void tick() {
         if (level instanceof ServerLevel serverLevel && canTick(getUpgradeTickDelay())) {
+
+            Boolean enabled = getBlockState().getValue(AbstractMachineBlock.ENABLED);
+            if (Boolean.FALSE.equals(enabled)) {
+                workStatus = WorkStatus.REDSTONE_DISABLED;
+                return;
+            }
 
             // ensure that block above is a valid inventory, and get an IItemHandler
             BlockPos below = getBlockPos().below();

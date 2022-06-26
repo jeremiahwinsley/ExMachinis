@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -21,6 +22,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.IContainerFactory;
@@ -31,10 +35,22 @@ import net.permutated.exmachinis.items.UpgradeItem;
 import javax.annotation.Nullable;
 
 public abstract class AbstractMachineBlock extends Block implements EntityBlock {
+    public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
 
     protected AbstractMachineBlock() {
         super(Properties.of(Material.METAL).strength(3.0F, 3.0F).noOcclusion());
+        this.registerDefaultState(this.defaultBlockState().setValue(ENABLED, Boolean.TRUE));
+    }
 
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(ENABLED);
+    }
+
+    @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(ENABLED, Boolean.TRUE);
     }
 
     public abstract IContainerFactory<AbstractMachineMenu> containerFactory();
@@ -71,6 +87,29 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
 
             super.onRemove(state, level, pos, newState, isMoving);
         }
+    }
+
+    @Override
+    @SuppressWarnings("java:S1874") // deprecated method from super class
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!newState.is(state.getBlock())) {
+            this.checkPoweredState(level, pos, state);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("java:S1874") // deprecated method from super class
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighborPos, boolean isMoving) {
+        this.checkPoweredState(level, pos, state);
+    }
+
+    //TODO avoid chunk loading?
+    private void checkPoweredState(Level level, BlockPos pos, BlockState state) {
+        boolean flag = !level.hasNeighborSignal(pos);
+        if (!Boolean.valueOf(flag).equals((state.getValue(ENABLED)))) {
+            level.setBlock(pos, state.setValue(ENABLED, flag), 4);
+        }
+
     }
 
     @Override

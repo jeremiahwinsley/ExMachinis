@@ -35,6 +35,7 @@ public class Languages {
             add(gui("working"), "Machine is working.");
             add(gui("outOfEnergy"), "Out of energy.");
             add(gui("meshMissing"), "Mesh required for operation.");
+            add(gui("redstoneDisabled"), "Disabled by redstone signal.");
 
             add(gui("workArea"), "Work area (in chunks)");
             add(gui("workAreaBlocks"), "Work area (in blocks)");
@@ -70,14 +71,26 @@ public class Languages {
             add(jei(Constants.FLUX_COMPACTOR), """
                 The Flux Compactor will take items from the internal inventory,
                 and place the outputs into an inventory below.
+
+                Upgrades can be added to increase the number of items processed at once.
+
+                The block can be disabled by a redstone signal.
                 """);
             add(jei(Constants.FLUX_HAMMER), """
                 The Flux Hammer will take items from an inventory above,
                 and place the outputs into an inventory in front.
+
+                Upgrades can be added to increase the number of items processed at once.
+
+                The block can be disabled by a redstone signal.
                 """);
             add(jei(Constants.FLUX_SIEVE), """
                 The Flux Sieve will take items from the internal inventory,
                 and place the outputs into an inventory below.
+
+                Upgrades can be added to increase the number of items processed at once.
+
+                The block can be disabled by a redstone signal.
                 """);
         }
     }

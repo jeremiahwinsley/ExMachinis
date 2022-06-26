@@ -41,6 +41,8 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         // render work status texture
         if (this.menu.getWorkStatus() == WorkStatus.WORKING) {
             this.blit(matrixStack, relX + 116, relY + 35, 224, 0, 16, 16);
+        } else if(this.menu.getWorkStatus() == WorkStatus.REDSTONE_DISABLED) {
+            this.blit(matrixStack, relX + 116, relY + 35, 240, 0, 16, 16);
         } else {
             this.blit(matrixStack, relX + 116, relY + 35, 208, 0, 16, 16);
         }
