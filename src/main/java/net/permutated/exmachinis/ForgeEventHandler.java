@@ -1,6 +1,8 @@
 package net.permutated.exmachinis;
 
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -20,6 +22,7 @@ public class ForgeEventHandler {
         // nothing to do
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onClientLoggedOutEvent(final ClientPlayerNetworkEvent.LoggedOutEvent event) {
         ModRegistry.COMPACTING_REGISTRY.clearRecipes();
