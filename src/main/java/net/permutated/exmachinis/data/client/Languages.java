@@ -55,6 +55,14 @@ public class Languages {
             add(tooltip("upgradeSlot"), "Upgrade Slot");
             add(tooltip("meshSlot"), "Mesh Slot");
 
+            add(tooltip("goldItemsProcessed"), "2/4/8");
+            add(tooltip("diamondItemsProcessed"), "16/32/64");
+            add(tooltip("netheriteItemsProcessed"), "64");
+
+            add(tooltip("itemsProcessed"), "Items processed: %s");
+            add(tooltip("costPerBlock"), "RF cost per item: %d");
+            add(tooltip("processingTime"), "Processing time: %d ticks");
+
             add(tooltip("player"), "Player: %s");
 
             add(jei(Constants.COMPACTING), "Flux Compactor");
