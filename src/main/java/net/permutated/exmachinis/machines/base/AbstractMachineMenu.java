@@ -20,11 +20,14 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.registries.RegistryObject;
 import net.permutated.exmachinis.ExMachinis;
+import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
+import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.util.WorkStatus;
 
 import javax.annotation.Nullable;
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
+import java.util.function.Predicate;
 
 public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess containerLevelAccess;
@@ -100,9 +103,9 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
 
     public void registerHandlerSlots(IItemHandler handler) {
         int index = 0;
-        addSlot(new SlotItemHandler(handler, index++, 116, 53));
+        addSlot(new FilteredSlot(handler, index++, 116, 53, stack -> stack.getItem() instanceof UpgradeItem));
         if (enableMeshSlot) {
-            addSlot(new SlotItemHandler(handler, index++, 80, 36));
+            addSlot(new FilteredSlot(handler, index++, 80, 36, ExNihiloAPI::isMeshItem));
         }
 
         // 3 x 3
@@ -128,8 +131,20 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     public void registerDataSlots() {
         addDataSlot(dataHolder::getWork, dataHolder::setWork);
         addDataSlot(dataHolder::getMaxWork, dataHolder::setMaxWork);
-        addDataSlot(dataHolder::getMaxEnergy, dataHolder::setMaxEnergy);
         addDataSlot(() -> dataHolder.getWorkStatus().ordinal(), dataHolder::setWorkStatus);
+
+        // split max energy
+        addDataSlot(() -> dataHolder.getMaxEnergy() & 0xffff, value -> {
+            int energyStored = dataHolder.getMaxEnergy() & 0xffff0000;
+            dataHolder.setMaxEnergy(energyStored + (value & 0xffff));
+        });
+
+        addDataSlot(() -> (dataHolder.getMaxEnergy() >> 16) & 0xffff, value -> {
+            int energyStored = dataHolder.getMaxEnergy() & 0x0000ffff;
+            dataHolder.setMaxEnergy(energyStored | (value << 16));
+        });
+
+        // split current energy
         addDataSlot(() -> dataHolder.getEnergy() & 0xffff, value -> {
             int energyStored = dataHolder.getEnergy() & 0xffff0000;
             dataHolder.setEnergy(energyStored + (value & 0xffff));
@@ -145,6 +160,9 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         addDataSlot(new LambdaDataSlot(getter, setter));
     }
 
+    /**
+     * Based on <a href="https://github.com/Shadows-of-Fire/Placebo/blob/b104501c18e2f6432c843944a8106d07cab825cf/src/main/java/shadows/placebo/container/EasyContainerData.java">Placebo</a>
+     */
     static class LambdaDataSlot extends DataSlot {
 
         private final IntSupplier getter;
@@ -165,5 +183,23 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
             this.setter.accept(pValue);
         }
 
+    }
+
+    /**
+     * Based on <a href="https://github.com/Shadows-of-Fire/Placebo/blob/b104501c18e2f6432c843944a8106d07cab825cf/src/main/java/shadows/placebo/container/FilteredSlot.java">Placebo</a>
+     */
+    static class FilteredSlot extends SlotItemHandler {
+
+        protected final Predicate<ItemStack> filter;
+
+        public FilteredSlot(IItemHandler handler, int index, int x, int y, Predicate<ItemStack> filter) {
+            super(handler, index, x, y);
+            this.filter = filter;
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return this.filter.test(stack);
+        }
     }
 }
