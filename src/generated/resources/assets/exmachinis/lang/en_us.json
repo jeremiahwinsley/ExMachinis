@@ -24,6 +24,7 @@
   "tooltip.exmachinis.compactor1": "RF-powered automatic compactor",
   "tooltip.exmachinis.costPerBlock": "RF cost per item: %d",
   "tooltip.exmachinis.diamondItemsProcessed": "16/32/64",
+  "tooltip.exmachinis.energyPerTick": "RF per tick: %s RF/t",
   "tooltip.exmachinis.fluxBar": "Redstone Flux:",
   "tooltip.exmachinis.fluxData": "%d/%d RF stored",
   "tooltip.exmachinis.goldItemsProcessed": "2/4/8",

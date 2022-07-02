@@ -61,6 +61,7 @@ public class Languages {
             add(tooltip("netheriteItemsProcessed"), "64");
 
             add(tooltip("itemsProcessed"), "Items processed: %s");
+            add(tooltip("energyPerTick"), "RF per tick: %s RF/t");
             add(tooltip("costPerBlock"), "RF cost per item: %d");
             add(tooltip("processingTime"), "Processing time: %d ticks");
 

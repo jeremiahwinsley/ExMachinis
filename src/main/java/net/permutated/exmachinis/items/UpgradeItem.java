@@ -2,6 +2,7 @@ package net.permutated.exmachinis.items;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -27,6 +28,14 @@ public class UpgradeItem extends Item {
         Tier(int stackSize) {
             this.stackSize = stackSize;
         }
+
+        public int getItemsProcessed(int stackCount) {
+            return switch (this) {
+                case GOLD -> 1 << stackCount;
+                case DIAMOND -> 1 << (3 + stackCount);
+                case NETHERITE -> 64;
+            };
+        }
     }
 
     public UpgradeItem(Tier tier) {
@@ -47,28 +56,43 @@ public class UpgradeItem extends Item {
         // Items Processed: 2/4/8
         // RF cost per block: 1280
         // Processing time: 160 ticks
-        Component itemsProcessed = TextComponent.EMPTY;
         int cost = 0;
-        int time = 0;
+        int time = 1;
         switch (getTier()) {
             case GOLD -> {
-                itemsProcessed = translateTooltip("goldItemsProcessed");
                 cost = ConfigHolder.SERVER.goldEnergyPerBlock.get();
                 time = ConfigHolder.SERVER.goldTicksPerOperation.get();
             }
             case DIAMOND -> {
-                itemsProcessed = translateTooltip("diamondItemsProcessed");
                 cost = ConfigHolder.SERVER.diamondEnergyPerBlock.get();
                 time = ConfigHolder.SERVER.diamondTicksPerOperation.get();
             }
             case NETHERITE -> {
-                itemsProcessed = translateTooltip("netheriteItemsProcessed");
                 cost = ConfigHolder.SERVER.netheriteEnergyPerBlock.get();
                 time = ConfigHolder.SERVER.netheriteTicksPerOperation.get();
             }
         }
 
+        MutableComponent itemsProcessed = TextComponent.EMPTY.copy();
+        MutableComponent energyPerTick = TextComponent.EMPTY.copy();
+
+        for (int i = 1;i <= getTier().stackSize;i++) {
+            ChatFormatting style = i == stack.getCount() ? ChatFormatting.WHITE : ChatFormatting.GRAY;
+
+            int count = getTier().getItemsProcessed(i);
+            int perTick = (count * cost) / time;
+
+            itemsProcessed.append(new TextComponent(String.valueOf(count)).withStyle(style));
+            energyPerTick.append(new TextComponent(String.valueOf(perTick)).withStyle(style));
+
+            if (i < getTier().stackSize) {
+                itemsProcessed.append(new TextComponent("/").withStyle(ChatFormatting.GRAY));
+                energyPerTick.append(new TextComponent("/").withStyle(ChatFormatting.GRAY));
+            }
+        }
+
         tooltip.add(translateTooltip("itemsProcessed", itemsProcessed).withStyle(ChatFormatting.GRAY));
+        tooltip.add(translateTooltip("energyPerTick", energyPerTick).withStyle(ChatFormatting.GRAY));
         tooltip.add(translateTooltip("costPerBlock", cost).withStyle(ChatFormatting.GRAY));
         tooltip.add(translateTooltip("processingTime", time).withStyle(ChatFormatting.GRAY));
     }

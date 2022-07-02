@@ -74,11 +74,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
         var upgradeStack = upgradeStackHandler.getStackInSlot(0);
         if (upgradeStack.getItem() instanceof UpgradeItem upgradeItem && upgradeStack.getCount() > 0) {
             int upgradeCount = Mth.clamp(upgradeStack.getCount(), 1, 3);
-            return switch (upgradeItem.getTier()) {
-                case GOLD -> 1 << upgradeCount;
-                case DIAMOND -> 1 << (3 + upgradeCount);
-                case NETHERITE -> 64;
-            };
+            return upgradeItem.getTier().getItemsProcessed(upgradeCount);
         }
         return 1;
     }
