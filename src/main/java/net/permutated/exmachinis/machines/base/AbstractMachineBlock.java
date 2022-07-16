@@ -107,7 +107,7 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
     private void checkPoweredState(Level level, BlockPos pos, BlockState state) {
         boolean flag = !level.hasNeighborSignal(pos);
         if (!Boolean.valueOf(flag).equals((state.getValue(ENABLED)))) {
-            level.setBlock(pos, state.setValue(ENABLED, flag), 4);
+            level.setBlock(pos, state.setValue(ENABLED, flag), Block.UPDATE_ALL);
         }
 
     }
