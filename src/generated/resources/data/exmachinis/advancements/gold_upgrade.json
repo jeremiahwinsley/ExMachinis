@@ -1,0 +1,37 @@
+{
+  "parent": "exmachinis:root",
+  "display": {
+    "icon": {
+      "item": "exmachinis:gold_upgrade"
+    },
+    "title": {
+      "translate": "advancement.exmachinis.gold_upgrade"
+    },
+    "description": {
+      "translate": "advancement.exmachinis.gold_upgrade.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_gold_upgrade": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "exmachinis:gold_upgrade"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_gold_upgrade"
+    ]
+  ]
+}

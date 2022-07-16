@@ -1,0 +1,37 @@
+{
+  "parent": "exmachinis:root",
+  "display": {
+    "icon": {
+      "item": "exmachinis:flux_sieve"
+    },
+    "title": {
+      "translate": "advancement.exmachinis.flux_sieve"
+    },
+    "description": {
+      "translate": "advancement.exmachinis.flux_sieve.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_flux_sieve": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "exmachinis:flux_sieve"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_flux_sieve"
+    ]
+  ]
+}

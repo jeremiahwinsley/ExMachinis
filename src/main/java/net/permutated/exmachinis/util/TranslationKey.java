@@ -39,6 +39,13 @@ public class TranslationKey {
         return String.format(FORMAT, "chat", key);
     }
 
+    public static String advancement(String key) {
+        return String.format(FORMAT, "advancement", key);
+    }
+
+    public static String desc(String key) {
+        return key.concat(".desc");
+    }
 
     public static MutableComponent translateTooltip(String key) {
         return new TranslatableComponent(TranslationKey.tooltip(key));
@@ -58,5 +65,9 @@ public class TranslationKey {
 
     public static MutableComponent translateJei(String key) {
         return new TranslatableComponent(TranslationKey.jei(key));
+    }
+
+    public static MutableComponent translateAdvancement(String key) {
+        return new TranslatableComponent(TranslationKey.advancement(key));
     }
 }

@@ -1,0 +1,37 @@
+{
+  "parent": "exmachinis:root",
+  "display": {
+    "icon": {
+      "item": "exmachinis:flux_compactor"
+    },
+    "title": {
+      "translate": "advancement.exmachinis.flux_compactor"
+    },
+    "description": {
+      "translate": "advancement.exmachinis.flux_compactor.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_flux_compactor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "exmachinis:flux_compactor"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_flux_compactor"
+    ]
+  ]
+}

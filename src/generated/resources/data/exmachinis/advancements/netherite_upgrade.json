@@ -1,0 +1,37 @@
+{
+  "parent": "exmachinis:diamond_upgrade",
+  "display": {
+    "icon": {
+      "item": "exmachinis:netherite_upgrade"
+    },
+    "title": {
+      "translate": "advancement.exmachinis.netherite_upgrade"
+    },
+    "description": {
+      "translate": "advancement.exmachinis.netherite_upgrade.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_netherite_upgrade": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "exmachinis:netherite_upgrade"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_netherite_upgrade"
+    ]
+  ]
+}

@@ -2,11 +2,16 @@ package net.permutated.exmachinis.data.client;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
-import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.ExMachinis;
+import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.util.Constants;
 
-import static net.permutated.exmachinis.util.TranslationKey.*;
+import static net.permutated.exmachinis.util.TranslationKey.advancement;
+import static net.permutated.exmachinis.util.TranslationKey.desc;
+import static net.permutated.exmachinis.util.TranslationKey.gui;
+import static net.permutated.exmachinis.util.TranslationKey.jei;
+import static net.permutated.exmachinis.util.TranslationKey.tab;
+import static net.permutated.exmachinis.util.TranslationKey.tooltip;
 
 public class Languages {
     private Languages() {
@@ -41,6 +46,27 @@ public class Languages {
             add(gui("workAreaBlocks"), "Work area (in blocks)");
             add(gui("toggleWork"), "Working status");
             add(tab(), "Ex Machinis");
+
+            add(advancement("root"), "Ex Machinis");
+            add(advancement(desc("root")), "From machines, automation!");
+
+            add(advancement(Constants.FLUX_SIEVE), "Sieving...with flux!");
+            add(advancement(desc(Constants.FLUX_SIEVE)), "Tired of right-clicking? Craft a Flux Sieve");
+
+            add(advancement(Constants.FLUX_HAMMER), "Break it down!");
+            add(advancement(desc(Constants.FLUX_HAMMER)), "No more pounding sand! Craft a Flux Hammer");
+
+            add(advancement(Constants.FLUX_COMPACTOR), "Put it back together!");
+            add(advancement(desc(Constants.FLUX_COMPACTOR)), "Pesky pieces filling up your storage? Craft a Flux Compactor");
+
+            add(advancement(Constants.GOLD_UPGRADE), "Do more at once!");
+            add(advancement(desc(Constants.GOLD_UPGRADE)), "Craft a Gold Upgrade");
+
+            add(advancement(Constants.DIAMOND_UPGRADE), "Do more at once, faster!");
+            add(advancement(desc(Constants.DIAMOND_UPGRADE)), "Craft a Diamond Upgrade");
+
+            add(advancement(Constants.NETHERITE_UPGRADE), "Is this is the end?");
+            add(advancement(desc(Constants.NETHERITE_UPGRADE)), "\"No, this is netherite.\" Craft a Netherite Upgrade");
 
             add(tooltip("sieve1"), "RF-powered automatic sieve");
             add(tooltip("hammer1"), "RF-powered automatic hammer");
