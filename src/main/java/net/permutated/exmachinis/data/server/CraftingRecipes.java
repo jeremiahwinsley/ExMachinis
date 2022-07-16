@@ -7,10 +7,8 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
 import novamachina.exnihilosequentia.common.init.ExNihiloItems;
 
@@ -21,14 +19,9 @@ public class CraftingRecipes extends RecipeProvider {
         super(generatorIn);
     }
 
-    private ShapedRecipeBuilder shaped(ItemLike provider) {
-        return ShapedRecipeBuilder.shaped(provider)
-            .group(ExMachinis.MODID);
-    }
-
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-        shaped(ModRegistry.GOLD_UPGRADE.get())
+        ShapedRecipeBuilder.shaped(ModRegistry.GOLD_UPGRADE.get())
             .pattern("tct")
             .pattern("gdg")
             .pattern("ggg")
@@ -39,7 +32,7 @@ public class CraftingRecipes extends RecipeProvider {
             .unlockedBy("has_gold_ingot", has(Tags.Items.INGOTS_GOLD))
             .save(consumer);
 
-        shaped(ModRegistry.DIAMOND_UPGRADE.get())
+        ShapedRecipeBuilder.shaped(ModRegistry.DIAMOND_UPGRADE.get())
             .pattern("nun")
             .pattern("nun")
             .pattern("nun")
@@ -48,7 +41,7 @@ public class CraftingRecipes extends RecipeProvider {
             .unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
             .save(consumer);
 
-        shaped(ModRegistry.NETHERITE_UPGRADE.get())
+        ShapedRecipeBuilder.shaped(ModRegistry.NETHERITE_UPGRADE.get())
             .pattern("nun")
             .pattern("nun")
             .pattern("nun")
@@ -58,7 +51,7 @@ public class CraftingRecipes extends RecipeProvider {
             .save(consumer);
 
         var sieveTag = TagKey.create(ForgeRegistries.ITEMS.getRegistryKey(), new ResourceLocation("exnihilosequentia:sieves"));
-        shaped(ModRegistry.FLUX_SIEVE_ITEM.get())
+        ShapedRecipeBuilder.shaped(ModRegistry.FLUX_SIEVE_ITEM.get())
             .pattern("bbb")
             .pattern("bsb")
             .pattern("ihi")
@@ -70,7 +63,7 @@ public class CraftingRecipes extends RecipeProvider {
             .save(consumer);
 
         var hammerItem = ExNihiloItems.HAMMER_DIAMOND.get();
-        shaped(ModRegistry.FLUX_HAMMER_ITEM.get())
+        ShapedRecipeBuilder.shaped(ModRegistry.FLUX_HAMMER_ITEM.get())
             .pattern("ggg")
             .pattern("gdg")
             .pattern("ihi")
@@ -81,7 +74,7 @@ public class CraftingRecipes extends RecipeProvider {
             .unlockedBy("has_diamond_hammer", has(hammerItem))
             .save(consumer);
 
-        shaped(ModRegistry.FLUX_COMPACTOR_ITEM.get())
+        ShapedRecipeBuilder.shaped(ModRegistry.FLUX_COMPACTOR_ITEM.get())
             .pattern("ipi")
             .pattern("pcp")
             .pattern("ihi")
