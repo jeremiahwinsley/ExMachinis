@@ -65,7 +65,7 @@ public class Languages {
             add(advancement(Constants.DIAMOND_UPGRADE), "Do more at once, faster!");
             add(advancement(desc(Constants.DIAMOND_UPGRADE)), "Craft a Diamond Upgrade");
 
-            add(advancement(Constants.NETHERITE_UPGRADE), "Is this is the end?");
+            add(advancement(Constants.NETHERITE_UPGRADE), "Is this the end?");
             add(advancement(desc(Constants.NETHERITE_UPGRADE)), "\"No, this is netherite.\" Craft a Netherite Upgrade");
 
             add(tooltip("sieve1"), "RF-powered automatic sieve");
