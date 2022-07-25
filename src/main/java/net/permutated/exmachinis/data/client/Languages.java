@@ -117,6 +117,8 @@ public class Languages {
 
                 Upgrades can be added to increase the number of items processed at once.
 
+                Meshes can be enchanted with Fortune to increase drop chances.
+
                 The block can be disabled by a redstone signal.
                 """);
         }

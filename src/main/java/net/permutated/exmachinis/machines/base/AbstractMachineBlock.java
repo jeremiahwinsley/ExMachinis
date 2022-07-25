@@ -38,7 +38,8 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
 
     protected AbstractMachineBlock() {
-        super(Properties.of(Material.METAL).strength(3.0F, 3.0F).noOcclusion());
+        super(Properties.of(Material.METAL).strength(3.0F, 3.0F).noOcclusion()
+            .isRedstoneConductor((state, getter, pos) -> false)); // allow chests to be opened underneath
         this.registerDefaultState(this.defaultBlockState().setValue(ENABLED, Boolean.TRUE));
     }
 

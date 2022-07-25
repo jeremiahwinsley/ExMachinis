@@ -19,7 +19,7 @@
   "exmachinis.int.jei.category.compacting": "Flux Compactor",
   "exmachinis.int.jei.category.flux_compactor": "The Flux Compactor will take items from the internal inventory,\nand place the outputs into an inventory below.\n\nUpgrades can be added to increase the number of items processed at once.\n\nThe block can be disabled by a redstone signal.\n",
   "exmachinis.int.jei.category.flux_hammer": "The Flux Hammer will take items from an inventory above,\nand place the outputs into an inventory in front.\n\nUpgrades can be added to increase the number of items processed at once.\n\nThe block can be disabled by a redstone signal.\n",
-  "exmachinis.int.jei.category.flux_sieve": "The Flux Sieve will take items from the internal inventory,\nand place the outputs into an inventory below.\n\nUpgrades can be added to increase the number of items processed at once.\n\nThe block can be disabled by a redstone signal.\n",
+  "exmachinis.int.jei.category.flux_sieve": "The Flux Sieve will take items from the internal inventory,\nand place the outputs into an inventory below.\n\nUpgrades can be added to increase the number of items processed at once.\n\nMeshes can be enchanted with Fortune to increase drop chances.\n\nThe block can be disabled by a redstone signal.\n",
   "gui.exmachinis.inventoryFull": "Inventory is full.",
   "gui.exmachinis.inventoryMissing": "Place inventory on machine output.",
   "gui.exmachinis.meshMissing": "Mesh required for operation.",

@@ -24,6 +24,7 @@ import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.util.Constants;
 import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
 import net.permutated.exmachinis.util.OverlayItemHandler;
+import net.permutated.exmachinis.util.PipeItemHandler;
 import net.permutated.exmachinis.util.WorkStatus;
 
 import javax.annotation.Nonnull;
@@ -110,7 +111,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
     }
 
     protected final LazyOptional<EnergyStorage> energy = LazyOptional.of(() -> energyStorage);
-    protected final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemStackHandler);
+    protected final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> new PipeItemHandler(itemStackHandler));
     protected final LazyOptional<IItemHandler> overlay = LazyOptional.of(() -> new OverlayItemHandler(itemStackHandler, upgradeStackHandler));
 
     @Nonnull
