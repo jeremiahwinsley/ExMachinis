@@ -1,4 +1,4 @@
-package net.permutated.exmachinis.machines.events;
+package net.permutated.exmachinis.events;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;

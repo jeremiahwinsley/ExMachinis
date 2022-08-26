@@ -1,4 +1,4 @@
-package net.permutated.exmachinis.machines.events;
+package net.permutated.exmachinis.events;
 
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
@@ -27,8 +27,7 @@ public class ForgeEventHandler {
 
     @SubscribeEvent
     public static void onRecipesUpdatedEvent(final RecipesUpdatedEvent event) {
-        ExMachinis.LOGGER.debug("Reloading recipes");
-        ModRegistry.COMPACTING_REGISTRY.clearRecipes();
+        ExMachinis.LOGGER.debug("Loading recipes on server sync");
         loadCompactingRecipes(event.getRecipeManager());
     }
 
