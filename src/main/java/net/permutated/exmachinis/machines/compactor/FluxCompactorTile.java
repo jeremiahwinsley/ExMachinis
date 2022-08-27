@@ -16,9 +16,7 @@ import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.util.WorkStatus;
 
-import java.util.List;
-
-import static net.permutated.exmachinis.util.ItemStackUtil.multiplyStack;
+import static net.permutated.exmachinis.util.ItemStackUtil.multiplyStackCount;
 
 public class FluxCompactorTile extends AbstractMachineTile {
     public FluxCompactorTile(BlockPos pos, BlockState state) {
@@ -138,12 +136,10 @@ public class FluxCompactorTile extends AbstractMachineTile {
 
     private boolean processResults(IItemHandler itemHandler, CompactingRecipe recipe, int multiplier, boolean simulate) {
         // process compacting results
-        List<ItemStack> multiplied = multiplyStack(recipe.getOutput(), multiplier);
-        for (var output : multiplied) {
-            var response = ItemHandlerHelper.insertItemStacked(itemHandler, output, simulate);
-            if (!response.isEmpty()) {
-                workStatus = WorkStatus.INVENTORY_FULL;
-            }
+        ItemStack output = multiplyStackCount(recipe.getOutput(), multiplier);
+        var response = ItemHandlerHelper.insertItemStacked(itemHandler, output, simulate);
+        if (!response.isEmpty()) {
+            workStatus = WorkStatus.INVENTORY_FULL;
         }
         return workStatus == WorkStatus.WORKING;
     }

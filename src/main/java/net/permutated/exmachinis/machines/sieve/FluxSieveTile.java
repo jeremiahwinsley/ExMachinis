@@ -10,14 +10,12 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.permutated.exmachinis.ModRegistry;
+import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
 import net.permutated.exmachinis.machines.base.AbstractMachineTile;
-import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
 import net.permutated.exmachinis.util.WorkStatus;
 
-import java.util.List;
-
-import static net.permutated.exmachinis.util.ItemStackUtil.multiplyStack;
+import static net.permutated.exmachinis.util.ItemStackUtil.multiplyStackCount;
 
 public class FluxSieveTile extends AbstractMachineTile {
     public FluxSieveTile(BlockPos pos, BlockState state) {
@@ -135,8 +133,7 @@ public class FluxSieveTile extends AbstractMachineTile {
     private boolean processResults(IItemHandler itemHandler, ItemStack meshStack, ItemStack stack, int multiplier, boolean simulate) {
         // process sieve results
         ExNihiloAPI.getSieveResult(stack, meshStack, isWaterlogged()).stream()
-            .map(result -> multiplyStack(result, multiplier))
-            .flatMap(List::stream)
+            .map(result -> multiplyStackCount(result, multiplier))
             .map(output -> ItemHandlerHelper.insertItemStacked(itemHandler, output, simulate))
             .forEach(response -> {
                 if (!response.isEmpty()) {

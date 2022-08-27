@@ -9,14 +9,12 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.permutated.exmachinis.ModRegistry;
+import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
 import net.permutated.exmachinis.machines.base.AbstractMachineTile;
-import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
 import net.permutated.exmachinis.util.WorkStatus;
 
-import java.util.List;
-
-import static net.permutated.exmachinis.util.ItemStackUtil.multiplyStack;
+import static net.permutated.exmachinis.util.ItemStackUtil.multiplyStackCount;
 
 public class FluxHammerTile extends AbstractMachineTile {
     public FluxHammerTile(BlockPos pos, BlockState state) {
@@ -123,8 +121,7 @@ public class FluxHammerTile extends AbstractMachineTile {
     private boolean processResults(IItemHandler itemHandler, ItemStack stack, int multiplier, boolean simulate) {
         // process hammer results
         ExNihiloAPI.getHammerResult(stack).stream()
-            .map(result -> multiplyStack(result, multiplier))
-            .flatMap(List::stream)
+            .map(result -> multiplyStackCount(result, multiplier))
             .map(output -> ItemHandlerHelper.insertItemStacked(itemHandler, output, simulate))
             .forEach(response -> {
                 if (!response.isEmpty()) {

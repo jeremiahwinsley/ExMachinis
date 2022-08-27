@@ -31,4 +31,16 @@ public class ItemStackUtil {
         output.add(copyStackWithSize(input, amount));
         return output;
     }
+
+    /**
+     * Multiply input stack, returning a single ItemStack that can be over the maxStackSize.
+     * While not explicitly allowed, most ItemHandlers should safely insert oversized stacks.
+     * @param input the input stack to copy.
+     * @param times the multiplier
+     * @return the multiplied ItemStack
+     */
+    public static ItemStack multiplyStackCount(ItemStack input, int times) {
+        int count = input.getCount() * times;
+        return copyStackWithSize(input, count);
+    }
 }

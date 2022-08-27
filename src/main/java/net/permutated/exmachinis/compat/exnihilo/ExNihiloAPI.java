@@ -40,7 +40,7 @@ public class ExNihiloAPI {
             .map(ExNihiloRegistries.HAMMER_REGISTRY::getResult)
             .orElseGet(Collections::emptyList)
             .stream()
-            .filter(chance -> ThreadLocalRandom.current().nextFloat() <= chance.getChance())
+            .filter(chance -> chance.getChance() == 1.0 || ThreadLocalRandom.current().nextFloat() <= chance.getChance())
             .map(chance -> chance.getStack().copy())
             .toList();
     }
