@@ -57,7 +57,7 @@ public class FluxSieveTile extends AbstractMachineTile {
             IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP)
                 .resolve()
                 .orElse(null);
-            if (itemHandler == null) {
+            if (itemHandler == null || itemHandler.getSlots() == 0) {
                 workStatus = WorkStatus.MISSING_INVENTORY;
                 return;
             } else {

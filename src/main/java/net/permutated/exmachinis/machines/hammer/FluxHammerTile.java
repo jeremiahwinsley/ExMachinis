@@ -48,7 +48,7 @@ public class FluxHammerTile extends AbstractMachineTile {
             IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())
                 .resolve()
                 .orElse(null);
-            if (itemHandler == null) {
+            if (itemHandler == null || itemHandler.getSlots() == 0) {
                 workStatus = WorkStatus.MISSING_INVENTORY;
                 return;
             } else {
