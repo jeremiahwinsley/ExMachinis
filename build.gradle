@@ -159,7 +159,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:cofh-core-69162:3803484")
     runtimeOnly fg.deobf("curse.maven:pipez-443900:3819249")
     implementation fg.deobf("curse.maven:jei-238222:3788739")
-    implementation fg.deobf("novamachina.exnihilosequentia:ExNihiloSequentia:1.18.2-20220818-010806")
+    implementation fg.deobf("novamachina.exnihilosequentia:ExNihiloSequentia:1.18.2-20220915-164752")
 }
 
 jar {
