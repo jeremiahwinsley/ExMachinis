@@ -50,6 +50,7 @@
   "tooltip.exmachinis.processingTime": "Processing time: %d ticks",
   "tooltip.exmachinis.progress": "Progress: %d/%d seconds",
   "tooltip.exmachinis.sieve1": "RF-powered automatic sieve",
+  "tooltip.exmachinis.stackSize": "Upgrade count: %s",
   "tooltip.exmachinis.upgradeSlot": "Upgrade Slot",
   "tooltip.exmachinis.workBar": "Work Progress:",
   "tooltip.exmachinis.workData": "%d/%d ticks"

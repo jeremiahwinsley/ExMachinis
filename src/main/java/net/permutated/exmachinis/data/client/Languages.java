@@ -86,6 +86,7 @@ public class Languages {
             add(tooltip("diamondItemsProcessed"), "16/32/64");
             add(tooltip("netheriteItemsProcessed"), "64");
 
+            add(tooltip("stackSize"), "Upgrade count: %s");
             add(tooltip("itemsProcessed"), "Items processed: %s");
             add(tooltip("energyPerTick"), "RF per tick: %s RF/t");
             add(tooltip("costPerBlock"), "RF cost per item: %d");

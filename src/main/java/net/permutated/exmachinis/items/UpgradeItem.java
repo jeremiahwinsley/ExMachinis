@@ -73,6 +73,7 @@ public class UpgradeItem extends Item {
             }
         }
 
+        MutableComponent stackSize = TextComponent.EMPTY.copy();
         MutableComponent itemsProcessed = TextComponent.EMPTY.copy();
         MutableComponent energyPerTick = TextComponent.EMPTY.copy();
 
@@ -82,15 +83,18 @@ public class UpgradeItem extends Item {
             int count = getTier().getItemsProcessed(i);
             int perTick = (count * cost) / time;
 
+            stackSize.append(new TextComponent(String.valueOf(i)).withStyle(style));
             itemsProcessed.append(new TextComponent(String.valueOf(count)).withStyle(style));
             energyPerTick.append(new TextComponent(String.valueOf(perTick)).withStyle(style));
 
             if (i < getTier().stackSize) {
+                stackSize.append(new TextComponent("/").withStyle(ChatFormatting.GRAY));
                 itemsProcessed.append(new TextComponent("/").withStyle(ChatFormatting.GRAY));
                 energyPerTick.append(new TextComponent("/").withStyle(ChatFormatting.GRAY));
             }
         }
 
+        tooltip.add(translateTooltip("stackSize", stackSize).withStyle(ChatFormatting.GRAY));
         tooltip.add(translateTooltip("itemsProcessed", itemsProcessed).withStyle(ChatFormatting.GRAY));
         tooltip.add(translateTooltip("energyPerTick", energyPerTick).withStyle(ChatFormatting.GRAY));
         tooltip.add(translateTooltip("costPerBlock", cost).withStyle(ChatFormatting.GRAY));
