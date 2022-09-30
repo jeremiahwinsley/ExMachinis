@@ -121,7 +121,14 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
                 ItemStack stackInHand = player.getItemInHand(hand).copy();
                 if (!stackInHand.isEmpty() && stackInHand.getItem() instanceof UpgradeItem handItem) {
                     ItemStack inSlot = machineTile.upgradeStackHandler.getStackInSlot(0).copy();
-                    if (inSlot.isEmpty()) { // no upgrades in machine, move the whole stack
+                    if (player.isCreative()) {
+                        if (!ItemStack.matches(inSlot, stackInHand)) {
+                            // We are in creative, and the contents of the slot is different than what's in hand.
+                            // Replace whatever upgrade is in the machine with the stack in hand.
+                            machineTile.upgradeStackHandler.setStackInSlot(0, stackInHand);
+                            return InteractionResult.SUCCESS;
+                        }
+                    } else if (inSlot.isEmpty()) { // no upgrades in machine, move the whole stack
                         ItemStack result = machineTile.upgradeStackHandler.insertItem(0, stackInHand, true);
                         if (result.isEmpty()) { // verify that all items were inserted
                             ItemStack actual = machineTile.upgradeStackHandler.insertItem(0, stackInHand, false);
