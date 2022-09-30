@@ -52,7 +52,7 @@ public class CompactingRecipe extends AbstractMachineRecipe {
         return output.copy();
     }
 
-    public static class Serializer extends AbstractSerializer<CompactingRecipe> {
+    public static class Serializer implements RecipeSerializer<CompactingRecipe> {
         @Override
         public CompactingRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
             IngredientStack input = IngredientStack.fromJson(jsonObject.getAsJsonObject(Constants.JSON.INPUT));

@@ -9,15 +9,13 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.util.Constants;
-import net.permutated.exmachinis.util.ResourceUtil;
 import net.permutated.exmachinis.util.TranslationKey;
 
 import java.util.Arrays;
@@ -27,14 +25,14 @@ public class CompactingCategory implements IRecipeCategory<CompactingRecipe> {
 
     private final IDrawable icon;
     private final IDrawable background;
-    private final TranslatableComponent title;
+    private final MutableComponent title;
 
     public static final RecipeType<CompactingRecipe> RECIPE_TYPE = RecipeType.create(ExMachinis.MODID, Constants.COMPACTING, CompactingRecipe.class);
 
     public CompactingCategory(final IGuiHelper guiHelper) {
         icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModRegistry.FLUX_COMPACTOR_BLOCK.get()));
-        background = guiHelper.createDrawable(mezz.jei.config.Constants.RECIPE_GUI_VANILLA, 0, 220, 82, 34);
-        title = new TranslatableComponent(TranslationKey.jei(Constants.COMPACTING));
+        background = guiHelper.createDrawable(mezz.jei.common.Constants.RECIPE_GUI_VANILLA, 0, 220, 82, 34);
+        title = Component.translatable(TranslationKey.jei(Constants.COMPACTING));
     }
 
     @Override
@@ -50,16 +48,6 @@ public class CompactingCategory implements IRecipeCategory<CompactingRecipe> {
     @Override
     public IDrawable getIcon() {
         return icon;
-    }
-
-    @Override
-    public ResourceLocation getUid() {
-        return getRecipeType().getUid();
-    }
-
-    @Override
-    public Class<? extends CompactingRecipe> getRecipeClass() {
-        return getRecipeType().getRecipeClass();
     }
 
     @Override

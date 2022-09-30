@@ -10,7 +10,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
@@ -23,6 +22,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.permutated.exmachinis.items.UpgradeItem;
+import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.machines.compactor.FluxCompactorBlock;
 import net.permutated.exmachinis.machines.compactor.FluxCompactorMenu;
 import net.permutated.exmachinis.machines.compactor.FluxCompactorTile;
@@ -32,15 +32,14 @@ import net.permutated.exmachinis.machines.hammer.FluxHammerTile;
 import net.permutated.exmachinis.machines.sieve.FluxSieveBlock;
 import net.permutated.exmachinis.machines.sieve.FluxSieveMenu;
 import net.permutated.exmachinis.machines.sieve.FluxSieveTile;
-import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.recipes.CompactingRegistry;
 import net.permutated.exmachinis.util.Constants;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Locale;
 import java.util.function.Supplier;
+
+import static net.permutated.exmachinis.util.ResourceUtil.prefix;
 
 public class ModRegistry {
     private ModRegistry() {
@@ -49,8 +48,8 @@ public class ModRegistry {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ExMachinis.MODID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ExMachinis.MODID);
-    public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, ExMachinis.MODID);
-    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, ExMachinis.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ExMachinis.MODID);
+    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ExMachinis.MODID);
 
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, ExMachinis.MODID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ExMachinis.MODID);
@@ -83,7 +82,7 @@ public class ModRegistry {
     public static final RegistryObject<MenuType<FluxCompactorMenu>> FLUX_COMPACTOR_MENU = container(Constants.FLUX_COMPACTOR, FluxCompactorMenu::new);
     public static final RegistryObject<BlockItem> FLUX_COMPACTOR_ITEM = blockItem(FLUX_COMPACTOR_BLOCK);
 
-    public static final RegistryObject<RecipeType<CompactingRecipe>> COMPACTING_RECIPE_TYPE = RECIPE_TYPES.register(Constants.COMPACTING, () -> new RecipeType<>() {});
+    public static final RegistryObject<RecipeType<CompactingRecipe>> COMPACTING_RECIPE_TYPE = RECIPE_TYPES.register(Constants.COMPACTING, () -> RecipeType.simple(prefix(Constants.COMPACTING)));
     public static final RegistryObject<RecipeSerializer<CompactingRecipe>> COMPACTING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(Constants.COMPACTING, CompactingRecipe.Serializer::new);
     public static final CompactingRegistry COMPACTING_REGISTRY = new CompactingRegistry();
 

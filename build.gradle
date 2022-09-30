@@ -1,19 +1,9 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-    }
-}
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
     id 'eclipse'
     id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'org.spongepowered.mixin' version '0.7.+' // needed for remapping dependencies
 }
-apply plugin: 'net.minecraftforge.gradle'
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -33,7 +23,7 @@ minecraft {
     //
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'official', version: '1.18.2'
+    mappings channel: 'official', version: '1.19.2'
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -151,15 +141,13 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.52'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.1.24'
 
-    runtimeOnly fg.deobf("curse.maven:cobblefordays-349460:3739573")
-    runtimeOnly fg.deobf("curse.maven:thermal-expansion-69163:3803489")
-    runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:3803495")
-    runtimeOnly fg.deobf("curse.maven:cofh-core-69162:3803484")
-    runtimeOnly fg.deobf("curse.maven:pipez-443900:3819249")
-    implementation fg.deobf("curse.maven:jei-238222:3788739")
-    implementation fg.deobf("novamachina.exnihilosequentia:ExNihiloSequentia:1.18.2-20220915-164752")
+    runtimeOnly fg.deobf("curse.maven:cobblefordays-349460:3975349")
+    runtimeOnly fg.deobf("curse.maven:pipez-443900:3920730")
+    runtimeOnly fg.deobf("curse.maven:Phosphophyllite-412551:3941673")
+    implementation fg.deobf("curse.maven:jei-238222:3969039")
+    implementation fg.deobf("novamachina.exnihilosequentia:ExNihiloSequentia:1.19.2-4.0.0.40-beta")
 }
 
 jar {

@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "d": {
+      "item": "exnihilosequentia:diamond_hammer"
+    },
+    "g": {
+      "tag": "forge:glass_panes"
+    },
+    "h": {
+      "item": "minecraft:hopper"
+    },
+    "i": {
+      "tag": "forge:storage_blocks/iron"
+    }
+  },
   "pattern": [
     "ggg",
     "gdg",
     "ihi"
   ],
-  "key": {
-    "g": {
-      "tag": "forge:glass_panes"
-    },
-    "d": {
-      "item": "exnihilosequentia:diamond_hammer"
-    },
-    "i": {
-      "tag": "forge:storage_blocks/iron"
-    },
-    "h": {
-      "item": "minecraft:hopper"
-    }
-  },
   "result": {
     "item": "exmachinis:flux_hammer"
   }

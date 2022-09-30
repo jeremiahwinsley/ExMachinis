@@ -5,7 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.permutated.exmachinis.ModRegistry;
@@ -45,7 +45,7 @@ public class FluxHammerTile extends AbstractMachineTile {
                 return;
             }
 
-            IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())
+            IItemHandler itemHandler = target.getCapability(ForgeCapabilities.ITEM_HANDLER, facing.getOpposite())
                 .resolve()
                 .orElse(null);
             if (itemHandler == null || itemHandler.getSlots() == 0) {
@@ -139,7 +139,7 @@ public class FluxHammerTile extends AbstractMachineTile {
             BlockPos above = getBlockPos().above();
             BlockEntity targetAbove = level.getBlockEntity(above);
             if (targetAbove != null) {
-                inputItemHandler = targetAbove.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN)
+                inputItemHandler = targetAbove.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN)
                     .resolve()
                     .orElse(null);
             }

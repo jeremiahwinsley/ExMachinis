@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "n": {
+      "tag": "forge:ingots/netherite"
+    },
+    "u": {
+      "item": "exmachinis:diamond_upgrade"
+    }
+  },
   "pattern": [
     "nun",
     "nun",
     "nun"
   ],
-  "key": {
-    "u": {
-      "item": "exmachinis:diamond_upgrade"
-    },
-    "n": {
-      "tag": "forge:ingots/netherite"
-    }
-  },
   "result": {
     "item": "exmachinis:netherite_upgrade"
   }

@@ -1,14 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "tct",
-    "gdg",
-    "ggg"
-  ],
   "key": {
-    "t": {
-      "item": "minecraft:cyan_terracotta"
-    },
     "c": {
       "tag": "forge:dyes/green"
     },
@@ -17,8 +9,16 @@
     },
     "g": {
       "tag": "forge:glass"
+    },
+    "t": {
+      "item": "minecraft:cyan_terracotta"
     }
   },
+  "pattern": [
+    "tct",
+    "gdg",
+    "ggg"
+  ],
   "result": {
     "item": "exmachinis:gold_upgrade"
   }

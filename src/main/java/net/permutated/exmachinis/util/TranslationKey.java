@@ -1,7 +1,7 @@
 package net.permutated.exmachinis.util;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.permutated.exmachinis.ExMachinis;
 
 public class TranslationKey {
@@ -48,26 +48,26 @@ public class TranslationKey {
     }
 
     public static MutableComponent translateTooltip(String key) {
-        return new TranslatableComponent(TranslationKey.tooltip(key));
+        return Component.translatable(TranslationKey.tooltip(key));
     }
 
     public static MutableComponent translateTooltip(String key, Object... values) {
-        return new TranslatableComponent(TranslationKey.tooltip(key), values);
+        return Component.translatable(TranslationKey.tooltip(key), values);
     }
 
     public static MutableComponent translateGui(String key) {
-        return new TranslatableComponent(TranslationKey.gui(key));
+        return Component.translatable(TranslationKey.gui(key));
     }
 
     public static MutableComponent translateGui(String key, Object... values) {
-        return new TranslatableComponent(TranslationKey.gui(key), values);
+        return Component.translatable(TranslationKey.gui(key), values);
     }
 
     public static MutableComponent translateJei(String key) {
-        return new TranslatableComponent(TranslationKey.jei(key));
+        return Component.translatable(TranslationKey.jei(key));
     }
 
     public static MutableComponent translateAdvancement(String key) {
-        return new TranslatableComponent(TranslationKey.advancement(key));
+        return Component.translatable(TranslationKey.advancement(key));
     }
 }

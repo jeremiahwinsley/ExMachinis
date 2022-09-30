@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ipi",
-    "pcp",
-    "ihi"
-  ],
   "key": {
-    "i": {
-      "tag": "forge:storage_blocks/iron"
-    },
-    "p": {
-      "item": "minecraft:piston"
-    },
     "c": {
       "item": "minecraft:comparator"
     },
     "h": {
       "item": "minecraft:hopper"
+    },
+    "i": {
+      "tag": "forge:storage_blocks/iron"
+    },
+    "p": {
+      "item": "minecraft:piston"
     }
   },
+  "pattern": [
+    "ipi",
+    "pcp",
+    "ihi"
+  ],
   "result": {
     "item": "exmachinis:flux_compactor"
   }

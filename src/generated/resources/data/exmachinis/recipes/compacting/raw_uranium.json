@@ -1,10 +1,10 @@
 {
   "type": "exmachinis:compacting",
   "input": {
+    "count": 4,
     "ingredient": {
       "item": "exnihilosequentia:uranium_pieces"
-    },
-    "count": 4
+    }
   },
   "output": {
     "item": "exnihilosequentia:raw_uranium"

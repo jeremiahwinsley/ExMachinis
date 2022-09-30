@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "n": {
+      "tag": "forge:gems/diamond"
+    },
+    "u": {
+      "item": "exmachinis:gold_upgrade"
+    }
+  },
   "pattern": [
     "nun",
     "nun",
     "nun"
   ],
-  "key": {
-    "u": {
-      "item": "exmachinis:gold_upgrade"
-    },
-    "n": {
-      "tag": "forge:gems/diamond"
-    }
-  },
   "result": {
     "item": "exmachinis:diamond_upgrade"
   }

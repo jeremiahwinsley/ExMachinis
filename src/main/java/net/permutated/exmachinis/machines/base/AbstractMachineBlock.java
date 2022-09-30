@@ -4,7 +4,6 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -151,7 +150,7 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
-                        return new TranslatableComponent(getDescriptionId());
+                        return Component.translatable(getDescriptionId());
                     }
 
                     @Override
@@ -161,7 +160,7 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
                         return containerFactory().create(i, playerInventory, buffer);
                     }
                 };
-                NetworkHooks.openGui((ServerPlayer) player, containerProvider, machineTile::updateContainer);
+                NetworkHooks.openScreen((ServerPlayer) player, containerProvider, machineTile::updateContainer);
             } else {
                 ExMachinis.LOGGER.error("tile entity not instance of AbstractMachineTile");
                 return InteractionResult.FAIL;

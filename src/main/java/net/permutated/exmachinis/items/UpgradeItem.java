@@ -3,7 +3,6 @@ package net.permutated.exmachinis.items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -73,9 +72,9 @@ public class UpgradeItem extends Item {
             }
         }
 
-        MutableComponent stackSize = TextComponent.EMPTY.copy();
-        MutableComponent itemsProcessed = TextComponent.EMPTY.copy();
-        MutableComponent energyPerTick = TextComponent.EMPTY.copy();
+        MutableComponent stackSize = Component.empty();
+        MutableComponent itemsProcessed = Component.empty();
+        MutableComponent energyPerTick = Component.empty();
 
         for (int i = 1;i <= getTier().stackSize;i++) {
             ChatFormatting style = i == stack.getCount() ? ChatFormatting.WHITE : ChatFormatting.GRAY;
@@ -83,14 +82,14 @@ public class UpgradeItem extends Item {
             int count = getTier().getItemsProcessed(i);
             int perTick = (count * cost) / time;
 
-            stackSize.append(new TextComponent(String.valueOf(i)).withStyle(style));
-            itemsProcessed.append(new TextComponent(String.valueOf(count)).withStyle(style));
-            energyPerTick.append(new TextComponent(String.valueOf(perTick)).withStyle(style));
+            stackSize.append(Component.literal(String.valueOf(i)).withStyle(style));
+            itemsProcessed.append(Component.literal(String.valueOf(count)).withStyle(style));
+            energyPerTick.append(Component.literal(String.valueOf(perTick)).withStyle(style));
 
             if (i < getTier().stackSize) {
-                stackSize.append(new TextComponent("/").withStyle(ChatFormatting.GRAY));
-                itemsProcessed.append(new TextComponent("/").withStyle(ChatFormatting.GRAY));
-                energyPerTick.append(new TextComponent("/").withStyle(ChatFormatting.GRAY));
+                stackSize.append(Component.literal("/").withStyle(ChatFormatting.GRAY));
+                itemsProcessed.append(Component.literal("/").withStyle(ChatFormatting.GRAY));
+                energyPerTick.append(Component.literal("/").withStyle(ChatFormatting.GRAY));
             }
         }
 

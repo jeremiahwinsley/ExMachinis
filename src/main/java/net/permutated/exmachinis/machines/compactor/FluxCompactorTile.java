@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.permutated.exmachinis.ExMachinis;
@@ -46,7 +46,7 @@ public class FluxCompactorTile extends AbstractMachineTile {
                 return;
             }
 
-            IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP)
+            IItemHandler itemHandler = target.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP)
                 .resolve()
                 .orElse(null);
             if (itemHandler == null || itemHandler.getSlots() == 0) {

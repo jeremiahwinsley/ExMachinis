@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "b": {
+      "item": "minecraft:iron_bars"
+    },
+    "h": {
+      "item": "minecraft:hopper"
+    },
+    "i": {
+      "tag": "forge:storage_blocks/iron"
+    },
+    "s": {
+      "tag": "exnihilosequentia:sieves"
+    }
+  },
   "pattern": [
     "bbb",
     "bsb",
     "ihi"
   ],
-  "key": {
-    "b": {
-      "item": "minecraft:iron_bars"
-    },
-    "s": {
-      "tag": "exnihilosequentia:sieves"
-    },
-    "i": {
-      "tag": "forge:storage_blocks/iron"
-    },
-    "h": {
-      "item": "minecraft:hopper"
-    }
-  },
   "result": {
     "item": "exmachinis:flux_sieve"
   }

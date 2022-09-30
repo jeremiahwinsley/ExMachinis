@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.data.RecipeException;
 import net.permutated.exmachinis.util.Constants;
@@ -60,7 +61,7 @@ public class CompactingRecipeBuilder extends AbstractRecipeBuilder {
     }
 
     public void build(Consumer<FinishedRecipe> consumer) {
-        String path = Objects.requireNonNull(output.getItem().getRegistryName()).getPath();
+        String path = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(output.getItem())).getPath();
         build(consumer, id(path));
     }
 

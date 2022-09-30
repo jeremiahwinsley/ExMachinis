@@ -5,6 +5,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.registries.RegistryObject;
 import net.permutated.exmachinis.data.builders.CompactingRecipeBuilder;
 import novamachina.exnihilosequentia.common.init.ExNihiloItems;
 
@@ -43,7 +44,9 @@ public class CompactingRecipes extends RecipeProvider {
         );
 
         for (var piece : defaultPieces) {
-            CompactingRecipeBuilder.builder(Objects.requireNonNull(piece.getRawOreItem()))
+            var oreItem = Objects.requireNonNull(piece.getRawOreItem())
+                .map(RegistryObject::get, item -> item);
+            CompactingRecipeBuilder.builder(oreItem)
                 .setInput(Ingredient.of(piece.getPieceItem()), 4)
                 .build(consumer);
         }

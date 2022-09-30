@@ -15,7 +15,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public static void onClientLoggedOutEvent(final ClientPlayerNetworkEvent.LoggedOutEvent event) {
+    public static void onClientLoggedOutEvent(final ClientPlayerNetworkEvent.LoggingOut event) {
         ExMachinis.LOGGER.debug("Clearing recipe cache after logging out");
         ModRegistry.COMPACTING_REGISTRY.clearRecipes();
     }

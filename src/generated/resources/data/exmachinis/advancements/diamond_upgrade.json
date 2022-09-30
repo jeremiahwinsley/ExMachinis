@@ -1,23 +1,7 @@
 {
   "parent": "exmachinis:gold_upgrade",
-  "display": {
-    "icon": {
-      "item": "exmachinis:diamond_upgrade"
-    },
-    "title": {
-      "translate": "advancement.exmachinis.diamond_upgrade"
-    },
-    "description": {
-      "translate": "advancement.exmachinis.diamond_upgrade.desc"
-    },
-    "frame": "task",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
   "criteria": {
     "has_diamond_upgrade": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -26,7 +10,23 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.exmachinis.diamond_upgrade.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "exmachinis:diamond_upgrade"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.exmachinis.diamond_upgrade"
     }
   },
   "requirements": [
