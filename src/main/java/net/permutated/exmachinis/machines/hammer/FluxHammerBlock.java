@@ -65,8 +65,8 @@ public class FluxHammerBlock extends AbstractMachineBlock {
         super();
         this.registerDefaultState(this.defaultBlockState()
             .setValue(FACING, Direction.NORTH)
+            .setValue(OUTPUT, Direction.NORTH)
             .setValue(HOPPER, false)
-            .setValue(ENABLED, Boolean.TRUE)
         );
     }
 
@@ -84,16 +84,18 @@ public class FluxHammerBlock extends AbstractMachineBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         var above = context.getClickedPos().above();
         var isAir = context.getLevel().getBlockState(above).isAir();
+        var opposite = context.getHorizontalDirection().getOpposite();
 
         return this.defaultBlockState()
-            .setValue(FACING, context.getHorizontalDirection().getOpposite())
-            .setValue(HOPPER, !isAir)
-            .setValue(ENABLED, Boolean.TRUE);
+            .setValue(FACING, opposite)
+            .setValue(OUTPUT, opposite)
+            .setValue(HOPPER, !isAir);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, HOPPER, ENABLED);
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING, HOPPER);
     }
 
     @Override

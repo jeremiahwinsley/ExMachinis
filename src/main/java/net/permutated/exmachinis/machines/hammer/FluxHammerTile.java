@@ -36,16 +36,16 @@ public class FluxHammerTile extends AbstractMachineTile {
                 return;
             }
 
-            // ensure that facing block is a valid inventory, and get an IItemHandler
-            Direction facing = getBlockState().getValue(FluxHammerBlock.FACING);
-            BlockPos facingPos = getBlockPos().relative(facing);
-            BlockEntity target = level.getBlockEntity(facingPos);
+            // ensure that the output is a valid inventory, and get an IItemHandler
+            Direction output = getBlockState().getValue(AbstractMachineBlock.OUTPUT);
+            BlockPos outPos = getBlockPos().relative(output);
+            BlockEntity target = level.getBlockEntity(outPos);
             if (target == null) {
                 workStatus = WorkStatus.MISSING_INVENTORY;
                 return;
             }
 
-            IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())
+            IItemHandler itemHandler = target.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, output.getOpposite())
                 .resolve()
                 .orElse(null);
             if (itemHandler == null || itemHandler.getSlots() == 0) {

@@ -1,5 +1,11 @@
 package net.permutated.exmachinis.util;
 
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+import net.minecraft.core.Direction;
+
+import java.util.Map;
+
 public class Constants {
     private Constants() {
         // nothing to do
@@ -31,6 +37,7 @@ public class Constants {
         public static final String ENABLED = "enabled";
         public static final String CONTENTS = "contents";
         public static final String POSITION = "position";
+        public static final String OUTPUT = "output";
     }
 
     public static class JSON
@@ -47,4 +54,13 @@ public class Constants {
         public static final String NBT = "nbt";
         public static final String TAG = "tag";
     }
+
+    public static final Map<Direction, Quaternion> ROTATIONS = Map.ofEntries(
+        Map.entry(Direction.UP, Vector3f.ZN.rotationDegrees(90)),
+        Map.entry(Direction.DOWN, Vector3f.ZN.rotationDegrees(-90)),
+        Map.entry(Direction.NORTH, Vector3f.YN.rotationDegrees(90)),
+        Map.entry(Direction.SOUTH, Vector3f.YN.rotationDegrees(-90)),
+        Map.entry(Direction.WEST, Vector3f.YN.rotationDegrees(0)),
+        Map.entry(Direction.EAST, Vector3f.YN.rotationDegrees(180))
+    );
 }

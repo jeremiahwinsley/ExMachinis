@@ -23,4 +23,8 @@ public enum WorkStatus {
     public MutableComponent getTranslation() {
         return this.translation;
     }
+
+    public MutableComponent getTranslation(String append) {
+        return this.translation.append(append);
+    }
 }
