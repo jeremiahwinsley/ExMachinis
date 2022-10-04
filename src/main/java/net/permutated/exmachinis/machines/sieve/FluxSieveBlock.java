@@ -36,10 +36,7 @@ public class FluxSieveBlock extends AbstractMachineBlock implements SimpleWaterl
 
     public FluxSieveBlock() {
         super();
-        this.registerDefaultState(this.defaultBlockState()
-            .setValue(WATERLOGGED, Boolean.FALSE)
-            .setValue(ENABLED, Boolean.TRUE)
-        );
+        this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.FALSE));
     }
 
     @Override
@@ -50,7 +47,8 @@ public class FluxSieveBlock extends AbstractMachineBlock implements SimpleWaterl
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED, ENABLED);
+        super.createBlockStateDefinition(builder);
+        builder.add(WATERLOGGED);
     }
 
     @Override
@@ -65,8 +63,7 @@ public class FluxSieveBlock extends AbstractMachineBlock implements SimpleWaterl
         BlockPos clickedPos = context.getClickedPos();
         FluidState fluidState = context.getLevel().getFluidState(clickedPos);
         return this.defaultBlockState()
-            .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER)
-            .setValue(ENABLED, Boolean.TRUE);
+            .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
     }
 
 

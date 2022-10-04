@@ -2,6 +2,7 @@ package net.permutated.exmachinis.machines.base;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,7 +13,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.IContainerFactory;
@@ -35,22 +36,19 @@ import javax.annotation.Nullable;
 
 public abstract class AbstractMachineBlock extends Block implements EntityBlock {
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
+    public static final DirectionProperty OUTPUT = DirectionProperty.create("output");
 
     protected AbstractMachineBlock() {
         super(Properties.of(Material.METAL).strength(3.0F, 3.0F).noOcclusion()
             .isRedstoneConductor((state, getter, pos) -> false)); // allow chests to be opened underneath
-        this.registerDefaultState(this.defaultBlockState().setValue(ENABLED, Boolean.TRUE));
+        this.registerDefaultState(this.defaultBlockState()
+            .setValue(ENABLED, Boolean.TRUE)
+            .setValue(OUTPUT, Direction.DOWN));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ENABLED);
-    }
-
-    @Override
-    @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(ENABLED, Boolean.TRUE);
+        builder.add(ENABLED, OUTPUT);
     }
 
     public abstract IContainerFactory<AbstractMachineMenu> containerFactory();

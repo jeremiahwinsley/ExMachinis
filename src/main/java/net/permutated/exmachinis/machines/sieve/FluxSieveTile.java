@@ -46,15 +46,18 @@ public class FluxSieveTile extends AbstractMachineTile {
                 return;
             }
 
-            // ensure that block below is a valid inventory, and get an IItemHandler
-            BlockPos below = getBlockPos().below();
-            BlockEntity target = level.getBlockEntity(below);
+            // ensure that the output is a valid inventory, and get an IItemHandler
+            Direction output = getBlockState().getValue(AbstractMachineBlock.OUTPUT);
+            BlockPos outPos = getBlockPos().relative(output);
+            BlockEntity target = level.getBlockEntity(outPos);
             if (target == null) {
                 workStatus = WorkStatus.MISSING_INVENTORY;
                 return;
             }
 
-            IItemHandler itemHandler = target.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP)
+
+
+            IItemHandler itemHandler = target.getCapability(ForgeCapabilities.ITEM_HANDLER, output.getOpposite())
                 .resolve()
                 .orElse(null);
             if (itemHandler == null || itemHandler.getSlots() == 0) {

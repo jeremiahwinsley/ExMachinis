@@ -35,7 +35,7 @@ public class Languages {
             addItem(ModRegistry.NETHERITE_UPGRADE, "Netherite Upgrade");
 
             add(gui("noStatus"), "Machine starting up...");
-            add(gui("inventoryMissing"), "Place inventory on machine output.");
+            add(gui("inventoryMissing"), "Missing inventory on output side.");
             add(gui("inventoryFull"), "Inventory is full.");
             add(gui("working"), "Machine is working.");
             add(gui("outOfEnergy"), "Out of energy.");
@@ -103,6 +103,8 @@ public class Languages {
                 Upgrades can be added to increase the number of items processed at once.
 
                 The block can be disabled by a redstone signal.
+
+                The output side can be configured by shift + right-clicking with an Ex Nihilo hammer.
                 """);
             add(jei(Constants.FLUX_HAMMER), """
                 The Flux Hammer will take items from an inventory above,
@@ -111,6 +113,8 @@ public class Languages {
                 Upgrades can be added to increase the number of items processed at once.
 
                 The block can be disabled by a redstone signal.
+
+                The output side can be configured by shift + right-clicking with an Ex Nihilo hammer.
                 """);
             add(jei(Constants.FLUX_SIEVE), """
                 The Flux Sieve will take items from the internal inventory,
@@ -121,6 +125,8 @@ public class Languages {
                 Meshes can be enchanted with Fortune to increase drop chances.
 
                 The block can be disabled by a redstone signal.
+
+                The output side can be configured by shift + right-clicking with an Ex Nihilo hammer.
                 """);
         }
     }

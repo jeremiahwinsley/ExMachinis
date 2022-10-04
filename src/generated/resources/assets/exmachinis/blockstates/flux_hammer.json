@@ -1,62 +1,362 @@
 {
   "variants": {
-    "enabled=false,facing=east,hopper=false": {
+    "enabled=false,facing=east,hopper=false,output=down": {
       "model": "exmachinis:block/flux_hammer",
       "y": 90
     },
-    "enabled=false,facing=east,hopper=true": {
+    "enabled=false,facing=east,hopper=false,output=east": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=false,facing=east,hopper=false,output=north": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=false,facing=east,hopper=false,output=south": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=false,facing=east,hopper=false,output=up": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=false,facing=east,hopper=false,output=west": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=false,facing=east,hopper=true,output=down": {
       "model": "exmachinis:block/flux_hammer_hopper",
       "y": 90
     },
-    "enabled=false,facing=north,hopper=false": {
+    "enabled=false,facing=east,hopper=true,output=east": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=false,facing=east,hopper=true,output=north": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=false,facing=east,hopper=true,output=south": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=false,facing=east,hopper=true,output=up": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=false,facing=east,hopper=true,output=west": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=false,facing=north,hopper=false,output=down": {
       "model": "exmachinis:block/flux_hammer"
     },
-    "enabled=false,facing=north,hopper=true": {
-      "model": "exmachinis:block/flux_hammer_hopper"
-    },
-    "enabled=false,facing=south,hopper=false": {
-      "model": "exmachinis:block/flux_hammer",
-      "y": 180
-    },
-    "enabled=false,facing=south,hopper=true": {
-      "model": "exmachinis:block/flux_hammer_hopper",
-      "y": 180
-    },
-    "enabled=false,facing=west,hopper=false": {
-      "model": "exmachinis:block/flux_hammer",
-      "y": 270
-    },
-    "enabled=false,facing=west,hopper=true": {
-      "model": "exmachinis:block/flux_hammer_hopper",
-      "y": 270
-    },
-    "enabled=true,facing=east,hopper=false": {
-      "model": "exmachinis:block/flux_hammer",
-      "y": 90
-    },
-    "enabled=true,facing=east,hopper=true": {
-      "model": "exmachinis:block/flux_hammer_hopper",
-      "y": 90
-    },
-    "enabled=true,facing=north,hopper=false": {
+    "enabled=false,facing=north,hopper=false,output=east": {
       "model": "exmachinis:block/flux_hammer"
     },
-    "enabled=true,facing=north,hopper=true": {
+    "enabled=false,facing=north,hopper=false,output=north": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=false,facing=north,hopper=false,output=south": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=false,facing=north,hopper=false,output=up": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=false,facing=north,hopper=false,output=west": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=false,facing=north,hopper=true,output=down": {
       "model": "exmachinis:block/flux_hammer_hopper"
     },
-    "enabled=true,facing=south,hopper=false": {
+    "enabled=false,facing=north,hopper=true,output=east": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=false,facing=north,hopper=true,output=north": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=false,facing=north,hopper=true,output=south": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=false,facing=north,hopper=true,output=up": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=false,facing=north,hopper=true,output=west": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=false,facing=south,hopper=false,output=down": {
       "model": "exmachinis:block/flux_hammer",
       "y": 180
     },
-    "enabled=true,facing=south,hopper=true": {
+    "enabled=false,facing=south,hopper=false,output=east": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=false,facing=south,hopper=false,output=north": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=false,facing=south,hopper=false,output=south": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=false,facing=south,hopper=false,output=up": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=false,facing=south,hopper=false,output=west": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=false,facing=south,hopper=true,output=down": {
       "model": "exmachinis:block/flux_hammer_hopper",
       "y": 180
     },
-    "enabled=true,facing=west,hopper=false": {
+    "enabled=false,facing=south,hopper=true,output=east": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=false,facing=south,hopper=true,output=north": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=false,facing=south,hopper=true,output=south": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=false,facing=south,hopper=true,output=up": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=false,facing=south,hopper=true,output=west": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=false,facing=west,hopper=false,output=down": {
       "model": "exmachinis:block/flux_hammer",
       "y": 270
     },
-    "enabled=true,facing=west,hopper=true": {
+    "enabled=false,facing=west,hopper=false,output=east": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=false,output=north": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=false,output=south": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=false,output=up": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=false,output=west": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=true,output=down": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=true,output=east": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=true,output=north": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=true,output=south": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=true,output=up": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=false,facing=west,hopper=true,output=west": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=true,facing=east,hopper=false,output=down": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=false,output=east": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=false,output=north": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=false,output=south": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=false,output=up": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=false,output=west": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=true,output=down": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=true,output=east": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=true,output=north": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=true,output=south": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=true,output=up": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=true,facing=east,hopper=true,output=west": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 90
+    },
+    "enabled=true,facing=north,hopper=false,output=down": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=true,facing=north,hopper=false,output=east": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=true,facing=north,hopper=false,output=north": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=true,facing=north,hopper=false,output=south": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=true,facing=north,hopper=false,output=up": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=true,facing=north,hopper=false,output=west": {
+      "model": "exmachinis:block/flux_hammer"
+    },
+    "enabled=true,facing=north,hopper=true,output=down": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=true,facing=north,hopper=true,output=east": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=true,facing=north,hopper=true,output=north": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=true,facing=north,hopper=true,output=south": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=true,facing=north,hopper=true,output=up": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=true,facing=north,hopper=true,output=west": {
+      "model": "exmachinis:block/flux_hammer_hopper"
+    },
+    "enabled=true,facing=south,hopper=false,output=down": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=false,output=east": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=false,output=north": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=false,output=south": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=false,output=up": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=false,output=west": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=true,output=down": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=true,output=east": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=true,output=north": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=true,output=south": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=true,output=up": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=true,facing=south,hopper=true,output=west": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 180
+    },
+    "enabled=true,facing=west,hopper=false,output=down": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=false,output=east": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=false,output=north": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=false,output=south": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=false,output=up": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=false,output=west": {
+      "model": "exmachinis:block/flux_hammer",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=true,output=down": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=true,output=east": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=true,output=north": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=true,output=south": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=true,output=up": {
+      "model": "exmachinis:block/flux_hammer_hopper",
+      "y": 270
+    },
+    "enabled=true,facing=west,hopper=true,output=west": {
       "model": "exmachinis:block/flux_hammer_hopper",
       "y": 270
     }
