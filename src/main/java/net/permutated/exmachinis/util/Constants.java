@@ -29,6 +29,7 @@ public class Constants {
         }
 
         public static final String REGISTRY = "registry";
+        public static final String VERSION = "version";
         public static final String ENERGY = "energy";
         public static final String INVENTORY = "inventory";
         public static final String UPGRADES = "upgrades";

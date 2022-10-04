@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbstractMachineTile extends BlockEntity {
+    protected int version = 1;
     protected AbstractMachineTile(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
     }
@@ -213,6 +214,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
     // Save TE data to disk
     @Override
     protected void saveAdditional(CompoundTag tag) {
+        tag.putInt(Constants.NBT.VERSION, version);
         tag.put(Constants.NBT.ENERGY, energyStorage.serializeNBT());
         tag.put(Constants.NBT.INVENTORY, itemStackHandler.serializeNBT());
         tag.put(Constants.NBT.UPGRADES, upgradeStackHandler.serializeNBT());
@@ -222,6 +224,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
     // Load TE data from disk
     @Override
     public void load(CompoundTag tag) {
+        version = tag.getInt(Constants.NBT.VERSION);
         energyStorage.deserializeNBT(tag.get(Constants.NBT.ENERGY));
         itemStackHandler.deserializeNBT(tag.getCompound(Constants.NBT.INVENTORY));
         upgradeStackHandler.deserializeNBT(tag.getCompound(Constants.NBT.UPGRADES));
