@@ -2,12 +2,15 @@ package net.permutated.exmachinis.machines.hammer;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
@@ -26,9 +29,35 @@ public class FluxHammerTile extends AbstractMachineTile {
         return true;
     }
 
+
+    /**
+     * Perform migrations based on a version number saved in the tile.
+     * @param serverLevel the server level
+     */
+    private void migrate(ServerLevel serverLevel) {
+        if (this.version == AbstractMachineBlock.VERSION) {
+            return;
+        }
+
+        if (this.version > AbstractMachineBlock.VERSION) {
+            ExMachinis.LOGGER.error("Current tile version higher than block version - things may break!");
+            return;
+        }
+
+        if (this.version == 0) {
+            // v1.0.2 to v1.0.3
+            // OUTPUT defaults to NORTH on existing blocks, when it should match FACING
+            Direction facing = getBlockState().getValue(FluxHammerBlock.FACING);
+            serverLevel.setBlock(getBlockPos(), getBlockState().setValue(AbstractMachineBlock.OUTPUT, facing), Block.UPDATE_CLIENTS);
+            this.version = 1;
+            this.setChanged();
+        }
+    }
+
     @Override
     public void tick() {
-        if (level != null && !level.isClientSide && canTick(getUpgradeTickDelay())) {
+        if (level instanceof ServerLevel serverLevel && canTick(getUpgradeTickDelay())) {
+            migrate(serverLevel);
 
             Boolean enabled = getBlockState().getValue(AbstractMachineBlock.ENABLED);
             if (Boolean.FALSE.equals(enabled)) {

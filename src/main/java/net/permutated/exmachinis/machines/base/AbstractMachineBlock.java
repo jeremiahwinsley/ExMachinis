@@ -36,6 +36,7 @@ import net.permutated.exmachinis.items.UpgradeItem;
 import javax.annotation.Nullable;
 
 public abstract class AbstractMachineBlock extends Block implements EntityBlock {
+    public static final int VERSION = 1; // @see FluxHammerTile#migrate()
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
     public static final DirectionProperty OUTPUT = DirectionProperty.create("output");
 

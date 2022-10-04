@@ -59,7 +59,7 @@ public class ForgeEventHandler {
                 Direction output = blockState.getValue(AbstractMachineBlock.OUTPUT);
                 event.setUseBlock(Event.Result.DENY);
                 if (!facing.equals(output)) {
-                    level.setBlock(event.getPos(), blockState.setValue(AbstractMachineBlock.OUTPUT, facing), Block.UPDATE_NONE);
+                    level.setBlock(event.getPos(), blockState.setValue(AbstractMachineBlock.OUTPUT, facing), Block.UPDATE_CLIENTS);
                 }
             }
         }
