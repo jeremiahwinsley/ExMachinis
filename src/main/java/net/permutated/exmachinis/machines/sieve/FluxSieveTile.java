@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.permutated.exmachinis.ConfigHolder;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
@@ -126,7 +127,11 @@ public class FluxSieveTile extends AbstractMachineTile {
 
                     itemStackHandler.setStackInSlot(i, copy); // shrink input
                     energyStorage.consumeEnergy(totalCost, false);
-                    processResults(itemHandler, meshStack, stack, multiplier, false);
+                    if (Boolean.TRUE.equals(ConfigHolder.SERVER.sieveBulkProcessing.get())) {
+                        processResults(itemHandler, meshStack, stack, multiplier, false);
+                    } else {
+                        processResultsSingle(itemHandler, meshStack, stack, multiplier, false);
+                    }
                 }
             }
         }
@@ -143,6 +148,21 @@ public class FluxSieveTile extends AbstractMachineTile {
                     workStatus = WorkStatus.INVENTORY_FULL;
                 }
             });
+        return workStatus == WorkStatus.WORKING;
+    }
+
+    @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"}) // kept for consistency
+    private boolean processResultsSingle(IItemHandler itemHandler, ItemStack meshStack, ItemStack stack, int multiplier, boolean simulate) {
+        // process sieve results one at a time
+        for (int i = 0;i < multiplier;i++) {
+            ExNihiloAPI.getSieveResult(stack, meshStack, isWaterlogged()).stream()
+                .map(output -> ItemHandlerHelper.insertItemStacked(itemHandler, output, simulate))
+                .forEach(response -> {
+                    if (!response.isEmpty()) {
+                        workStatus = WorkStatus.INVENTORY_FULL;
+                    }
+                });
+        }
         return workStatus == WorkStatus.WORKING;
     }
 }

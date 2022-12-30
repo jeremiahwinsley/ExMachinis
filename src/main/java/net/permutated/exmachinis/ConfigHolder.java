@@ -39,6 +39,11 @@ public class ConfigHolder {
         public final ForgeConfigSpec.IntValue energyBufferSize;
         public final ForgeConfigSpec.IntValue maxEnergyPerTick;
 
+        // CATEGORY_SIEVE
+        public final ForgeConfigSpec.BooleanValue sieveFortuneEnabled;
+        public final ForgeConfigSpec.BooleanValue sieveBulkProcessing;
+
+
         ServerConfig(ForgeConfigSpec.Builder builder) {
             builder
                 .comment("General balance configs",
@@ -77,6 +82,23 @@ public class ConfigHolder {
             maxEnergyPerTick = builder
                 .comment("Max energy transfer per tick for machines.")
                 .defineInRange("maxEnergyPerTick", 10_000, 1_000, 1_000_000);
+
+            builder.pop();
+
+            builder.push(CATEGORY_SIEVE);
+
+            sieveFortuneEnabled = builder
+                .comment("Whether fortune is applied from an enchanted mesh.")
+                .define("sieveFortuneEnabled", true);
+
+            sieveBulkProcessing = builder
+                .comment("Whether sieve rolls are processed in bulk for better performance.",
+                    "Bulk processing will roll once per slot and multiply the output,",
+                    "while single processing will roll for each input.")
+                .define("sieveBulkProcessing", true);
+
+            builder.pop();
+
         }
     }
 }

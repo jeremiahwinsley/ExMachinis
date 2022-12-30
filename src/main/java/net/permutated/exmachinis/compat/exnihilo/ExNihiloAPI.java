@@ -4,6 +4,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.permutated.exmachinis.ConfigHolder;
 import novamachina.exnihilosequentia.common.item.HammerBaseItem;
 import novamachina.exnihilosequentia.common.item.MeshItem;
 import novamachina.exnihilosequentia.common.registries.ExNihiloRegistries;
@@ -65,7 +66,11 @@ public class ExNihiloAPI {
     public static List<ItemStack> getSieveResult(ItemStack stack, ItemStack mesh, boolean waterlogged) {
         if (mesh.getItem() instanceof MeshItem meshItem) {
             var recipes = ExNihiloRegistries.SIEVE_REGISTRY.getDrops(stack.getItem(), meshItem.getType(), waterlogged);
-            int fortune = mesh.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
+
+            int fortune = 0;
+            if (Boolean.TRUE.equals(ConfigHolder.SERVER.sieveFortuneEnabled.get())) {
+                fortune = mesh.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
+            }
 
             List<ItemStack> output = new ArrayList<>();
             for (var sieveRecipe : recipes) {
