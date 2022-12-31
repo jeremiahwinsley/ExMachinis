@@ -103,7 +103,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
 
     public void registerHandlerSlots(IItemHandler handler) {
         int index = 0;
-        addSlot(new FilteredSlot(handler, index++, 116, 53, stack -> stack.getItem() instanceof UpgradeItem));
+        addSlot(new FilteredSlot(handler, index++, 116, 54, stack -> stack.getItem() instanceof UpgradeItem));
         if (enableMeshSlot) {
             addSlot(new FilteredSlot(handler, index++, 80, 36, ExNihiloAPI::isMeshItem));
         }
