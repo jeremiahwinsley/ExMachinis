@@ -3,9 +3,12 @@ package net.permutated.exmachinis.machines.crucible;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -36,6 +39,7 @@ public class FluxCrucibleTile extends AbstractMachineTile {
         return true;
     }
 
+    private FluidStack lastSync = FluidStack.EMPTY;
     protected final FluidTank fluidTank = new FluidTank(128 * FluidType.BUCKET_VOLUME) {
         @Override
         protected void onContentsChanged() {
@@ -76,6 +80,38 @@ public class FluxCrucibleTile extends AbstractMachineTile {
     public void updateContainer(FriendlyByteBuf packetBuffer) {
         super.updateContainer(packetBuffer);
         packetBuffer.writeInt(getFluidCapacity());
+    }
+
+    // Called whenever a block update happens on the client
+    @Nullable
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        if (pkt.getTag() != null) {
+            handleUpdateTag(pkt.getTag());
+        }
+    }
+
+    // Tag to be sent to the client
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        tag.put(Constants.NBT.FLUID, fluidTank.writeToNBT(new CompoundTag()));
+        return tag;
+    }
+
+    // Handle tag received on the client
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        if (tag.contains(Constants.NBT.FLUID)) {
+            fluidTank.readFromNBT(tag.getCompound(Constants.NBT.FLUID));
+        } else {
+            fluidTank.setFluid(FluidStack.EMPTY);
+        }
     }
 
     @Override
@@ -131,7 +167,7 @@ public class FluxCrucibleTile extends AbstractMachineTile {
 
                     if (!processResults(fluidTank, stack, multiplier, true)) {
                         // simulating inserts failed
-                        return;
+                        break;
                     }
 
                     int totalCost = cost * multiplier;
@@ -139,7 +175,7 @@ public class FluxCrucibleTile extends AbstractMachineTile {
                     if (!result) {
                         // simulating energy use failed
                         workStatus = WorkStatus.OUT_OF_ENERGY;
-                        return;
+                        break;
                     }
 
                     itemStackHandler.setStackInSlot(i, copy); // shrink input
@@ -148,6 +184,10 @@ public class FluxCrucibleTile extends AbstractMachineTile {
                 }
             }
             dumpBuffer();
+            if (!fluidTank.getFluid().isFluidStackIdentical(lastSync)) {
+                serverLevel.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+                lastSync = fluidTank.getFluid().copy();
+            }
         }
     }
 
