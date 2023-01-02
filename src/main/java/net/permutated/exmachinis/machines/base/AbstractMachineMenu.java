@@ -30,7 +30,7 @@ import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 
 public abstract class AbstractMachineMenu extends AbstractContainerMenu {
-    private final ContainerLevelAccess containerLevelAccess;
+    protected final ContainerLevelAccess containerLevelAccess;
     protected final DataHolder dataHolder;
     protected final boolean enableMeshSlot;
     protected final int totalSlots;

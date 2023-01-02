@@ -13,6 +13,7 @@ import net.permutated.exmachinis.util.WorkStatus;
 import java.util.List;
 
 import static net.permutated.exmachinis.util.TranslationKey.translateTooltip;
+import static net.permutated.exmachinis.util.TranslationKey.translateTooltipInt;
 
 public class AbstractMachineScreen<T extends AbstractMachineMenu> extends AbstractContainerScreen<T> {
     protected final ResourceLocation gui;
@@ -29,10 +30,17 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         this.renderTooltip(matrixStack, mouseX, mouseY);
     }
 
-    @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    private static final TextureHolder energyHolder = new TextureHolder(152, 18, 176, 0, 16, 52);
+    private static final TextureHolder progressHolder = new TextureHolder(134, 18, 192, 0, 16, 52);
+
+    protected void resetTexture() {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, gui);
+    }
+
+    @Override
+    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        resetTexture();
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
@@ -41,7 +49,7 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         // render work status texture
         if (this.menu.getWorkStatus() == WorkStatus.WORKING) {
             this.blit(matrixStack, relX + 116, relY + 36, 224, 0, 16, 16);
-        } else if(this.menu.getWorkStatus() == WorkStatus.REDSTONE_DISABLED) {
+        } else if (this.menu.getWorkStatus() == WorkStatus.REDSTONE_DISABLED) {
             this.blit(matrixStack, relX + 116, relY + 36, 240, 0, 16, 16);
         } else {
             this.blit(matrixStack, relX + 116, relY + 36, 208, 0, 16, 16);
@@ -50,7 +58,6 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         // texture offset - addon texture
 
         float energyFraction = this.menu.dataHolder.getEnergyFraction();
-        var energyHolder = new TextureHolder(152, 18, 176, 0, 16, 52);
         blit(matrixStack,
             relX + energyHolder.progressOffsetX(),
             relY + energyHolder.progressHeightOffset(energyFraction),
@@ -62,7 +69,6 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
 
         // work progress
         float workFraction = this.menu.dataHolder.getWorkFraction();
-        var progressHolder = new TextureHolder(134, 18, 192, 0, 16, 52);
         blit(matrixStack,
             relX + progressHolder.progressOffsetX(),
             relY + progressHolder.progressHeightOffset(workFraction),
@@ -84,14 +90,14 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         if (this.isHovering(152, 18, 16, 52, x, y)) {
             this.renderComponentTooltip(stack, List.of(
                 translateTooltip("fluxBar"),
-                translateTooltip("fluxData", this.menu.dataHolder.getEnergy(), this.menu.dataHolder.getMaxEnergy())
+                translateTooltipInt("fluxData", this.menu.dataHolder.getEnergy(), this.menu.dataHolder.getMaxEnergy())
             ), x, y, this.font);
         }
 
         if (this.isHovering(134, 18, 16, 52, x, y)) {
             this.renderComponentTooltip(stack, List.of(
                 translateTooltip("workBar"),
-                translateTooltip("workData", this.menu.dataHolder.getWork(), this.menu.dataHolder.getMaxWork())
+                translateTooltipInt("workData", this.menu.dataHolder.getWork(), this.menu.dataHolder.getMaxWork())
             ), x, y, this.font);
         }
 

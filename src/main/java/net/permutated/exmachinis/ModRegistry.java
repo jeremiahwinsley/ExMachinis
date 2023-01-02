@@ -26,6 +26,9 @@ import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.machines.compactor.FluxCompactorBlock;
 import net.permutated.exmachinis.machines.compactor.FluxCompactorMenu;
 import net.permutated.exmachinis.machines.compactor.FluxCompactorTile;
+import net.permutated.exmachinis.machines.crucible.FluxCrucibleBlock;
+import net.permutated.exmachinis.machines.crucible.FluxCrucibleMenu;
+import net.permutated.exmachinis.machines.crucible.FluxCrucibleTile;
 import net.permutated.exmachinis.machines.hammer.FluxHammerBlock;
 import net.permutated.exmachinis.machines.hammer.FluxHammerMenu;
 import net.permutated.exmachinis.machines.hammer.FluxHammerTile;
@@ -81,6 +84,12 @@ public class ModRegistry {
     public static final RegistryObject<BlockEntityType<FluxCompactorTile>> FLUX_COMPACTOR_TILE = blockEntity(FLUX_COMPACTOR_BLOCK, FluxCompactorTile::new);
     public static final RegistryObject<MenuType<FluxCompactorMenu>> FLUX_COMPACTOR_MENU = container(Constants.FLUX_COMPACTOR, FluxCompactorMenu::new);
     public static final RegistryObject<BlockItem> FLUX_COMPACTOR_ITEM = blockItem(FLUX_COMPACTOR_BLOCK);
+
+    // Flux Crucible
+    public static final RegistryObject<Block> FLUX_CRUCIBLE_BLOCK = BLOCKS.register(Constants.FLUX_CRUCIBLE, FluxCrucibleBlock::new);
+    public static final RegistryObject<BlockEntityType<FluxCrucibleTile>> FLUX_CRUCIBLE_TILE = blockEntity(FLUX_CRUCIBLE_BLOCK, FluxCrucibleTile::new);
+    public static final RegistryObject<MenuType<FluxCrucibleMenu>> FLUX_CRUCIBLE_MENU = container(Constants.FLUX_CRUCIBLE, FluxCrucibleMenu::new);
+    public static final RegistryObject<BlockItem> FLUX_CRUCIBLE_ITEM = blockItem(FLUX_CRUCIBLE_BLOCK);
 
     public static final RegistryObject<RecipeType<CompactingRecipe>> COMPACTING_RECIPE_TYPE = RECIPE_TYPES.register(Constants.COMPACTING, () -> RecipeType.simple(prefix(Constants.COMPACTING)));
     public static final RegistryObject<RecipeSerializer<CompactingRecipe>> COMPACTING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(Constants.COMPACTING, CompactingRecipe.Serializer::new);

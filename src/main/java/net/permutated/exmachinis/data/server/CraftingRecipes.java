@@ -84,6 +84,18 @@ public class CraftingRecipes extends RecipeProvider {
             .define('h', Items.HOPPER)
             .unlockedBy("has_anvil", has(Items.ANVIL))
             .save(consumer);
+
+        var crucibleItem = ExNihiloItems.CRUCIBLE_FIRED.get();
+        ShapedRecipeBuilder.shaped(ModRegistry.FLUX_CRUCIBLE_ITEM.get())
+            .pattern("bbb")
+            .pattern("bdb")
+            .pattern("ihi")
+            .define('b', Items.BRICKS)
+            .define('d', crucibleItem)
+            .define('i', Tags.Items.STORAGE_BLOCKS_IRON)
+            .define('h', Items.HOPPER)
+            .unlockedBy("has_crucible", has(crucibleItem))
+            .save(consumer);
     }
 
 }

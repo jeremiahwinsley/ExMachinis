@@ -29,6 +29,7 @@ public class Languages {
             addBlock(ModRegistry.FLUX_SIEVE_BLOCK, "Flux Sieve");
             addBlock(ModRegistry.FLUX_HAMMER_BLOCK, "Flux Hammer");
             addBlock(ModRegistry.FLUX_COMPACTOR_BLOCK, "Flux Compactor");
+            addBlock(ModRegistry.FLUX_CRUCIBLE_BLOCK, "Flux Crucible");
 
             addItem(ModRegistry.GOLD_UPGRADE, "Gold Upgrade");
             addItem(ModRegistry.DIAMOND_UPGRADE, "Diamond Upgrade");
@@ -59,6 +60,9 @@ public class Languages {
             add(advancement(Constants.FLUX_COMPACTOR), "Put it back together!");
             add(advancement(desc(Constants.FLUX_COMPACTOR)), "Pesky pieces filling up your storage? Craft a Flux Compactor");
 
+            add(advancement(Constants.FLUX_CRUCIBLE), "The cobblestone is lava!");
+            add(advancement(desc(Constants.FLUX_CRUCIBLE)), "Crucibles too slow? The Flux Crucible will fill your tanks");
+
             add(advancement(Constants.GOLD_UPGRADE), "Do more at once!");
             add(advancement(desc(Constants.GOLD_UPGRADE)), "Craft a Gold Upgrade");
 
@@ -71,14 +75,17 @@ public class Languages {
             add(tooltip("sieve1"), "RF-powered automatic sieve");
             add(tooltip("hammer1"), "RF-powered automatic hammer");
             add(tooltip("compactor1"), "RF-powered automatic compactor");
+            add(tooltip("crucible1"), "RF-powered automatic crucible");
 
             add(tooltip("activated"), "Activated");
             add(tooltip("progress"), "Progress: %d/%d seconds");
 
             add(tooltip("fluxBar"), "Redstone Flux:");
-            add(tooltip("fluxData"), "%d/%d RF stored");
+            add(tooltip("fluxData"), "%s / %s RF stored");
             add(tooltip("workBar"), "Work Progress:");
-            add(tooltip("workData"), "%d/%d ticks");
+            add(tooltip("workData"), "%s / %s ticks");
+            add(tooltip("fluidNone"), "Empty");
+            add(tooltip("fluidData"), "%s / %s mB");
             add(tooltip("upgradeSlot"), "Upgrade Slot");
             add(tooltip("meshSlot"), "Mesh Slot");
 
@@ -110,6 +117,8 @@ public class Languages {
                 The Flux Hammer will take items from an inventory above,
                 and place the outputs into an inventory in front.
 
+                After each cycle, it will attempt to pull valid items from an inventory above.
+
                 Upgrades can be added to increase the number of items processed at once.
 
                 The block can be disabled by a redstone signal.
@@ -123,6 +132,18 @@ public class Languages {
                 Upgrades can be added to increase the number of items processed at once.
 
                 Meshes can be enchanted with Fortune to increase drop chances.
+
+                The block can be disabled by a redstone signal.
+
+                The output side can be configured by shift + right-clicking with an Ex Nihilo hammer.
+                """);
+            add(jei(Constants.FLUX_CRUCIBLE), """
+                The Flux Crucible will take items from the internal inventory,
+                and output to the internal tank.
+
+                After each cycle, it will attempt to dump the internal tank to a tank below.
+
+                Upgrades can be added to increase the number of items processed at once.
 
                 The block can be disabled by a redstone signal.
 

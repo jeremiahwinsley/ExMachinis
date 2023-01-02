@@ -39,6 +39,7 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_HAMMER_BLOCK.get()), RecipeTypes.HAMMER);
         registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.DRY_SIEVE);
         registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.WET_SIEVE);
+        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_CRUCIBLE_BLOCK.get()), RecipeTypes.FIRED_CRUCIBLE);
     }
 
     @Override
@@ -48,5 +49,6 @@ public class JEIPlugin implements IModPlugin {
         registration.addIngredientInfo(new ItemStack(ModRegistry.FLUX_COMPACTOR_BLOCK.get()), VanillaTypes.ITEM_STACK, translateJei(Constants.FLUX_COMPACTOR));
         registration.addIngredientInfo(new ItemStack(ModRegistry.FLUX_HAMMER_BLOCK.get()), VanillaTypes.ITEM_STACK, translateJei(Constants.FLUX_HAMMER));
         registration.addIngredientInfo(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), VanillaTypes.ITEM_STACK, translateJei(Constants.FLUX_SIEVE));
+        registration.addIngredientInfo(new ItemStack(ModRegistry.FLUX_CRUCIBLE_BLOCK.get()), VanillaTypes.ITEM_STACK, translateJei(Constants.FLUX_CRUCIBLE));
     }
 }

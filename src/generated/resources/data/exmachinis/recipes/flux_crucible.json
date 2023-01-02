@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "b": {
+      "item": "minecraft:bricks"
+    },
+    "d": {
+      "item": "exnihilosequentia:fired_crucible"
+    },
+    "h": {
+      "item": "minecraft:hopper"
+    },
+    "i": {
+      "tag": "forge:storage_blocks/iron"
+    }
+  },
+  "pattern": [
+    "bbb",
+    "bdb",
+    "ihi"
+  ],
+  "result": {
+    "item": "exmachinis:flux_crucible"
+  }
+}

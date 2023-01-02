@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.permutated.exmachinis.network.NetworkDispatcher;
 import org.slf4j.Logger;
 
 @Mod(ExMachinis.MODID)
@@ -19,6 +20,7 @@ public class ExMachinis {
         LOGGER.info("Registering mod: {}", MODID);
 
         ModRegistry.register();
+        NetworkDispatcher.register();
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigHolder.SERVER_SPEC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetupEvent);

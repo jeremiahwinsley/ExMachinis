@@ -4,11 +4,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.permutated.exmachinis.ExMachinis;
 
+import java.text.NumberFormat;
+import java.util.Arrays;
+
 public class TranslationKey {
     private TranslationKey() {
         // nothing to do
     }
 
+    protected static final NumberFormat numberFormat = NumberFormat.getInstance();
     private static final String FORMAT = "%s." + ExMachinis.MODID + ".%s";
 
     public static String tooltip(String key) {
@@ -53,6 +57,11 @@ public class TranslationKey {
 
     public static MutableComponent translateTooltip(String key, Object... values) {
         return Component.translatable(TranslationKey.tooltip(key), values);
+    }
+
+    public static MutableComponent translateTooltipInt(String key, Integer... values) {
+        Object[] formatted = Arrays.stream(values).map(numberFormat::format).toArray();
+        return Component.translatable(TranslationKey.tooltip(key), formatted);
     }
 
     public static MutableComponent translateGui(String key) {

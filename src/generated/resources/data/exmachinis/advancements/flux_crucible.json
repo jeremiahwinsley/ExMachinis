@@ -1,0 +1,37 @@
+{
+  "parent": "exmachinis:root",
+  "criteria": {
+    "has_flux_crucible": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "exmachinis:flux_crucible"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.exmachinis.flux_crucible.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "exmachinis:flux_crucible"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.exmachinis.flux_crucible"
+    }
+  },
+  "requirements": [
+    [
+      "has_flux_crucible"
+    ]
+  ]
+}

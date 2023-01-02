@@ -21,6 +21,7 @@ public class BlockStates extends BlockStateProvider {
         sieveModel();
         hammerModel();
         compactorModel();
+        crucibleModel();
     }
 
     protected void hammerModel() {
@@ -43,5 +44,12 @@ public class BlockStates extends BlockStateProvider {
         ModelFile model = models().cubeAll(Constants.FLUX_COMPACTOR, block(Constants.FLUX_COMPACTOR));
         simpleBlock(compactorBlock, model);
         simpleBlockItem(compactorBlock, model);
+    }
+
+    protected void crucibleModel() {
+        var crucibleBlock = ModRegistry.FLUX_CRUCIBLE_BLOCK.get();
+        ModelFile model = models().getExistingFile(block(Constants.FLUX_CRUCIBLE));
+        simpleBlock(crucibleBlock, model);
+        simpleBlockItem(crucibleBlock, model);
     }
 }

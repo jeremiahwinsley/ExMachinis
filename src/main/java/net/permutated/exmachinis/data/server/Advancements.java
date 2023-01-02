@@ -59,6 +59,7 @@ public class Advancements extends AdvancementProvider {
         var sieve = machineBuilder.apply(ModRegistry.FLUX_SIEVE_ITEM, Constants.FLUX_SIEVE);
         var hammer = machineBuilder.apply(ModRegistry.FLUX_HAMMER_ITEM, Constants.FLUX_HAMMER);
         var compactor = machineBuilder.apply(ModRegistry.FLUX_COMPACTOR_ITEM, Constants.FLUX_COMPACTOR);
+        var crucible = machineBuilder.apply(ModRegistry.FLUX_CRUCIBLE_ITEM, Constants.FLUX_CRUCIBLE);
 
         TriFunction<RegistryObject<Item>, String, Advancement, Advancement> upgradeBuilder = (registryObject, upgrade, parent) -> Advancement.Builder.advancement()
             .parent(parent)

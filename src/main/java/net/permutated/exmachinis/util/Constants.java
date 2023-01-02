@@ -14,6 +14,7 @@ public class Constants {
     public static final String FLUX_SIEVE = "flux_sieve";
     public static final String FLUX_HAMMER = "flux_hammer";
     public static final String FLUX_COMPACTOR = "flux_compactor";
+    public static final String FLUX_CRUCIBLE = "flux_crucible";
 
     public static final String UNKNOWN = "unknown";
 
@@ -31,6 +32,7 @@ public class Constants {
         public static final String REGISTRY = "registry";
         public static final String VERSION = "version";
         public static final String ENERGY = "energy";
+        public static final String FLUID = "fluid";
         public static final String INVENTORY = "inventory";
         public static final String UPGRADES = "upgrades";
 

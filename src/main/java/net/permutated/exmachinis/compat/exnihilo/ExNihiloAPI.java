@@ -4,7 +4,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.fluids.FluidStack;
 import net.permutated.exmachinis.ConfigHolder;
+import net.permutated.exmachinis.util.FluidStackUtil;
 import novamachina.exnihilosequentia.common.item.HammerBaseItem;
 import novamachina.exnihilosequentia.common.item.MeshItem;
 import novamachina.exnihilosequentia.common.registries.ExNihiloRegistries;
@@ -85,4 +87,11 @@ public class ExNihiloAPI {
         return Collections.emptyList();
     }
 
+    public static Optional<FluidStack> getCrucibleResult(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return Optional.empty();
+        }
+        var recipe = ExNihiloRegistries.CRUCIBLE_REGISTRY.findRecipeByItemStack(stack);
+        return recipe.map(r -> FluidStackUtil.copyStackWithSize(r.getResultFluid(), r.getAmount()));
+    }
 }
