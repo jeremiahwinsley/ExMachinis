@@ -18,8 +18,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.permutated.exmachinis.ConfigHolder;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
+import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
 import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import net.permutated.exmachinis.util.Constants;
@@ -62,6 +64,20 @@ public class FluxCrucibleTile extends AbstractMachineTile {
 
     public int getFluidCapacity() {
         return fluidTank.getCapacity();
+    }
+
+
+    public static class CrucibleTierConfig extends TierConfig {
+        public static final TierConfig INSTANCE = new CrucibleTierConfig();
+        @Override
+        protected UpgradeItem.Tier getMaxUpgradeTier() {
+            return ConfigHolder.SERVER.crucibleMaxUpgradeTier.get();
+        }
+    }
+
+    @Override
+    protected TierConfig tierConfig() {
+        return CrucibleTierConfig.INSTANCE;
     }
 
     @Override

@@ -6,12 +6,15 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.machines.base.AbstractMachineScreen;
 import net.permutated.exmachinis.util.Constants;
 import net.permutated.exmachinis.util.FluidStackUtil;
@@ -41,6 +44,20 @@ public class FluxCrucibleScreen extends AbstractMachineScreen<FluxCrucibleMenu> 
                 translateTooltipInt("fluidData", fluid.getAmount(), this.menu.getCapacity())
             ), x, y, this.font);
         }
+    }
+
+    @Override
+    public List<Component> getTooltipFromItem(ItemStack stack) {
+        List<Component> tooltip = super.getTooltipFromItem(stack);
+
+        if (stack.getItem() instanceof UpgradeItem upgradeItem) {
+            var clamped = FluxCrucibleTile.CrucibleTierConfig.INSTANCE.clampTier(upgradeItem.getTier());
+            if (clamped != upgradeItem.getTier()) {
+                tooltip.add(translateTooltip("clamped", clamped.component()).withStyle(ChatFormatting.GOLD));
+            }
+        }
+
+        return tooltip;
     }
 
     @Override

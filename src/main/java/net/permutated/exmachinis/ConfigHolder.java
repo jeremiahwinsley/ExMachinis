@@ -2,6 +2,7 @@ package net.permutated.exmachinis;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
+import net.permutated.exmachinis.items.UpgradeItem;
 import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber
@@ -14,6 +15,7 @@ public class ConfigHolder {
     public static final String CATEGORY_SIEVE = "sieve";
     public static final String CATEGORY_HAMMER = "hammer";
     public static final String CATEGORY_COMPACTOR = "compactor";
+    public static final String CATEGORY_CRUCIBLE = "crucible";
 
 
     public static final ServerConfig SERVER;
@@ -42,6 +44,9 @@ public class ConfigHolder {
         // CATEGORY_SIEVE
         public final ForgeConfigSpec.BooleanValue sieveFortuneEnabled;
         public final ForgeConfigSpec.BooleanValue sieveBulkProcessing;
+
+        // CATEGORY_CRUCIBLE
+        public final ForgeConfigSpec.EnumValue<UpgradeItem.Tier> crucibleMaxUpgradeTier;
 
 
         ServerConfig(ForgeConfigSpec.Builder builder) {
@@ -96,6 +101,16 @@ public class ConfigHolder {
                     "Bulk processing will roll once per slot and multiply the output,",
                     "while single processing will roll for each input.")
                 .define("sieveBulkProcessing", true);
+
+            builder.pop();
+
+            builder.push(CATEGORY_CRUCIBLE);
+
+            crucibleMaxUpgradeTier = builder
+                .comment("Maximum upgrade tier supported by the crucible.",
+                    "The equivalent amount of heat on a standard crucible",
+                    "is 50 (GOLD), 800 (DIAMOND), and 3200 (NETHERITE).")
+                .defineEnum("crucibleMaxUpgradeTier", UpgradeItem.Tier.GOLD);
 
             builder.pop();
 

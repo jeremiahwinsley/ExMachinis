@@ -79,6 +79,7 @@ public class Languages {
 
             add(tooltip("activated"), "Activated");
             add(tooltip("progress"), "Progress: %d/%d seconds");
+            add(tooltip("clamped"), "Limited to %s speed");
 
             add(tooltip("fluxBar"), "Redstone Flux:");
             add(tooltip("fluxData"), "%s / %s RF stored");

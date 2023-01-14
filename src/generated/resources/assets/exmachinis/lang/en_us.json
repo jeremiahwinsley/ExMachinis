@@ -39,6 +39,7 @@
   "item.exmachinis.netherite_upgrade": "Netherite Upgrade",
   "itemGroup.exmachinis": "Ex Machinis",
   "tooltip.exmachinis.activated": "Activated",
+  "tooltip.exmachinis.clamped": "Limited to %s speed",
   "tooltip.exmachinis.compactor1": "RF-powered automatic compactor",
   "tooltip.exmachinis.costPerBlock": "RF cost per item: %d",
   "tooltip.exmachinis.crucible1": "RF-powered automatic crucible",

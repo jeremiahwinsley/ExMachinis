@@ -31,6 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbstractMachineTile extends BlockEntity {
     protected int version = 1;
+
     protected AbstractMachineTile(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
     }
@@ -70,11 +71,32 @@ public abstract class AbstractMachineTile extends BlockEntity {
         return ConfigHolder.SERVER.maxEnergyPerTick.get();
     }
 
+    //region Upgrade Tiers
+    public static class TierConfig {
+        public static final TierConfig INSTANCE = new TierConfig();
+        protected UpgradeItem.Tier getMaxUpgradeTier() {
+            return UpgradeItem.Tier.NETHERITE;
+        }
+
+        public UpgradeItem.Tier clampTier(UpgradeItem.Tier tier) {
+            return tier.compareTo(getMaxUpgradeTier()) > 0 ? getMaxUpgradeTier() : tier;
+        }
+    }
+
+    protected TierConfig tierConfig() {
+        return TierConfig.INSTANCE;
+    }
+
     protected int getUpgradeItemsProcessed() {
         var upgradeStack = upgradeStackHandler.getStackInSlot(0);
         if (upgradeStack.getItem() instanceof UpgradeItem upgradeItem && upgradeStack.getCount() > 0) {
-            int upgradeCount = Mth.clamp(upgradeStack.getCount(), 1, 3);
-            return upgradeItem.getTier().getItemsProcessed(upgradeCount);
+
+            UpgradeItem.Tier tier = tierConfig().clampTier(upgradeItem.getTier());
+            // If original tier does not equal the clamped tier, then it has been clamped to a lower tier.
+            // In this case, the higher tier upgrade should count as the max (3) of the clamped tier.
+            int upgradeCount = upgradeItem.getTier() == tier ? Mth.clamp(upgradeStack.getCount(), 1, 3) : 3;
+
+            return tier.getItemsProcessed(upgradeCount);
         }
         return 1;
     }
@@ -82,7 +104,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
     protected int getUpgradeTickDelay() {
         var upgradeStack = upgradeStackHandler.getStackInSlot(0);
         if (upgradeStack.getItem() instanceof UpgradeItem upgradeItem) {
-            return switch (upgradeItem.getTier()) {
+            return switch (tierConfig().clampTier(upgradeItem.getTier())) {
                 case GOLD -> ConfigHolder.SERVER.goldTicksPerOperation.get();
                 case DIAMOND -> ConfigHolder.SERVER.diamondTicksPerOperation.get();
                 case NETHERITE -> ConfigHolder.SERVER.netheriteTicksPerOperation.get();
@@ -94,7 +116,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
     protected int getUpgradeEnergyCost() {
         var upgradeStack = upgradeStackHandler.getStackInSlot(0);
         if (upgradeStack.getItem() instanceof UpgradeItem upgradeItem) {
-            return switch (upgradeItem.getTier()) {
+            return switch (tierConfig().clampTier(upgradeItem.getTier())) {
                 case GOLD -> ConfigHolder.SERVER.goldEnergyPerBlock.get();
                 case DIAMOND -> ConfigHolder.SERVER.diamondEnergyPerBlock.get();
                 case NETHERITE -> ConfigHolder.SERVER.netheriteEnergyPerBlock.get();
@@ -102,6 +124,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
         }
         return ConfigHolder.SERVER.goldEnergyPerBlock.get();
     }
+    //endregion
 
     protected abstract boolean isItemValid(ItemStack stack);
 

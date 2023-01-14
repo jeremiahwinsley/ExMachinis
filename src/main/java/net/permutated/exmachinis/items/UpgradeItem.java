@@ -35,6 +35,16 @@ public class UpgradeItem extends Item {
                 case NETHERITE -> 64;
             };
         }
+
+        public Component component() {
+            ChatFormatting formatting = switch (this) {
+                case GOLD -> ChatFormatting.YELLOW;
+                case DIAMOND -> ChatFormatting.BLUE;
+                case NETHERITE -> ChatFormatting.DARK_GRAY;
+            };
+
+            return Component.literal(name()).withStyle(formatting);
+        }
     }
 
     public UpgradeItem(Tier tier) {
