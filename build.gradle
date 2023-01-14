@@ -130,7 +130,7 @@ repositories {
         }
     }
     maven {
-        url "https://repo.jacob-williams.me/repository/maven-releases/"
+        url "https://maven.permutated.net/releases"
         content {
             includeGroup "novamachina.exnihilosequentia"
         }
@@ -144,6 +144,9 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.1.24'
 
     runtimeOnly fg.deobf("curse.maven:cobblefordays-349460:3975349")
+    runtimeOnly fg.deobf("curse.maven:thermal-expansion-69163:4112130")
+    runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:4112137")
+    runtimeOnly fg.deobf("curse.maven:cofh-core-69162:4202944")
     runtimeOnly fg.deobf("curse.maven:pipez-443900:3920730")
     runtimeOnly fg.deobf("curse.maven:Phosphophyllite-412551:3941673")
     implementation fg.deobf("curse.maven:jei-238222:3969039")
