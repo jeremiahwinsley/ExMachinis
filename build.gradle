@@ -140,7 +140,7 @@ repositories {
         }
     }
     maven {
-        url "https://repo.jacob-williams.me/repository/maven-releases/"
+        url "https://maven.permutated.net/releases"
         content {
             includeGroup "novamachina.exnihilosequentia"
         }
@@ -159,7 +159,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:cofh-core-69162:3803484")
     runtimeOnly fg.deobf("curse.maven:pipez-443900:3819249")
     implementation fg.deobf("curse.maven:jei-238222:3788739")
-    implementation fg.deobf("novamachina.exnihilosequentia:ExNihiloSequentia:1.18.2-20220915-164752")
+    implementation fg.deobf("novamachina.exnihilosequentia:ExNihiloSequentia:1.18.2-20221113-044349")
 }
 
 jar {
