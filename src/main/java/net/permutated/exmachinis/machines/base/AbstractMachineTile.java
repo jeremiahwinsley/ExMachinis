@@ -136,9 +136,11 @@ public abstract class AbstractMachineTile extends BlockEntity {
     }
 
     @Override
-    public void setRemoved() {
-        super.setRemoved();
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        energy.invalidate();
         handler.invalidate();
+        overlay.invalidate();
     }
 
     int remainder = 0;
