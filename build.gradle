@@ -158,7 +158,8 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:thermal-foundation-222880:3803495")
     runtimeOnly fg.deobf("curse.maven:cofh-core-69162:3803484")
     runtimeOnly fg.deobf("curse.maven:pipez-443900:3819249")
-    implementation fg.deobf("curse.maven:jei-238222:3788739")
+//    implementation fg.deobf("curse.maven:jei-238222:3788739") // JEI 9
+    implementation fg.deobf("curse.maven:jei-238222:4434393") // JEI 10
     implementation fg.deobf("novamachina.exnihilosequentia:ExNihiloSequentia:1.18.2-20221113-044349")
 }
 

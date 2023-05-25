@@ -17,7 +17,6 @@ import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.util.Constants;
-import net.permutated.exmachinis.util.ResourceUtil;
 import net.permutated.exmachinis.util.TranslationKey;
 
 import java.util.Arrays;
@@ -28,12 +27,13 @@ public class CompactingCategory implements IRecipeCategory<CompactingRecipe> {
     private final IDrawable icon;
     private final IDrawable background;
     private final TranslatableComponent title;
+    private static final ResourceLocation RECIPE_GUI_VANILLA = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
 
     public static final RecipeType<CompactingRecipe> RECIPE_TYPE = RecipeType.create(ExMachinis.MODID, Constants.COMPACTING, CompactingRecipe.class);
 
     public CompactingCategory(final IGuiHelper guiHelper) {
         icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModRegistry.FLUX_COMPACTOR_BLOCK.get()));
-        background = guiHelper.createDrawable(mezz.jei.config.Constants.RECIPE_GUI_VANILLA, 0, 220, 82, 34);
+        background = guiHelper.createDrawable(RECIPE_GUI_VANILLA, 0, 220, 82, 34);
         title = new TranslatableComponent(TranslationKey.jei(Constants.COMPACTING));
     }
 
