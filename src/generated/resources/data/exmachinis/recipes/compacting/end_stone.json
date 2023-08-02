@@ -1,0 +1,12 @@
+{
+  "type": "exmachinis:compacting",
+  "input": {
+    "count": 4,
+    "ingredient": {
+      "item": "exnihilosequentia:end_stone_pebble"
+    }
+  },
+  "output": {
+    "item": "minecraft:end_stone"
+  }
+}

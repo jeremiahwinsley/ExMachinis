@@ -1,0 +1,12 @@
+{
+  "type": "exmachinis:compacting",
+  "input": {
+    "count": 4,
+    "ingredient": {
+      "item": "exnihilosequentia:netherrack_pebble"
+    }
+  },
+  "output": {
+    "item": "minecraft:netherrack"
+  }
+}
