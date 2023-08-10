@@ -4,7 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.tuple.Pair;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = ExMachinis.MODID)
 public class ConfigHolder {
     private ConfigHolder() {
         // nothing to do

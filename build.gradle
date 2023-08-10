@@ -149,6 +149,8 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:cofh-core-69162:4202944")
     runtimeOnly fg.deobf("curse.maven:pipez-443900:3920730")
     runtimeOnly fg.deobf("curse.maven:Phosphophyllite-412551:3941673")
+    runtimeOnly fg.deobf("curse.maven:jade-324717:4433884")
+
     implementation fg.deobf("curse.maven:jei-238222:3969039")
     implementation fg.deobf("novamachina.exnihilosequentia:ExNihiloSequentia:1.19.2-4.0.0.40-beta")
 }

@@ -5,11 +5,13 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.RegistryObject;
 import net.permutated.exmachinis.data.builders.CompactingRecipeBuilder;
 import novamachina.exnihilosequentia.common.init.ExNihiloItems;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -50,5 +52,25 @@ public class CompactingRecipes extends RecipeProvider {
                 .setInput(Ingredient.of(piece.getPieceItem()), 4)
                 .build(consumer);
         }
+
+        // novamachina.exnihilosequentia.common.ExNihiloRecipeGenerator#registerPebbleBlocks
+        var pebbleMap = Map.ofEntries(
+            Map.entry(Blocks.ANDESITE, ExNihiloItems.PEBBLE_ANDESITE.get()),
+            Map.entry(Blocks.BASALT, ExNihiloItems.PEBBLE_BASALT.get()),
+            Map.entry(Blocks.BLACKSTONE, ExNihiloItems.PEBBLE_BLACKSTONE.get()),
+            Map.entry(Blocks.COBBLESTONE, ExNihiloItems.PEBBLE_STONE.get()),
+            Map.entry(Blocks.CALCITE, ExNihiloItems.PEBBLE_CALCITE.get()),
+            Map.entry(Blocks.DEEPSLATE, ExNihiloItems.PEBBLE_DEEPSLATE.get()),
+            Map.entry(Blocks.DIORITE, ExNihiloItems.PEBBLE_DIORITE.get()),
+            Map.entry(Blocks.DRIPSTONE_BLOCK, ExNihiloItems.PEBBLE_DRIPSTONE.get()),
+            Map.entry(Blocks.END_STONE, ExNihiloItems.PEBBLE_END_STONE.get()),
+            Map.entry(Blocks.GRANITE, ExNihiloItems.PEBBLE_GRANITE.get()),
+            Map.entry(Blocks.NETHERRACK, ExNihiloItems.PEBBLE_NETHERRACK.get()),
+            Map.entry(Blocks.TUFF, ExNihiloItems.PEBBLE_TUFF.get())
+        );
+
+        pebbleMap.forEach((block, pebble) -> CompactingRecipeBuilder.builder(block.asItem())
+            .setInput(Ingredient.of(pebble), 4)
+            .build(consumer));
     }
 }

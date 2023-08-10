@@ -1,0 +1,12 @@
+{
+  "type": "exmachinis:compacting",
+  "input": {
+    "count": 4,
+    "ingredient": {
+      "item": "exnihilosequentia:andesite_pebble"
+    }
+  },
+  "output": {
+    "item": "minecraft:andesite"
+  }
+}

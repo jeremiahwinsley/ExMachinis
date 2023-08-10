@@ -1,0 +1,12 @@
+{
+  "type": "exmachinis:compacting",
+  "input": {
+    "count": 4,
+    "ingredient": {
+      "item": "exnihilosequentia:stone_pebble"
+    }
+  },
+  "output": {
+    "item": "minecraft:cobblestone"
+  }
+}
