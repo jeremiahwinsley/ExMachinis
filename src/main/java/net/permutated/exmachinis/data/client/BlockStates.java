@@ -1,6 +1,6 @@
 package net.permutated.exmachinis.data.client;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -12,8 +12,8 @@ import net.permutated.exmachinis.util.Constants;
 import static net.permutated.exmachinis.util.ResourceUtil.block;
 
 public class BlockStates extends BlockStateProvider {
-    public BlockStates(DataGenerator generator, ExistingFileHelper fileHelper) {
-        super(generator, ExMachinis.MODID, fileHelper);
+    public BlockStates(PackOutput packOutput, ExistingFileHelper fileHelper) {
+        super(packOutput, ExMachinis.MODID, fileHelper);
     }
 
     @Override

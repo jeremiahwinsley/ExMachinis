@@ -3,13 +3,13 @@ package net.permutated.exmachinis;
 import com.mojang.datafixers.types.Type;
 import com.mojang.datafixers.types.constant.EmptyPart;
 import com.mojang.datafixers.util.Unit;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
@@ -35,9 +35,7 @@ import net.permutated.exmachinis.machines.sieve.FluxSieveTile;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.recipes.CompactingRegistry;
 import net.permutated.exmachinis.util.Constants;
-
-import javax.annotation.Nonnull;
-import java.util.function.Supplier;
+import net.permutated.exmachinis.util.TranslationKey;
 
 import static net.permutated.exmachinis.util.ResourceUtil.prefix;
 
@@ -51,12 +49,20 @@ public class ModRegistry {
     public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ExMachinis.MODID);
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ExMachinis.MODID);
 
-    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, ExMachinis.MODID);
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, ExMachinis.MODID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ExMachinis.MODID);
 
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ExMachinis.MODID);
 
-    public static final CreativeModeTab CREATIVE_TAB = new ModItemGroup(ExMachinis.MODID,
-        () -> new ItemStack(ModRegistry.NETHERITE_UPGRADE.get()));
+    public static final RegistryObject<CreativeModeTab> CREATIVE_TAB = CREATIVE_TABS.register("creative_tab", () -> CreativeModeTab.builder()
+        .title(Component.translatable(TranslationKey.tab()))
+        .icon(() -> ModRegistry.NETHERITE_UPGRADE.get().getDefaultInstance())
+        .displayItems((parameters, output) -> ITEMS.getEntries().stream()
+            .map(RegistryObject::get)
+            .map(Item::getDefaultInstance)
+            .forEach(output::accept))
+        .build()
+    );
 
     // bulk upgrades, add efficiency/speed/something else?
     public static final RegistryObject<Item> GOLD_UPGRADE = upgradeItem(Constants.GOLD_UPGRADE, UpgradeItem.Tier.GOLD);
@@ -94,7 +100,7 @@ public class ModRegistry {
      */
     private static RegistryObject<BlockItem> blockItem(RegistryObject<Block> registryObject) {
         return ITEMS.register(registryObject.getId().getPath(),
-            () -> new BlockItem(registryObject.get(), new Item.Properties().tab(CREATIVE_TAB)));
+            () -> new BlockItem(registryObject.get(), new Item.Properties()));
     }
 
     /**
@@ -139,20 +145,6 @@ public class ModRegistry {
         CONTAINERS.register(bus);
         RECIPE_TYPES.register(bus);
         RECIPE_SERIALIZERS.register(bus);
-    }
-
-    public static final class ModItemGroup extends CreativeModeTab {
-        private final Supplier<ItemStack> iconSupplier;
-
-        public ModItemGroup(final String name, final Supplier<ItemStack> iconSupplier) {
-            super(name);
-            this.iconSupplier = iconSupplier;
-        }
-
-        @Nonnull
-        @Override
-        public ItemStack makeIcon() {
-            return iconSupplier.get();
-        }
+        CREATIVE_TABS.register(bus);
     }
 }

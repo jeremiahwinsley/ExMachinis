@@ -1,5 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "exmachinis",
   "key": {
     "n": {
       "tag": "forge:gems/diamond"
@@ -15,5 +17,6 @@
   ],
   "result": {
     "item": "exmachinis:diamond_upgrade"
-  }
+  },
+  "show_notification": true
 }

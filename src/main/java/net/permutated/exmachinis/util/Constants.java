@@ -1,8 +1,8 @@
 package net.permutated.exmachinis.util;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.core.Direction;
+import org.joml.Quaternionf;
 
 import java.util.Map;
 
@@ -56,12 +56,12 @@ public class Constants {
         public static final String TAG = "tag";
     }
 
-    public static final Map<Direction, Quaternion> ROTATIONS = Map.ofEntries(
-        Map.entry(Direction.UP, Vector3f.ZN.rotationDegrees(90)),
-        Map.entry(Direction.DOWN, Vector3f.ZN.rotationDegrees(-90)),
-        Map.entry(Direction.NORTH, Vector3f.YN.rotationDegrees(90)),
-        Map.entry(Direction.SOUTH, Vector3f.YN.rotationDegrees(-90)),
-        Map.entry(Direction.WEST, Vector3f.YN.rotationDegrees(0)),
-        Map.entry(Direction.EAST, Vector3f.YN.rotationDegrees(180))
+    public static final Map<Direction, Quaternionf> ROTATIONS = Map.ofEntries(
+        Map.entry(Direction.UP, Axis.ZN.rotationDegrees(90)),
+        Map.entry(Direction.DOWN, Axis.ZN.rotationDegrees(-90)),
+        Map.entry(Direction.NORTH, Axis.YN.rotationDegrees(90)),
+        Map.entry(Direction.SOUTH, Axis.YN.rotationDegrees(-90)),
+        Map.entry(Direction.WEST, Axis.YN.rotationDegrees(0)),
+        Map.entry(Direction.EAST, Axis.YN.rotationDegrees(180))
     );
 }

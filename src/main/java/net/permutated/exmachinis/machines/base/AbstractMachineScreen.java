@@ -1,7 +1,6 @@
 package net.permutated.exmachinis.machines.base;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,35 +22,34 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, gui);
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+        graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;
-        this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
+        graphics.blit(gui, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
 
 
         // render work status texture
         if (this.menu.getWorkStatus() == WorkStatus.WORKING) {
-            this.blit(matrixStack, relX + 116, relY + 36, 224, 0, 16, 16);
+            graphics.blit(gui, relX + 116, relY + 36, 224, 0, 16, 16);
         } else if(this.menu.getWorkStatus() == WorkStatus.REDSTONE_DISABLED) {
-            this.blit(matrixStack, relX + 116, relY + 36, 240, 0, 16, 16);
+            graphics.blit(gui, relX + 116, relY + 36, 240, 0, 16, 16);
         } else {
-            this.blit(matrixStack, relX + 116, relY + 36, 208, 0, 16, 16);
+            graphics.blit(gui, relX + 116, relY + 36, 208, 0, 16, 16);
         }
 
         // texture offset - addon texture
 
         float energyFraction = this.menu.dataHolder.getEnergyFraction();
         var energyHolder = new TextureHolder(152, 18, 176, 0, 16, 52);
-        blit(matrixStack,
+        graphics.blit(gui,
             relX + energyHolder.progressOffsetX(),
             relY + energyHolder.progressHeightOffset(energyFraction),
             energyHolder.textureOffsetX(),
@@ -63,7 +61,7 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         // work progress
         float workFraction = this.menu.dataHolder.getWorkFraction();
         var progressHolder = new TextureHolder(134, 18, 192, 0, 16, 52);
-        blit(matrixStack,
+        graphics.blit(gui,
             relX + progressHolder.progressOffsetX(),
             relY + progressHolder.progressHeightOffset(workFraction),
             progressHolder.textureOffsetX(),
@@ -74,33 +72,34 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     }
 
     @Override
-    protected void renderTooltip(PoseStack stack, int x, int y) {
-        super.renderTooltip(stack, x, y);
+    protected void renderTooltip(GuiGraphics graphics, int x, int y) {
+        super.renderTooltip(graphics, x, y);
 
         if (this.isHovering(116, 36, 16, 16, x, y)) {
-            this.renderComponentTooltip(stack, List.of(this.menu.getWorkStatus().getTranslation()), x, y, this.font);
+
+            graphics.renderComponentTooltip(this.font, List.of(this.menu.getWorkStatus().getTranslation()), x, y);
         }
 
         if (this.isHovering(152, 18, 16, 52, x, y)) {
-            this.renderComponentTooltip(stack, List.of(
+            graphics.renderComponentTooltip(this.font, List.of(
                 translateTooltip("fluxBar"),
                 translateTooltip("fluxData", this.menu.dataHolder.getEnergy(), this.menu.dataHolder.getMaxEnergy())
-            ), x, y, this.font);
+            ), x, y);
         }
 
         if (this.isHovering(134, 18, 16, 52, x, y)) {
-            this.renderComponentTooltip(stack, List.of(
+            graphics.renderComponentTooltip(this.font, List.of(
                 translateTooltip("workBar"),
                 translateTooltip("workData", this.menu.dataHolder.getWork(), this.menu.dataHolder.getMaxWork())
-            ), x, y, this.font);
+            ), x, y);
         }
 
         if (this.isHovering(116, 54, 16, 16, x, y) && shouldShowSlotTooltip()) {
-            this.renderComponentTooltip(stack, List.of(translateTooltip("upgradeSlot")), x, y, this.font);
+            graphics.renderComponentTooltip(this.font, List.of(translateTooltip("upgradeSlot")), x, y);
         }
 
         if (this.isHovering(80, 36, 16, 16, x, y) && this.menu.enableMeshSlot && shouldShowSlotTooltip()) {
-            this.renderComponentTooltip(stack, List.of(translateTooltip("meshSlot")), x, y, this.font);
+            graphics.renderComponentTooltip(this.font, List.of(translateTooltip("meshSlot")), x, y);
         }
     }
 

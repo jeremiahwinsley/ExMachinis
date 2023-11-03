@@ -1,5 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "exmachinis",
   "key": {
     "n": {
       "tag": "forge:ingots/netherite"
@@ -15,5 +17,6 @@
   ],
   "result": {
     "item": "exmachinis:netherite_upgrade"
-  }
+  },
+  "show_notification": true
 }

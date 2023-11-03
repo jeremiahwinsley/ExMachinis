@@ -1,11 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_netherite_ingot": {
+    "has_diamond_hammer": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/netherite"
+            "items": [
+              "exnihilosequentia:diamond_hammer"
+            ]
           }
         ]
       },
@@ -13,20 +15,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "exmachinis:netherite_upgrade"
+        "recipe": "exmachinis:flux_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_netherite_ingot",
+      "has_diamond_hammer",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "exmachinis:netherite_upgrade"
+      "exmachinis:flux_hammer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

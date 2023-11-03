@@ -1,5 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "exmachinis",
   "key": {
     "c": {
       "item": "minecraft:comparator"
@@ -21,5 +23,6 @@
   ],
   "result": {
     "item": "exmachinis:flux_compactor"
-  }
+  },
+  "show_notification": true
 }

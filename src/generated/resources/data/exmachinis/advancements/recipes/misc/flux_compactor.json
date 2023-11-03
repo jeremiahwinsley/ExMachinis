@@ -1,11 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_gold_ingot": {
+    "has_anvil": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/gold"
+            "items": [
+              "minecraft:anvil"
+            ]
           }
         ]
       },
@@ -13,20 +15,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "exmachinis:gold_upgrade"
+        "recipe": "exmachinis:flux_compactor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_gold_ingot",
+      "has_anvil",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "exmachinis:gold_upgrade"
+      "exmachinis:flux_compactor"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

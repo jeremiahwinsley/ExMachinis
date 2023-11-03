@@ -1,5 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "exmachinis",
   "key": {
     "b": {
       "item": "minecraft:iron_bars"
@@ -21,5 +23,6 @@
   ],
   "result": {
     "item": "exmachinis:flux_sieve"
-  }
+  },
+  "show_notification": true
 }

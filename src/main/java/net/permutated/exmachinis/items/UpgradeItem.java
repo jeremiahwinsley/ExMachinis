@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.permutated.exmachinis.ConfigHolder;
-import net.permutated.exmachinis.ModRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -38,7 +37,7 @@ public class UpgradeItem extends Item {
     }
 
     public UpgradeItem(Tier tier) {
-        super(new Properties().stacksTo(tier.stackSize).tab(ModRegistry.CREATIVE_TAB).setNoRepair());
+        super(new Properties().stacksTo(tier.stackSize).setNoRepair());
         this.tier = tier;
     }
 

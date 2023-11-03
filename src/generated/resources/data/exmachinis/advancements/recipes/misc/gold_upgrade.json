@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_diamond_hammer": {
+    "has_gold_ingot": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "exnihilosequentia:diamond_hammer"
-            ]
+            "tag": "forge:ingots/gold"
           }
         ]
       },
@@ -15,20 +13,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "exmachinis:flux_hammer"
+        "recipe": "exmachinis:gold_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_diamond_hammer",
+      "has_gold_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "exmachinis:flux_hammer"
+      "exmachinis:gold_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

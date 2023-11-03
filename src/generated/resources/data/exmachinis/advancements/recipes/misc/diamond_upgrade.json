@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_anvil": {
+    "has_diamond": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:anvil"
-            ]
+            "tag": "forge:gems/diamond"
           }
         ]
       },
@@ -15,20 +13,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "exmachinis:flux_compactor"
+        "recipe": "exmachinis:diamond_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_anvil",
+      "has_diamond",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "exmachinis:flux_compactor"
+      "exmachinis:diamond_upgrade"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

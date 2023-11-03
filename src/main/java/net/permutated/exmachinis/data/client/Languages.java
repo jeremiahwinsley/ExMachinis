@@ -1,6 +1,6 @@
 package net.permutated.exmachinis.data.client;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
@@ -20,8 +20,8 @@ public class Languages {
 
     public static class English extends LanguageProvider {
 
-        public English(DataGenerator gen) {
-            super(gen, ExMachinis.MODID, "en_us");
+        public English(PackOutput packOutput) {
+            super(packOutput, ExMachinis.MODID, "en_us");
         }
 
         @Override

@@ -5,9 +5,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.permutated.exmachinis.ConfigHolder;
-import novamachina.exnihilosequentia.common.item.HammerBaseItem;
-import novamachina.exnihilosequentia.common.item.MeshItem;
 import novamachina.exnihilosequentia.common.registries.ExNihiloRegistries;
+import novamachina.exnihilosequentia.world.item.HammerItem;
+import novamachina.exnihilosequentia.world.item.MeshItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,7 +51,7 @@ public class ExNihiloAPI {
     }
 
     public static boolean isHammerItem(ItemStack stack) {
-        return stack.getItem() instanceof HammerBaseItem;
+        return stack.getItem() instanceof HammerItem;
     }
 
     public static boolean canSieve(ItemStack stack, ItemStack mesh, boolean waterlogged) {

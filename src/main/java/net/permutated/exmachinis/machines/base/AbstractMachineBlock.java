@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.network.NetworkHooks;
@@ -40,7 +40,7 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
     public static final DirectionProperty OUTPUT = DirectionProperty.create("output");
 
     protected AbstractMachineBlock() {
-        super(Properties.of(Material.METAL).strength(3.0F, 3.0F).noOcclusion()
+        super(Properties.of().mapColor(MapColor.METAL).strength(3.0F, 3.0F).noOcclusion()
             .isRedstoneConductor((state, getter, pos) -> false)); // allow chests to be opened underneath
         this.registerDefaultState(this.defaultBlockState()
             .setValue(ENABLED, Boolean.TRUE)
@@ -134,7 +134,7 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
                             player.setItemInHand(hand, actual);
                             return InteractionResult.SUCCESS;
                         }
-                    } else if (inSlot.sameItem(stackInHand)) { // same upgrade type in machine
+                    } else if (inSlot.is(stackInHand.getItem())) { // same upgrade type in machine
                         if (inSlot.getCount() < inSlot.getMaxStackSize()) { // make sure the stack size is not max already
                             ItemStack result = machineTile.upgradeStackHandler.insertItem(0, stackInHand, true);
                             int maxInsert = inSlot.getMaxStackSize() - inSlot.getCount(); // the max that can be inserted in the slot.

@@ -33,5 +33,6 @@
     [
       "has_netherite_upgrade"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

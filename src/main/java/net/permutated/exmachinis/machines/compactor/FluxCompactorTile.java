@@ -158,7 +158,7 @@ public class FluxCompactorTile extends AbstractMachineTile {
                 // if it's not full, iterate over the slots after this one and look for matching stacks
                 for (int j = i + 1; j < itemStackHandler.getSlots() && missing > 0; j++) {
                     ItemStack match = itemStackHandler.getStackInSlot(j);
-                    if (stack.sameItem(match)) {
+                    if (stack.is(match.getItem())) {
                         // found a matching stack, let's test if we can combine it with the first one
                         var simulate = itemStackHandler.extractItem(j, missing, true);
                         if (!simulate.isEmpty() && itemStackHandler.insertItem(i, simulate, true).isEmpty()) {

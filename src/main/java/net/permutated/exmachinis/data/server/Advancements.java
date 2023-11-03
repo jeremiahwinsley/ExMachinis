@@ -6,8 +6,7 @@ import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.advancements.AdvancementProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -16,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import net.minecraftforge.registries.RegistryObject;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
@@ -28,14 +28,11 @@ import java.util.function.Consumer;
 
 import static net.permutated.exmachinis.util.TranslationKey.translateAdvancement;
 
-public class Advancements extends AdvancementProvider {
-    public Advancements(DataGenerator generator, ExistingFileHelper fileHelper) {
-        super(generator, fileHelper);
-    }
+public class Advancements implements ForgeAdvancementProvider.AdvancementGenerator {
 
     @Override
     @SuppressWarnings({"java:S1481", "java:S1854"}) // unused variables
-    protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
+    public void generate(HolderLookup.Provider registries, Consumer<Advancement> consumer, ExistingFileHelper existingFileHelper) {
         var root = Advancement.Builder.advancement()
             .display(displayInfo(
                 ModRegistry.FLUX_SIEVE_ITEM.get(),
@@ -90,5 +87,4 @@ public class Advancements extends AdvancementProvider {
     private DisplayInfo displayInfo(ItemLike title, Component description, Component icon, @Nullable ResourceLocation background, FrameType frame, boolean showToast, boolean announceChat, boolean hidden) {
         return new DisplayInfo(new ItemStack(title.asItem()), description, icon, background, frame, showToast, announceChat, hidden);
     }
-
 }

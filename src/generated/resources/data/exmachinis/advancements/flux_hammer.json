@@ -33,5 +33,6 @@
     [
       "has_flux_hammer"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

@@ -33,5 +33,6 @@
     [
       "has_flux_compactor"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

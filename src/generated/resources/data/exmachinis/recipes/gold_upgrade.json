@@ -1,5 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "exmachinis",
   "key": {
     "c": {
       "tag": "forge:dyes/green"
@@ -21,5 +23,6 @@
   ],
   "result": {
     "item": "exmachinis:gold_upgrade"
-  }
+  },
+  "show_notification": true
 }

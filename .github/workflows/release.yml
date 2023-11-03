@@ -8,7 +8,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v3
@@ -23,8 +23,8 @@ jobs:
         run: ./gradlew build
       - name: Upload Release Asset
         id: upload-release-assets
-        uses: alexellis/upload-assets@0.2.3
+        uses: alexellis/upload-assets@0.4.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_paths: '["build/libs/*.jar"]'
+          asset_paths: '["build/libs/*.jar", "build/checksums/*.sha512"]'

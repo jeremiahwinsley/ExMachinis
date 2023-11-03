@@ -1,6 +1,8 @@
 {
     "pack": {
-        "description": "exmachinis resources",
-        "pack_format": 9
-    }
+        "description": {
+            "text": "exmachinis resources"
+        },
+        "pack_format": 15
+}
 }

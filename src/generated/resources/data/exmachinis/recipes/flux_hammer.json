@@ -1,5 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "exmachinis",
   "key": {
     "d": {
       "item": "exnihilosequentia:diamond_hammer"
@@ -21,5 +23,6 @@
   ],
   "result": {
     "item": "exmachinis:flux_hammer"
-  }
+  },
+  "show_notification": true
 }
