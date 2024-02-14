@@ -3,10 +3,10 @@
   "input": {
     "count": 4,
     "ingredient": {
-      "item": "exnihilosequentia:tin_pieces"
+      "item": "exdeorum:iron_ore_chunk"
     }
   },
   "output": {
-    "item": "exnihilosequentia:raw_tin"
+    "item": "minecraft:iron_ore"
   }
 }

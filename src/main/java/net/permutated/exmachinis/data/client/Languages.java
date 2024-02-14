@@ -122,7 +122,7 @@ public class Languages {
 
                 Upgrades can be added to increase the number of items processed at once.
 
-                Meshes can be enchanted with Fortune to increase drop chances.
+                Meshes can be enchanted in an anvil with Fortune to increase drop chances.
 
                 The block can be disabled by a redstone signal.
 

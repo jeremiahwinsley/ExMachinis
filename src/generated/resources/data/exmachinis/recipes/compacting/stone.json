@@ -3,10 +3,10 @@
   "input": {
     "count": 4,
     "ingredient": {
-      "item": "exnihilosequentia:uranium_pieces"
+      "item": "exdeorum:stone_pebble"
     }
   },
   "output": {
-    "item": "exnihilosequentia:raw_uranium"
+    "item": "minecraft:stone"
   }
 }

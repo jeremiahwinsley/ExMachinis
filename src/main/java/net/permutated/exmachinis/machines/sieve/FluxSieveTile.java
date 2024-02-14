@@ -39,7 +39,7 @@ public class FluxSieveTile extends AbstractMachineTile {
 
     @Override
     public void tick() {
-        if (level instanceof ServerLevel && canTick(getUpgradeTickDelay())) {
+        if (level instanceof ServerLevel serverLevel && canTick(getUpgradeTickDelay())) {
 
             Boolean enabled = getBlockState().getValue(AbstractMachineBlock.ENABLED);
             if (Boolean.FALSE.equals(enabled)) {
@@ -128,9 +128,9 @@ public class FluxSieveTile extends AbstractMachineTile {
                     itemStackHandler.setStackInSlot(i, copy); // shrink input
                     energyStorage.consumeEnergy(totalCost, false);
                     if (Boolean.TRUE.equals(ConfigHolder.SERVER.sieveBulkProcessing.get())) {
-                        processResults(itemHandler, meshStack, stack, multiplier, false);
+                        processResults(serverLevel, itemHandler, meshStack, stack, multiplier, false);
                     } else {
-                        processResultsSingle(itemHandler, meshStack, stack, multiplier, false);
+                        processResultsSingle(serverLevel, itemHandler, meshStack, stack, multiplier, false);
                     }
                 }
             }
@@ -138,9 +138,9 @@ public class FluxSieveTile extends AbstractMachineTile {
     }
 
     @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"}) // kept for consistency
-    private boolean processResults(IItemHandler itemHandler, ItemStack meshStack, ItemStack stack, int multiplier, boolean simulate) {
+    private boolean processResults(ServerLevel serverLevel, IItemHandler itemHandler, ItemStack meshStack, ItemStack stack, int multiplier, boolean simulate) {
         // process sieve results
-        ExNihiloAPI.getSieveResult(stack, meshStack, isWaterlogged()).stream()
+        ExNihiloAPI.getSieveResult(serverLevel, stack, meshStack, isWaterlogged()).stream()
             .map(result -> multiplyStackCount(result, multiplier))
             .map(output -> ItemHandlerHelper.insertItemStacked(itemHandler, output, simulate))
             .forEach(response -> {
@@ -152,10 +152,10 @@ public class FluxSieveTile extends AbstractMachineTile {
     }
 
     @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"}) // kept for consistency
-    private boolean processResultsSingle(IItemHandler itemHandler, ItemStack meshStack, ItemStack stack, int multiplier, boolean simulate) {
+    private boolean processResultsSingle(ServerLevel serverLevel, IItemHandler itemHandler, ItemStack meshStack, ItemStack stack, int multiplier, boolean simulate) {
         // process sieve results one at a time
         for (int i = 0;i < multiplier;i++) {
-            ExNihiloAPI.getSieveResult(stack, meshStack, isWaterlogged()).stream()
+            ExNihiloAPI.getSieveResult(serverLevel, stack, meshStack, isWaterlogged()).stream()
                 .map(output -> ItemHandlerHelper.insertItemStacked(itemHandler, output, simulate))
                 .forEach(response -> {
                     if (!response.isEmpty()) {

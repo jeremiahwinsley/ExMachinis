@@ -3,10 +3,10 @@
   "input": {
     "count": 4,
     "ingredient": {
-      "item": "exnihilosequentia:dripstone_pebble"
+      "item": "exdeorum:gold_ore_chunk"
     }
   },
   "output": {
-    "item": "minecraft:dripstone_block"
+    "item": "minecraft:gold_ore"
   }
 }

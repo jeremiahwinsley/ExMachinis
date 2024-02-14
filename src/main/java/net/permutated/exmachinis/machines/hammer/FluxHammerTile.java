@@ -123,7 +123,7 @@ public class FluxHammerTile extends AbstractMachineTile {
                         maxProcessed -= count;
                     }
 
-                    if (!processResults(itemHandler, stack, multiplier, true)) {
+                    if (!processResults(serverLevel, itemHandler, stack, multiplier, true)) {
                         // simulating inserts failed
                         return;
                     }
@@ -138,7 +138,7 @@ public class FluxHammerTile extends AbstractMachineTile {
 
                     itemStackHandler.setStackInSlot(i, copy); // shrink input
                     energyStorage.consumeEnergy(totalCost, false);
-                    processResults(itemHandler, stack, multiplier, false);
+                    processResults(serverLevel, itemHandler, stack, multiplier, false);
                 }
             }
 
@@ -147,9 +147,9 @@ public class FluxHammerTile extends AbstractMachineTile {
         }
     }
 
-    private boolean processResults(IItemHandler itemHandler, ItemStack stack, int multiplier, boolean simulate) {
+    private boolean processResults(ServerLevel serverLevel, IItemHandler itemHandler, ItemStack stack, int multiplier, boolean simulate) {
         // process hammer results
-        ExNihiloAPI.getHammerResult(stack).stream()
+        ExNihiloAPI.getHammerResult(serverLevel, stack).stream()
             .map(result -> multiplyStackCount(result, multiplier))
             .map(output -> ItemHandlerHelper.insertItemStacked(itemHandler, output, simulate))
             .forEach(response -> {

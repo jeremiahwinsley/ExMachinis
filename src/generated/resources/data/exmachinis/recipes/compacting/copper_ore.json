@@ -3,10 +3,10 @@
   "input": {
     "count": 4,
     "ingredient": {
-      "item": "exnihilosequentia:copper_pieces"
+      "item": "exdeorum:copper_ore_chunk"
     }
   },
   "output": {
-    "item": "minecraft:raw_copper"
+    "item": "minecraft:copper_ore"
   }
 }

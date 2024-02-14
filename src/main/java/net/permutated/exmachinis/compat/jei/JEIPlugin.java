@@ -4,6 +4,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -14,7 +15,9 @@ import net.permutated.exmachinis.compat.jei.category.CompactingCategory;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.util.Constants;
 import net.permutated.exmachinis.util.ResourceUtil;
-import novamachina.exnihilosequentia.common.compat.jei.RecipeTypes;
+import thedarkcolour.exdeorum.compat.jei.ExDeorumJeiPlugin;
+
+import java.lang.reflect.Field;
 
 import static net.permutated.exmachinis.util.TranslationKey.translateJei;
 
@@ -36,9 +39,19 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_COMPACTOR_BLOCK.get()), CompactingCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_HAMMER_BLOCK.get()), RecipeTypes.CRUSHING);
-        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.DRY_SIFTING);
-        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.WET_SIFTING);
+
+        try {
+            // can't AT another mod, so hacks it is
+            Field hammer = ExDeorumJeiPlugin.class.getDeclaredField("HAMMER");
+            hammer.setAccessible(true);
+            registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_HAMMER_BLOCK.get()), (RecipeType<?>) hammer.get(null));
+
+            Field sieve = ExDeorumJeiPlugin.class.getDeclaredField("SIEVE");
+            sieve.setAccessible(true);
+            registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), (RecipeType<?>) sieve.get(null));
+        } catch (ReflectiveOperationException e) {
+            // do nothing
+        }
     }
 
     @Override

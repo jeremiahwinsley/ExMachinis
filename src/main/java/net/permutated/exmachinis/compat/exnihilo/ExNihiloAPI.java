@@ -1,13 +1,16 @@
 package net.permutated.exmachinis.compat.exnihilo;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.permutated.exmachinis.ConfigHolder;
-import novamachina.exnihilosequentia.common.registries.ExNihiloRegistries;
-import novamachina.exnihilosequentia.world.item.HammerItem;
-import novamachina.exnihilosequentia.world.item.MeshItem;
+import thedarkcolour.exdeorum.item.HammerItem;
+import thedarkcolour.exdeorum.item.MeshItem;
+import thedarkcolour.exdeorum.recipe.ProbabilityRecipe;
+import thedarkcolour.exdeorum.recipe.RecipeUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,34 +19,45 @@ import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Access class for Ex Nihilo Sequentia so that external code isn't referenced from the rest of the mod.
+ * Access class for Ex Deorum so that external code isn't referenced from the rest of the mod.
  */
 public class ExNihiloAPI {
     private ExNihiloAPI() {
         // nothing to do
     }
 
-    private static Optional<Block> blockFromItemStack(ItemStack stack) {
+    private static Optional<Item> itemFromItemStack(ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() instanceof BlockItem blockItem) {
-            return Optional.of(blockItem.getBlock());
+            return Optional.of(stack.getItem());
         }
         return Optional.empty();
     }
 
-    public static boolean canHammer(ItemStack stack) {
-        return blockFromItemStack(stack)
-            .map(ExNihiloRegistries.HAMMER_REGISTRY::isHammerable)
-            .orElse(false);
+    private static ItemStack getProbabilityResult(LootContext context, ProbabilityRecipe recipe, int fortune) {
+        Item item = recipe.result;
+        int amount = recipe.resultAmount.getInt(context);
+
+        for(int i = 0; i < fortune; ++i) {
+            if (ThreadLocalRandom.current().nextFloat() < 0.3F) {
+                amount += recipe.resultAmount.getInt(context);
+            }
+        }
+
+        return new ItemStack(item, amount);
     }
 
-    public static List<ItemStack> getHammerResult(ItemStack stack) {
-        return blockFromItemStack(stack)
-            .map(ExNihiloRegistries.HAMMER_REGISTRY::getResult)
-            .orElseGet(Collections::emptyList)
-            .stream()
-            .filter(chance -> chance.getChance() == 1.0 || ThreadLocalRandom.current().nextFloat() <= chance.getChance())
-            .map(chance -> chance.getStack().copy())
-            .toList();
+    public static boolean canHammer(ItemStack stack) {
+        return itemFromItemStack(stack)
+            .map(RecipeUtil::getHammerRecipe)
+            .isPresent();
+    }
+
+    public static List<ItemStack> getHammerResult(ServerLevel level, ItemStack stack) {
+        LootContext context = RecipeUtil.emptyLootContext(level);
+        return itemFromItemStack(stack)
+            .map(RecipeUtil::getHammerRecipe)
+            .map(recipe -> getProbabilityResult(context, recipe, 0))
+            .map(List::of).orElseGet(ArrayList::new);
     }
 
     public static boolean isMeshItem(ItemStack stack) {
@@ -56,16 +70,15 @@ public class ExNihiloAPI {
 
     public static boolean canSieve(ItemStack stack, ItemStack mesh, boolean waterlogged) {
         if (mesh.getItem() instanceof MeshItem meshItem) {
-            return blockFromItemStack(stack)
-                .map(block -> ExNihiloRegistries.SIEVE_REGISTRY.isBlockSiftable(block, meshItem.getType(), waterlogged))
-                .orElse(false);
+            return !RecipeUtil.getSieveRecipes(meshItem, stack).isEmpty();
         }
         return false;
     }
 
-    public static List<ItemStack> getSieveResult(ItemStack stack, ItemStack mesh, boolean waterlogged) {
+    public static List<ItemStack> getSieveResult(ServerLevel level, ItemStack stack, ItemStack mesh, boolean waterlogged) {
         if (mesh.getItem() instanceof MeshItem meshItem) {
-            var recipes = ExNihiloRegistries.SIEVE_REGISTRY.getDrops(stack.getItem(), meshItem.getType(), waterlogged);
+            LootContext context = RecipeUtil.emptyLootContext(level);
+            var recipes = RecipeUtil.getSieveRecipes(meshItem, stack);
 
             int fortune = 0;
             if (Boolean.TRUE.equals(ConfigHolder.SERVER.sieveFortuneEnabled.get())) {
@@ -74,11 +87,7 @@ public class ExNihiloAPI {
 
             List<ItemStack> output = new ArrayList<>();
             for (var sieveRecipe : recipes) {
-                for (var roll : sieveRecipe.getRolls()) {
-                    if (ThreadLocalRandom.current().nextFloat() <= roll.getChance() * (1F + fortune / 3F)) {
-                        output.add(sieveRecipe.getDrop());
-                    }
-                }
+                output.add(getProbabilityResult(context, sieveRecipe, fortune));
             }
             return output;
         }

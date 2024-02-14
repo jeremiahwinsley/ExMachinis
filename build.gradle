@@ -131,6 +131,18 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    exclusiveContent {
+        forRepositories(fg.repository)
+        forRepository {
+            maven {
+                name "Reposilite"
+                url "https://maven.permutated.net/releases"
+            }
+        }
+        filter {
+            includeGroup "thedarkcolour.modkit"
+        }
+    }
 }
 
 dependencies {
@@ -146,8 +158,8 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:jade-324717:4801177")
 
     implementation fg.deobf('maven.modrinth:jei:HU1FUi8s')
-    implementation fg.deobf('maven.modrinth:novacore:1.20.1-1.0.0-build.3')
-    implementation fg.deobf('maven.modrinth:ex-nihilo-sequentia:1.20.1-5.0.0-build.4')
+    implementation fg.deobf("curse.maven:ex-deorum-901420:5102480")
+    runtimeOnly fg.deobf("thedarkcolour.modkit:ModKit:1.0")
 }
 
 jar {
