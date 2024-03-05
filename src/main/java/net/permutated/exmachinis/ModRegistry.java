@@ -21,8 +21,12 @@ import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.permutated.exmachinis.items.ComparatorUpgradeItem;
 import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.machines.base.AbstractMachineTile;
+import net.permutated.exmachinis.machines.buffer.ItemBufferBlock;
+import net.permutated.exmachinis.machines.buffer.ItemBufferMenu;
+import net.permutated.exmachinis.machines.buffer.ItemBufferTile;
 import net.permutated.exmachinis.machines.compactor.FluxCompactorBlock;
 import net.permutated.exmachinis.machines.compactor.FluxCompactorMenu;
 import net.permutated.exmachinis.machines.compactor.FluxCompactorTile;
@@ -68,6 +72,7 @@ public class ModRegistry {
     public static final RegistryObject<Item> GOLD_UPGRADE = upgradeItem(Constants.GOLD_UPGRADE, UpgradeItem.Tier.GOLD);
     public static final RegistryObject<Item> DIAMOND_UPGRADE = upgradeItem(Constants.DIAMOND_UPGRADE, UpgradeItem.Tier.DIAMOND);
     public static final RegistryObject<Item> NETHERITE_UPGRADE = upgradeItem(Constants.NETHERITE_UPGRADE, UpgradeItem.Tier.NETHERITE);
+    public static final RegistryObject<Item> COMPARATOR_UPGRADE = ITEMS.register(Constants.COMPARATOR_UPGRADE, ComparatorUpgradeItem::new);
 
 
     // Flux Sieve
@@ -91,6 +96,12 @@ public class ModRegistry {
     public static final RegistryObject<RecipeType<CompactingRecipe>> COMPACTING_RECIPE_TYPE = RECIPE_TYPES.register(Constants.COMPACTING, () -> RecipeType.simple(prefix(Constants.COMPACTING)));
     public static final RegistryObject<RecipeSerializer<CompactingRecipe>> COMPACTING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(Constants.COMPACTING, CompactingRecipe.Serializer::new);
     public static final CompactingRegistry COMPACTING_REGISTRY = new CompactingRegistry();
+
+    // Item Buffer
+    public static final RegistryObject<Block> ITEM_BUFFER_BLOCK = BLOCKS.register(Constants.ITEM_BUFFER, ItemBufferBlock::new);
+    public static final RegistryObject<BlockEntityType<ItemBufferTile>> ITEM_BUFFER_TILE = blockEntity(ITEM_BUFFER_BLOCK, ItemBufferTile::new);
+    public static final RegistryObject<MenuType<ItemBufferMenu>> ITEM_BUFFER_MENU = container(Constants.ITEM_BUFFER, ItemBufferMenu::new);
+    public static final RegistryObject<BlockItem> ITEM_BUFFER_ITEM = blockItem(ITEM_BUFFER_BLOCK);
 
     /**
      * Register a BlockItem for a Block

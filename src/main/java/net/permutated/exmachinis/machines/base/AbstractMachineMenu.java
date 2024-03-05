@@ -21,6 +21,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.registries.RegistryObject;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
+import net.permutated.exmachinis.items.ComparatorUpgradeItem;
 import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.util.WorkStatus;
 
@@ -33,12 +34,21 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess containerLevelAccess;
     protected final DataHolder dataHolder;
     protected final boolean enableMeshSlot;
+    protected final boolean enableComparatorSlot;
     protected final int totalSlots;
 
     protected AbstractMachineMenu(@Nullable MenuType<?> containerType, int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
         super(containerType, windowId);
         this.enableMeshSlot = buf.readBoolean();
-        this.totalSlots = enableMeshSlot ? 11 : 10;
+        this.enableComparatorSlot = buf.readBoolean();
+
+        if (enableMeshSlot) {
+            totalSlots = 11;
+        } else if (enableComparatorSlot) {
+            totalSlots = 20;
+        } else {
+            totalSlots = 10;
+        }
 
         BlockPos pos = buf.readBlockPos();
         Level level = playerInventory.player.getCommandSenderWorld();
@@ -103,14 +113,20 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
 
     public void registerHandlerSlots(IItemHandler handler) {
         int index = 0;
-        addSlot(new FilteredSlot(handler, index++, 116, 54, stack -> stack.getItem() instanceof UpgradeItem));
+        int upgradeOffsetX = enableComparatorSlot ? 134 : 116;
+        addSlot(new FilteredSlot(handler, index++, upgradeOffsetX, 54, stack -> stack.getItem() instanceof UpgradeItem));
         if (enableMeshSlot) {
             addSlot(new FilteredSlot(handler, index++, 80, 36, ExNihiloAPI::isMeshItem));
         }
+        if (enableComparatorSlot) {
+            addSlot(new FilteredSlot(handler, index++, upgradeOffsetX, 18, stack -> stack.getItem() instanceof ComparatorUpgradeItem));
+        }
+
+        int width = enableComparatorSlot ? 6 : 3;
 
         // 3 x 3
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < width; j++) {
                 addSlot(new SlotItemHandler(handler, index++, 8 + j * 18, 18 + i * 18));
             }
         }

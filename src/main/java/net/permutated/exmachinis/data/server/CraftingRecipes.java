@@ -68,6 +68,17 @@ public class CraftingRecipes extends RecipeProvider {
             .unlockedBy("has_netherite_ingot", has(Tags.Items.INGOTS_NETHERITE))
             .save(consumer);
 
+        shaped(ModRegistry.COMPARATOR_UPGRADE.get())
+            .pattern("tct")
+            .pattern("gdg")
+            .pattern("ggg")
+            .define('t', Items.CYAN_TERRACOTTA)
+            .define('c', Tags.Items.DYES_GREEN)
+            .define('d', Items.COMPARATOR)
+            .define('g', Tags.Items.GLASS)
+            .unlockedBy("has_comparator", has(Items.COMPARATOR))
+            .save(consumer);
+
         var sieveTag = TagKey.create(ForgeRegistries.ITEMS.getRegistryKey(), new ResourceLocation("exmachinis:sieves"));
         shaped(ModRegistry.FLUX_SIEVE_ITEM.get())
             .pattern("bbb")
@@ -100,7 +111,18 @@ public class CraftingRecipes extends RecipeProvider {
             .define('p', Items.PISTON)
             .define('c', Items.COMPARATOR)
             .define('h', Items.HOPPER)
-            .unlockedBy("has_anvil", has(Items.ANVIL))
+            .unlockedBy("has_hopper", has(Items.HOPPER))
+            .save(consumer);
+
+        shaped(ModRegistry.ITEM_BUFFER_ITEM.get())
+            .pattern("iri")
+            .pattern("ici")
+            .pattern("ihi")
+            .define('i', Tags.Items.INGOTS_IRON)
+            .define('r', Tags.Items.DUSTS_REDSTONE)
+            .define('c', Tags.Items.CHESTS_WOODEN)
+            .define('h', Items.HOPPER)
+            .unlockedBy("has_hopper", has(Items.HOPPER))
             .save(consumer);
     }
 

@@ -61,5 +61,6 @@ public class JEIPlugin implements IModPlugin {
         registration.addIngredientInfo(new ItemStack(ModRegistry.FLUX_COMPACTOR_BLOCK.get()), VanillaTypes.ITEM_STACK, translateJei(Constants.FLUX_COMPACTOR));
         registration.addIngredientInfo(new ItemStack(ModRegistry.FLUX_HAMMER_BLOCK.get()), VanillaTypes.ITEM_STACK, translateJei(Constants.FLUX_HAMMER));
         registration.addIngredientInfo(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), VanillaTypes.ITEM_STACK, translateJei(Constants.FLUX_SIEVE));
+        registration.addIngredientInfo(new ItemStack(ModRegistry.ITEM_BUFFER_BLOCK.get()), VanillaTypes.ITEM_STACK, translateJei(Constants.ITEM_BUFFER));
     }
 }

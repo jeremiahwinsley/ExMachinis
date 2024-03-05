@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
 import net.permutated.exmachinis.machines.base.AbstractMachineTile;
@@ -143,38 +142,5 @@ public class FluxCompactorTile extends AbstractMachineTile {
             workStatus = WorkStatus.INVENTORY_FULL;
         }
         return workStatus == WorkStatus.WORKING;
-    }
-
-    /**
-     * Sort the inventory slots to merge anything stackable
-     */
-    private void sortSlots() {
-        // iterate over each slot
-        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-            ItemStack stack = itemStackHandler.getStackInSlot(i);
-            // see if this stack is full
-            int missing = stack.getMaxStackSize() - stack.getCount();
-            if (!stack.isEmpty() && missing > 0) {
-                // if it's not full, iterate over the slots after this one and look for matching stacks
-                for (int j = i + 1; j < itemStackHandler.getSlots() && missing > 0; j++) {
-                    ItemStack match = itemStackHandler.getStackInSlot(j);
-                    if (stack.is(match.getItem())) {
-                        // found a matching stack, let's test if we can combine it with the first one
-                        var simulate = itemStackHandler.extractItem(j, missing, true);
-                        if (!simulate.isEmpty() && itemStackHandler.insertItem(i, simulate, true).isEmpty()) {
-                            // we can, so actually combine the stacks
-                            var actual = itemStackHandler.extractItem(j, simulate.getCount(), false);
-                            var result = itemStackHandler.insertItem(i, actual, false);
-                            missing -= actual.getCount();
-
-                            // should not happen but just in case
-                            if (!result.isEmpty()) {
-                                ExMachinis.LOGGER.error("non-empty itemstack returned from sorting: {}", result);
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

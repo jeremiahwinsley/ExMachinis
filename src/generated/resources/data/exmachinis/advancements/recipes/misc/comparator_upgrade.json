@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_hopper": {
+    "has_comparator": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:hopper"
+              "minecraft:comparator"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "exmachinis:flux_compactor"
+        "recipe": "exmachinis:comparator_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_hopper",
+      "has_comparator",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "exmachinis:flux_compactor"
+      "exmachinis:comparator_upgrade"
     ]
   },
   "sends_telemetry_event": false

@@ -21,6 +21,7 @@ public class BlockStates extends BlockStateProvider {
         sieveModel();
         hammerModel();
         compactorModel();
+        bufferModel();
     }
 
     protected void hammerModel() {
@@ -43,5 +44,12 @@ public class BlockStates extends BlockStateProvider {
         ModelFile model = models().cubeAll(Constants.FLUX_COMPACTOR, block(Constants.FLUX_COMPACTOR));
         simpleBlock(compactorBlock, model);
         simpleBlockItem(compactorBlock, model);
+    }
+
+    protected void bufferModel() {
+        var bufferBlock = ModRegistry.ITEM_BUFFER_BLOCK.get();
+        ModelFile model = models().cubeAll(Constants.ITEM_BUFFER, block(Constants.ITEM_BUFFER));
+        simpleBlock(bufferBlock, model);
+        simpleBlockItem(bufferBlock, model);
     }
 }

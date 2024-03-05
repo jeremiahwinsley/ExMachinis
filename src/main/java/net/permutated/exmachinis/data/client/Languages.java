@@ -29,10 +29,12 @@ public class Languages {
             addBlock(ModRegistry.FLUX_SIEVE_BLOCK, "Flux Sieve");
             addBlock(ModRegistry.FLUX_HAMMER_BLOCK, "Flux Hammer");
             addBlock(ModRegistry.FLUX_COMPACTOR_BLOCK, "Flux Compactor");
+            addBlock(ModRegistry.ITEM_BUFFER_BLOCK, "Item Buffer");
 
             addItem(ModRegistry.GOLD_UPGRADE, "Gold Upgrade");
             addItem(ModRegistry.DIAMOND_UPGRADE, "Diamond Upgrade");
             addItem(ModRegistry.NETHERITE_UPGRADE, "Netherite Upgrade");
+            addItem(ModRegistry.COMPARATOR_UPGRADE, "Comparator Upgrade");
 
             add(gui("noStatus"), "Machine starting up...");
             add(gui("inventoryMissing"), "Missing inventory on output side.");
@@ -94,6 +96,11 @@ public class Languages {
 
             add(tooltip("player"), "Player: %s");
 
+            add(tooltip("comparatorDirection"), "Direction: %s");
+            add(tooltip("comparatorSetDirection1"), "Sneak + right-click on a block to");
+            add(tooltip("comparatorSetDirection2"), "set the redstone output direction");
+            add(tooltip("comparatorSetDirection3"), "to the clicked face of the block.");
+
             add(jei(Constants.COMPACTING), "Flux Compactor");
 
             add(jei(Constants.FLUX_COMPACTOR), """
@@ -123,6 +130,20 @@ public class Languages {
                 Upgrades can be added to increase the number of items processed at once.
 
                 Meshes can be enchanted in an anvil with Fortune to increase drop chances.
+
+                The block can be disabled by a redstone signal.
+
+                The output side can be configured by shift + right-clicking with an Ex Nihilo hammer.
+                """);
+
+            add(jei(Constants.ITEM_BUFFER), """
+                The Item Buffer will take items from the internal inventory,
+                and move them into an inventory below.
+
+                Upgrades can be added to increase the number of items processed at once.
+
+                A comparator upgrade can be added to produce a redstone signal in a particular direction.
+                You could use this to turn off other machines.
 
                 The block can be disabled by a redstone signal.
 

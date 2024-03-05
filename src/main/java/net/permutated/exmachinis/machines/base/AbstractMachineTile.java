@@ -19,7 +19,9 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.permutated.exmachinis.ConfigHolder;
+import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
+import net.permutated.exmachinis.items.ComparatorUpgradeItem;
 import net.permutated.exmachinis.items.UpgradeItem;
 import net.permutated.exmachinis.util.Constants;
 import net.permutated.exmachinis.util.OverlayItemHandler;
@@ -40,20 +42,21 @@ public abstract class AbstractMachineTile extends BlockEntity {
 
     protected final MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergyStorage(), getMaxEnergyTransfer());
 
-    protected final ItemStackHandler itemStackHandler = new MachineItemStackHandler(9) {
+    protected final ItemStackHandler itemStackHandler = new MachineItemStackHandler(enableComparatorSlot() ? 18 : 9) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             return AbstractMachineTile.this.isItemValid(stack);
         }
     };
 
-    protected final ItemStackHandler upgradeStackHandler = new MachineItemStackHandler(enableMeshSlot() ? 2 : 1) {
+    protected final ItemStackHandler upgradeStackHandler = new MachineItemStackHandler((enableMeshSlot() || enableComparatorSlot()) ? 2 : 1) {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             if (slot == 0) {
                 return stack.getItem() instanceof UpgradeItem;
             } else {
-                return enableMeshSlot() && ExNihiloAPI.isMeshItem(stack);
+                return (enableMeshSlot() && ExNihiloAPI.isMeshItem(stack))
+                    || (enableComparatorSlot() && stack.getItem() instanceof ComparatorUpgradeItem);
             }
         }
 
@@ -107,6 +110,9 @@ public abstract class AbstractMachineTile extends BlockEntity {
     protected abstract boolean isItemValid(ItemStack stack);
 
     protected boolean enableMeshSlot() {
+        return false;
+    }
+    protected boolean enableComparatorSlot() {
         return false;
     }
 
@@ -210,6 +216,7 @@ public abstract class AbstractMachineTile extends BlockEntity {
      */
     public void updateContainer(FriendlyByteBuf packetBuffer) {
         packetBuffer.writeBoolean(enableMeshSlot());
+        packetBuffer.writeBoolean(enableComparatorSlot());
         packetBuffer.writeBlockPos(worldPosition);
     }
 
@@ -240,14 +247,50 @@ public abstract class AbstractMachineTile extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
     }
 
+    @SuppressWarnings("java:S3776") // complexity warning
+    protected void sortSlots() {
+        // iterate over each slot
+        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+            ItemStack stack = itemStackHandler.getStackInSlot(i);
+            // see if this stack is full
+            int missing = stack.getMaxStackSize() - stack.getCount();
+            if (!stack.isEmpty() && missing > 0) {
+                // if it's not full, iterate over the slots after this one and look for matching stacks
+                for (int j = i + 1; j < itemStackHandler.getSlots() && missing > 0; j++) {
+                    ItemStack match = itemStackHandler.getStackInSlot(j);
+                    if (stack.is(match.getItem())) {
+                        // found a matching stack, let's test if we can combine it with the first one
+                        var simulate = itemStackHandler.extractItem(j, missing, true);
+                        if (!simulate.isEmpty() && itemStackHandler.insertItem(i, simulate, true).isEmpty()) {
+                            // we can, so actually combine the stacks
+                            var actual = itemStackHandler.extractItem(j, simulate.getCount(), false);
+                            var result = itemStackHandler.insertItem(i, actual, false);
+                            missing -= actual.getCount();
+
+                            // should not happen but just in case
+                            if (!result.isEmpty()) {
+                                ExMachinis.LOGGER.error("non-empty itemstack returned from sorting: {}", result);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public class MachineItemStackHandler extends ItemStackHandler {
+        Runnable listener = null;
         public MachineItemStackHandler(int size) {
             super(size);
         }
 
         @Override
         protected void onContentsChanged(int slot) {
+            if (listener != null) listener.run();
             setChanged();
+        }
+        public void setListener(Runnable listener) {
+            this.listener = listener;
         }
     }
 

@@ -14,12 +14,14 @@ public class Constants {
     public static final String FLUX_SIEVE = "flux_sieve";
     public static final String FLUX_HAMMER = "flux_hammer";
     public static final String FLUX_COMPACTOR = "flux_compactor";
+    public static final String ITEM_BUFFER = "item_buffer";
 
     public static final String UNKNOWN = "unknown";
 
     public static final String GOLD_UPGRADE = "gold_upgrade";
     public static final String DIAMOND_UPGRADE = "diamond_upgrade";
     public static final String NETHERITE_UPGRADE = "netherite_upgrade";
+    public static final String COMPARATOR_UPGRADE = "comparator_upgrade";
 
     public static final String COMPACTING = "compacting";
 
@@ -39,6 +41,7 @@ public class Constants {
         public static final String CONTENTS = "contents";
         public static final String POSITION = "position";
         public static final String OUTPUT = "output";
+        public static final String DIRECTION = "direction";
     }
 
     public static class JSON
