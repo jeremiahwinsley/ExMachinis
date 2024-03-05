@@ -158,12 +158,12 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:jade-324717:4801177")
 
     implementation fg.deobf('maven.modrinth:jei:HU1FUi8s')
-    implementation fg.deobf("curse.maven:ex-deorum-901420:5102480")
+    implementation fg.deobf("curse.maven:ex-deorum-901420:5129108")
     runtimeOnly fg.deobf("thedarkcolour.modkit:ModKit:1.0")
 }
 
 jar {
-    archiveBaseName.set("${mod_id}-${minecraft_version}")
+    archiveBaseName.set("${mod_id}-deorum-${minecraft_version}")
     manifest {
         attributes([
             "Specification-Title"     : mod_id,
