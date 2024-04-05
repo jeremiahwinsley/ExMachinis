@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
@@ -12,12 +13,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.energy.EnergyStorage;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.permutated.exmachinis.ConfigHolder;
 import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
 import net.permutated.exmachinis.items.UpgradeItem;
@@ -110,37 +111,60 @@ public abstract class AbstractMachineTile extends BlockEntity {
         return false;
     }
 
-    protected final LazyOptional<EnergyStorage> energy = LazyOptional.of(() -> energyStorage);
-    protected final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> new PipeItemHandler(itemStackHandler));
-    protected final LazyOptional<IItemHandler> overlay = LazyOptional.of(() -> new OverlayItemHandler(itemStackHandler, upgradeStackHandler));
+    protected final IItemHandler handler = new PipeItemHandler(itemStackHandler);
+    protected final IItemHandler overlay = new OverlayItemHandler(itemStackHandler, upgradeStackHandler);
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
+    /**
+     * Helper method for registering capabilities. Called by ForgeEventHandler.
+     * @param event the registration event
+     * @param blockEntityType the block entity being registered
+     */
+    public static void registerCapabilities(RegisterCapabilitiesEvent event, BlockEntityType<? extends AbstractMachineTile> blockEntityType) {
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, blockEntityType, (machine, context) -> machine.energyStorage );
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, blockEntityType, (machine, side) -> {
             if (side == null) {
-                return overlay.cast();
+                return machine.overlay;
             } else {
-                return handler.cast();
+                return machine.handler;
             }
-        }
-        if (cap == ForgeCapabilities.ENERGY) {
-            return energy.cast();
-        }
-        return super.getCapability(cap, side);
+        });
     }
+
+    protected BlockCapabilityCache<IItemHandler, Direction> inputCache;
+    protected BlockCapabilityCache<IItemHandler, Direction> outputCache;
+
+    /**
+     * Load an item capability for a given position and update cache if necessary.
+     * @param serverLevel the current level
+     * @param target the position to search
+     * @param side the side to extract from
+     * @return an item handler, if found
+     */
+    protected @Nullable IItemHandler findCapabilityForInput(ServerLevel serverLevel, BlockPos target, Direction side) {
+        if (inputCache == null || !side.equals(inputCache.context())) {
+            inputCache = BlockCapabilityCache.create(Capabilities.ItemHandler.BLOCK, serverLevel, target, side);
+        }
+        return inputCache.getCapability();
+    }
+
+    /**
+     * Load an item capability for a given position and update cache if necessary.
+     * @param serverLevel the current level
+     * @param target the position to search
+     * @param side the side to insert to
+     * @return an item handler, if found
+     */
+    protected @Nullable IItemHandler findCapabilityForOutput(ServerLevel serverLevel, BlockPos target, Direction side) {
+        if (outputCache == null || !side.equals(outputCache.context())) {
+            outputCache = BlockCapabilityCache.create(Capabilities.ItemHandler.BLOCK, serverLevel, target, side);
+        }
+        return outputCache.getCapability();
+    }
+
 
     public void dropItems() {
         AbstractMachineTile.dropItems(level, worldPosition, itemStackHandler);
         AbstractMachineTile.dropItems(level, worldPosition, upgradeStackHandler);
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        energy.invalidate();
-        handler.invalidate();
-        overlay.invalidate();
     }
 
     int remainder = 0;

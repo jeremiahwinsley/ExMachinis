@@ -1,6 +1,5 @@
 package net.permutated.exmachinis.machines.base;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.permutated.exmachinis.util.WorkStatus;
 
 public class DataHolderClient implements DataHolder {

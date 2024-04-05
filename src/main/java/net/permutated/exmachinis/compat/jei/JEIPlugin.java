@@ -9,12 +9,13 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.fml.ModList;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.compat.jei.category.CompactingCategory;
 import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.util.Constants;
 import net.permutated.exmachinis.util.ResourceUtil;
-import novamachina.exnihilosequentia.common.compat.jei.RecipeTypes;
+import novamachina.exnjei.jei.RecipeTypes;
 
 import static net.permutated.exmachinis.util.TranslationKey.translateJei;
 
@@ -36,9 +37,13 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_COMPACTOR_BLOCK.get()), CompactingCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_HAMMER_BLOCK.get()), RecipeTypes.CRUSHING);
-        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.DRY_SIFTING);
-        registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.WET_SIFTING);
+
+        if (ModList.get().isLoaded("exnjei")) {
+            registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_HAMMER_BLOCK.get()), RecipeTypes.CRUSHING);
+            registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.DRY_SIFTING);
+            registration.addRecipeCatalyst(new ItemStack(ModRegistry.FLUX_SIEVE_BLOCK.get()), RecipeTypes.WET_SIFTING);
+        }
+
     }
 
     @Override

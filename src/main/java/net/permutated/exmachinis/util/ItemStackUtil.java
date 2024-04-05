@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraftforge.items.ItemHandlerHelper.copyStackWithSize;
+import static net.neoforged.neoforge.items.ItemHandlerHelper.copyStackWithSize;
 
 public class ItemStackUtil {
     private ItemStackUtil() {

@@ -1,11 +1,12 @@
 package net.permutated.exmachinis;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.permutated.exmachinis.machines.base.AbstractMachineTile;
 import org.slf4j.Logger;
 
 @Mod(ExMachinis.MODID)
@@ -15,16 +16,18 @@ public class ExMachinis {
 
     public static final String MODID = "exmachinis";
 
-    public ExMachinis() {
+    public ExMachinis(IEventBus modEventBus) {
         LOGGER.info("Registering mod: {}", MODID);
 
-        ModRegistry.register();
+        ModRegistry.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigHolder.SERVER_SPEC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetupEvent);
+        modEventBus.addListener(ExMachinis::registerCapabilities);
     }
 
-    public void onClientSetupEvent(final FMLClientSetupEvent event) {
-        ClientSetup.register();
+    public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
+        AbstractMachineTile.registerCapabilities(event, ModRegistry.FLUX_COMPACTOR_TILE.get());
+        AbstractMachineTile.registerCapabilities(event, ModRegistry.FLUX_HAMMER_TILE.get());
+        AbstractMachineTile.registerCapabilities(event, ModRegistry.FLUX_SIEVE_TILE.get());
     }
 }

@@ -1,14 +1,15 @@
 package net.permutated.exmachinis.data.builders;
 
-import com.google.gson.JsonObject;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.permutated.exmachinis.ExMachinis;
+import net.permutated.exmachinis.recipes.AbstractMachineRecipe;
 
-import javax.annotation.Nullable;
-import java.util.function.Consumer;
-
-public abstract class AbstractRecipeBuilder {
+public abstract class AbstractRecipeBuilder<T extends AbstractMachineRecipe> {
 
     protected abstract String getPrefix();
 
@@ -18,36 +19,14 @@ public abstract class AbstractRecipeBuilder {
 
     protected abstract void validate(ResourceLocation id);
 
-    protected abstract AbstractResult getResult(ResourceLocation id);
+    protected abstract T getResult();
 
-    public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
+    public void build(RecipeOutput consumer, ResourceLocation id) {
         validate(id);
-        consumer.accept(getResult(id));
-    }
-
-    protected abstract static class AbstractResult implements FinishedRecipe {
-        private final ResourceLocation id;
-
-        protected AbstractResult(ResourceLocation id) {
-            this.id = id;
-        }
-
-        @Override
-        public ResourceLocation getId() {
-            return id;
-        }
-
-
-        @Nullable
-        @Override
-        public JsonObject serializeAdvancement() {
-            return null;
-        }
-
-        @Nullable
-        @Override
-        public ResourceLocation getAdvancementId() {
-            return null;
-        }
+        Advancement.Builder advancementBuilder = consumer.advancement()
+            .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+            .rewards(AdvancementRewards.Builder.recipe(id))
+            .requirements(AdvancementRequirements.Strategy.OR);
+        consumer.accept(id, getResult(), advancementBuilder.build(id));
     }
 }

@@ -19,8 +19,6 @@
     "description": {
       "translate": "advancement.exmachinis.root.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "exmachinis:flux_sieve"
     },

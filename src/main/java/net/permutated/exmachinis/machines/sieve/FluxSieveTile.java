@@ -6,9 +6,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.permutated.exmachinis.ConfigHolder;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
@@ -39,7 +38,7 @@ public class FluxSieveTile extends AbstractMachineTile {
 
     @Override
     public void tick() {
-        if (level instanceof ServerLevel && canTick(getUpgradeTickDelay())) {
+        if (level instanceof ServerLevel serverLevel && canTick(getUpgradeTickDelay())) {
 
             Boolean enabled = getBlockState().getValue(AbstractMachineBlock.ENABLED);
             if (Boolean.FALSE.equals(enabled)) {
@@ -58,9 +57,7 @@ public class FluxSieveTile extends AbstractMachineTile {
 
 
 
-            IItemHandler itemHandler = target.getCapability(ForgeCapabilities.ITEM_HANDLER, output.getOpposite())
-                .resolve()
-                .orElse(null);
+            IItemHandler itemHandler = findCapabilityForOutput(serverLevel, outPos, output.getOpposite());
             if (itemHandler == null || itemHandler.getSlots() == 0) {
                 workStatus = WorkStatus.MISSING_INVENTORY;
                 return;

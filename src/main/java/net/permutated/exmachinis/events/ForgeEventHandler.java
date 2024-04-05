@@ -2,15 +2,16 @@ package net.permutated.exmachinis.events;
 
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.event.RecipesUpdatedEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.compat.exnihilo.ExNihiloAPI;
@@ -28,7 +29,8 @@ public class ForgeEventHandler {
 
     public static void loadCompactingRecipes(RecipeManager recipeManager) {
         List<CompactingRecipe> compactingRecipes = recipeManager
-            .getAllRecipesFor(ModRegistry.COMPACTING_RECIPE_TYPE.get());
+            .getAllRecipesFor(ModRegistry.COMPACTING_RECIPE_TYPE.get())
+            .stream().map(RecipeHolder::value).toList();
         ModRegistry.COMPACTING_REGISTRY.setRecipeList(compactingRecipes);
         ExMachinis.LOGGER.debug("Registered {} compacting recipes", compactingRecipes.size());
     }

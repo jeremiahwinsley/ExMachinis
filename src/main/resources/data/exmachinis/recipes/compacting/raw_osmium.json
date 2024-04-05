@@ -9,9 +9,9 @@
   "output": {
     "item": "mekanism:raw_osmium"
   },
-  "conditions": [
+  "neoforge:conditions": [
     {
-      "type": "forge:mod_loaded",
+      "type": "neoforge:mod_loaded",
       "modid": "exnihilomekanism"
     }
   ]

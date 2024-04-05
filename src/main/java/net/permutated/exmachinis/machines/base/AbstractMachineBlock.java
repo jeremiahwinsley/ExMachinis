@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -27,8 +26,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.IContainerFactory;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.network.IContainerFactory;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.items.UpgradeItem;
 
@@ -166,7 +164,7 @@ public abstract class AbstractMachineBlock extends Block implements EntityBlock 
                         return containerFactory().create(i, playerInventory, buffer);
                     }
                 };
-                NetworkHooks.openScreen((ServerPlayer) player, containerProvider, machineTile::updateContainer);
+                player.openMenu(containerProvider, machineTile::updateContainer);
             } else {
                 ExMachinis.LOGGER.error("tile entity not instance of AbstractMachineTile");
                 return InteractionResult.FAIL;

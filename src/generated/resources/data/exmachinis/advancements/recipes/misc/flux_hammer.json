@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_diamond_hammer",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_diamond_hammer"
     ]
   ],
   "rewards": {
     "recipes": [
       "exmachinis:flux_hammer"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

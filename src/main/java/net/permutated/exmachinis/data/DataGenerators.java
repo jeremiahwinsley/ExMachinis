@@ -4,16 +4,19 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeAdvancementProvider;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.data.AdvancementProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.data.client.BlockStates;
 import net.permutated.exmachinis.data.client.ItemModels;
 import net.permutated.exmachinis.data.client.Languages;
-import net.permutated.exmachinis.data.server.*;
+import net.permutated.exmachinis.data.server.Advancements;
+import net.permutated.exmachinis.data.server.BlockLoot;
+import net.permutated.exmachinis.data.server.BlockTags;
+import net.permutated.exmachinis.data.server.CraftingRecipes;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +32,7 @@ public final class DataGenerators {
         ExistingFileHelper fileHelper = event.getExistingFileHelper();
 
         if (event.includeServer()) {
-            generator.addProvider(true, new ForgeAdvancementProvider(packOutput, event.getLookupProvider(), fileHelper,
+            generator.addProvider(true, new AdvancementProvider(packOutput, event.getLookupProvider(), fileHelper,
                 List.of(new Advancements())));
             generator.addProvider(true, new BlockTags(packOutput, event.getLookupProvider(), fileHelper));
             generator.addProvider(true, new CraftingRecipes(packOutput));

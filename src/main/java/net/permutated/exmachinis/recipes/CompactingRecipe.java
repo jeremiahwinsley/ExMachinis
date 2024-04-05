@@ -1,26 +1,22 @@
 package net.permutated.exmachinis.recipes;
 
 import com.google.common.base.Preconditions;
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.util.Constants;
 import net.permutated.exmachinis.util.IngredientStack;
-import net.permutated.exmachinis.util.SerializerUtil;
-
-import javax.annotation.Nullable;
 
 public class CompactingRecipe extends AbstractMachineRecipe {
-    public static final CompactingRecipe EMPTY = new CompactingRecipe(new ResourceLocation("empty"), IngredientStack.EMPTY, ItemStack.EMPTY);
+    public static final CompactingRecipe EMPTY = new CompactingRecipe(IngredientStack.EMPTY, ItemStack.EMPTY);
     private final IngredientStack ingredient;
     private final ItemStack output;
 
-    public CompactingRecipe(ResourceLocation id, IngredientStack input, ItemStack output) {
-        super(id);
+    public CompactingRecipe(IngredientStack input, ItemStack output) {
         Preconditions.checkNotNull(input, "input cannot be null.");
         Preconditions.checkState(input.count() > 0, "input count must be greater than 0");
         Preconditions.checkNotNull(output, "output cannot be null.");
@@ -54,20 +50,19 @@ public class CompactingRecipe extends AbstractMachineRecipe {
 
     public static class Serializer implements RecipeSerializer<CompactingRecipe> {
         @Override
-        public CompactingRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
-            IngredientStack input = IngredientStack.fromJson(jsonObject.getAsJsonObject(Constants.JSON.INPUT));
-            ItemStack output = SerializerUtil.getItemStack(jsonObject, Constants.JSON.OUTPUT);
-
-            return new CompactingRecipe(resourceLocation, input, output);
+        public Codec<CompactingRecipe> codec() {
+            return RecordCodecBuilder.create(instance -> instance.group(
+                IngredientStack.CODEC.fieldOf(Constants.JSON.INPUT).forGetter(CompactingRecipe::getIngredient),
+                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(Constants.JSON.OUTPUT).forGetter(CompactingRecipe::getOutput)
+            ).apply(instance, CompactingRecipe::new));
         }
 
-        @Nullable
         @Override
-        public CompactingRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
+        public CompactingRecipe fromNetwork(FriendlyByteBuf buffer) {
             IngredientStack input = IngredientStack.fromNetwork(buffer);
             ItemStack output = buffer.readItem();
 
-            return new CompactingRecipe(resourceLocation, input, output);
+            return new CompactingRecipe(input, output);
         }
 
         @Override

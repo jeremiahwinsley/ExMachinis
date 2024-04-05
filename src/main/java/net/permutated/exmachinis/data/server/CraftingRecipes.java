@@ -1,8 +1,9 @@
 package net.permutated.exmachinis.data.server;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -11,8 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.Tags;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.data.builders.CompactingRecipeBuilder;
@@ -22,7 +22,7 @@ import novamachina.novacore.world.item.ItemDefinition;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
+
 
 public class CraftingRecipes extends RecipeProvider {
     public CraftingRecipes(PackOutput packOutput) {
@@ -35,12 +35,12 @@ public class CraftingRecipes extends RecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildRecipes(RecipeOutput consumer) {
         buildCraftingRecipes(consumer);
         buildCompactingRecipes(consumer);
     }
 
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildCraftingRecipes(RecipeOutput consumer) {
         shaped(ModRegistry.GOLD_UPGRADE.get())
             .pattern("tct")
             .pattern("gdg")
@@ -70,7 +70,7 @@ public class CraftingRecipes extends RecipeProvider {
             .unlockedBy("has_netherite_ingot", has(Tags.Items.INGOTS_NETHERITE))
             .save(consumer);
 
-        var sieveTag = TagKey.create(ForgeRegistries.ITEMS.getRegistryKey(), new ResourceLocation("exnihilosequentia:sieves"));
+        var sieveTag = TagKey.create(Registries.ITEM, new ResourceLocation("exnihilosequentia:sieves"));
         shaped(ModRegistry.FLUX_SIEVE_ITEM.get())
             .pattern("bbb")
             .pattern("bsb")
@@ -106,7 +106,7 @@ public class CraftingRecipes extends RecipeProvider {
             .save(consumer);
     }
 
-    protected void buildCompactingRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildCompactingRecipes(RecipeOutput consumer) {
         CompactingRecipeBuilder.builder(Objects.requireNonNull(Items.RAW_IRON))
             .setInput(Ingredient.of(EXNItems.IRON.getPieceItem()), 4)
             .build(consumer);

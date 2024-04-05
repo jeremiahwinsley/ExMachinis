@@ -1,25 +1,21 @@
 package net.permutated.exmachinis.data.builders;
 
-import com.google.gson.JsonObject;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.data.RecipeException;
+import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.util.Constants;
 import net.permutated.exmachinis.util.IngredientStack;
-import net.permutated.exmachinis.util.SerializerUtil;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
-public class CompactingRecipeBuilder extends AbstractRecipeBuilder {
+public class CompactingRecipeBuilder extends AbstractRecipeBuilder<CompactingRecipe> {
 
     private IngredientStack ingredient = new IngredientStack(Ingredient.EMPTY, 0);
     private final ItemStack output;
@@ -60,31 +56,13 @@ public class CompactingRecipeBuilder extends AbstractRecipeBuilder {
         }
     }
 
-    public void build(Consumer<FinishedRecipe> consumer) {
-        String path = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(output.getItem())).getPath();
+    public void build(RecipeOutput consumer) {
+        String path = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(output.getItem())).getPath();
         build(consumer, id(path));
     }
 
     @Override
-    protected AbstractResult getResult(ResourceLocation id) {
-        return new CompactingRecipeBuilder.Result(id);
-    }
-
-    public class Result extends AbstractResult {
-        public Result(ResourceLocation id) {
-            super(id);
-        }
-
-        @Override
-        public void serializeRecipeData(JsonObject jsonObject) {
-            jsonObject.add(Constants.JSON.INPUT, ingredient.toJson());
-            jsonObject.add(Constants.JSON.OUTPUT, SerializerUtil.serializeItemStack(output));
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return ModRegistry.COMPACTING_RECIPE_SERIALIZER.get();
-        }
-
+    protected CompactingRecipe getResult() {
+        return new CompactingRecipe(ingredient, output);
     }
 }

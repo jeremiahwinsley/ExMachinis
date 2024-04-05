@@ -15,16 +15,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.exmachinis.gold_upgrade.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "exmachinis:gold_upgrade"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.exmachinis.gold_upgrade"
     }

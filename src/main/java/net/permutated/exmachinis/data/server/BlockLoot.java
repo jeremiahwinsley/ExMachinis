@@ -2,8 +2,11 @@ package net.permutated.exmachinis.data.server;
 
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.permutated.exmachinis.ModRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockLoot extends VanillaBlockLoot {
     @Override
@@ -13,6 +16,10 @@ public class BlockLoot extends VanillaBlockLoot {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return ModRegistry.BLOCKS.getEntries().stream().map(RegistryObject::get).toList();
+        List<Block> knownBlocks = new ArrayList<>();
+        ModRegistry.BLOCKS.getEntries().stream()
+            .map(DeferredHolder::get)
+            .forEach(knownBlocks::add);
+        return knownBlocks;
     }
 }

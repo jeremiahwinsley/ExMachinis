@@ -6,9 +6,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.permutated.exmachinis.ExMachinis;
 import net.permutated.exmachinis.ModRegistry;
 import net.permutated.exmachinis.machines.base.AbstractMachineBlock;
@@ -17,6 +16,7 @@ import net.permutated.exmachinis.recipes.CompactingRecipe;
 import net.permutated.exmachinis.util.WorkStatus;
 
 import static net.permutated.exmachinis.util.ItemStackUtil.multiplyStackCount;
+
 
 public class FluxCompactorTile extends AbstractMachineTile {
     public FluxCompactorTile(BlockPos pos, BlockState state) {
@@ -47,9 +47,7 @@ public class FluxCompactorTile extends AbstractMachineTile {
                 return;
             }
 
-            IItemHandler itemHandler = target.getCapability(ForgeCapabilities.ITEM_HANDLER, output.getOpposite())
-                .resolve()
-                .orElse(null);
+            IItemHandler itemHandler = findCapabilityForOutput(serverLevel, outPos, output.getOpposite());
             if (itemHandler == null || itemHandler.getSlots() == 0) {
                 workStatus = WorkStatus.MISSING_INVENTORY;
                 return;

@@ -40,7 +40,6 @@ jobs:
 
           name: ""
           loaders: |
-            forge
             neoforge
           dependencies: |
             ex-nihilo-sequentia(required){modrinth:WhVa4xyw}{curseforge:400012}
