@@ -2,7 +2,7 @@ plugins {
     id 'idea'
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.86'
+    id 'net.neoforged.gradle.userdev' version '7.0.100'
     id 'org.gradle.crypto.checksum' version '1.4.0'
 }
 
