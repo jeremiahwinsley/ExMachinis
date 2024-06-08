@@ -83,6 +83,7 @@ public class Languages {
             add(tooltip("workData"), "%d/%d ticks");
             add(tooltip("upgradeSlot"), "Upgrade Slot");
             add(tooltip("meshSlot"), "Mesh Slot");
+            add(tooltip("comparatorSlot"), "Comparator Slot");
 
             add(tooltip("goldItemsProcessed"), "2/4/8");
             add(tooltip("diamondItemsProcessed"), "16/32/64");
